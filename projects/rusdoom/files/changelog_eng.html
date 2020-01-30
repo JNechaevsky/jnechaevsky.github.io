@@ -1,0 +1,1178 @@
+<html><head>
+<title>Russian Doom changelog</title>
+
+<meta http-equiv="content-type" content="text/html"; charset="windows-1251">
+<link rel="icon" href="../../../img/favicon.ico" type="image/x-icon">
+<meta name="author" content="Julian Nechaevsky">
+<meta name="description" content="Russian Doom - history of changes">
+
+<meta http-equiv="content-type" content="text/html"; charset="windows-1251">
+<link rel="icon" href="../../../img/favicon.ico" type="image/x-icon">
+
+<style type="text/css">
+    html { overflow-y: scroll; }
+    a {text-decoration: none; }
+    .code { background: #e8e8e8; }
+</style>
+</head>
+
+<body bgcolor="#000000" text="#999999" link="#0078ff" alink="#7fbbff" vlink="#0078ff">
+<font face="segoe ui">
+
+
+<b><span id="3.3">Version 3.3 (9/29/2019)</span></b>
+<br><br>
+
+<b>Updates on Doom:</b>
+
+<ul>
+    <li>DEHACKED parser now able to read some BEX specifics: PARS and CODEPTR sections. BOOM-specific actions like A_Stop, A_Mushroom, A_Scratch and others are not supported.
+    <li>Updated support and graphics for SIGIL versions 1.2 and 1.21. Only compat versions are supported.
+    <li>Implemented customization of pickup messages color. Can be choosen in "Gameplay / Graphical" section.
+    <li>Added automap overlay mode. Can be toggled via "O" button in opened automap.
+    <li>Added automap rotate mode. Can be toggled via "R" button in opened automap.
+</ul>
+
+<b>Updates on Heretic:</b>
+
+<ul>
+    <li>Fixed critical bug when opening automap was crashing game.
+</ul>
+
+<br>
+<hr size="1" color="#666666">
+<br><br>
+
+
+<b><span id="3.2.1">Version 3.2.1 (8/4/2019)</span></b>
+<br><br>
+
+<b>Changelog</b>
+
+<ul>
+    <li>Updated SDL library to version 2.0.10.
+    <li>Finished limit-removing:
+        <ul>
+        <li>Properly removed BLOCKMAP limit. In case of necessity, port will create new BLOCKMAP using MBF algorithm.
+        <li>Added support for ZDBSP and DeePBSP nodes.
+        <li>Port now able to load patches and floor textures with same names without errors.
+        <li>Dehacked parser now able to load DEHACKED lump without headers.
+        <li>Maps like Sunder, Oku2v31, Deus Vult now able to load, hovewer there is no BOOM specifics support and levels with such specifics may be technically unfinishable.
+        </ul>
+    <li>Widescreen: fixed bug with missing satus bar background on automap.
+    <li>Improved performance of rendering huge and detailed map views.
+    <li>Settings reset now properly resets sfx and music volume.
+    <li>Gameplay features pages can be scrolled by PgUp and PgDn keys. Port will remember cursor position.
+    <li>Changed default player name to "Player" in multiplayer lobby.
+    <li>Player will make an "oof" sound while trying to activate G-doors and scrollers.
+    <li>Fullscreen: reduced startup delay from 1000 to 35 ms.
+    <li>Maximum duration of yellow bonus palette reduced from 5 to 4 seconds.
+    <li>Weapon changing while movement is now more smooth.
+    <li>Changed total level times format on intermission screen from DD:HH:MM:SS to HHHH:MM:SS.
+</ul>
+
+<br>
+<hr size="1" color="#666666">
+<br><br>
+
+
+<b><span id="3.2">Version 3.2 (6/22/2019)</span></b>
+<br><br>
+
+<b>Technical improvements</b>
+
+<ul>
+    <li>SDL libraries updated to most recent version: SDL2 to 2.0.9, SDL_Mixer to 2.0.4.
+    <li>Wide screen code consolidated with standard one, making all in-game functions always same for both executables. Still not hot-swapping, though.
+    <li>Screenshot files limit increased to 10,000.
+    <li>Windows: -devparm command line parameter now creates a console output window. Available for all supported games.
+    <li>Brightmaps loading logic slightly improved.
+    <li>Fixed MIDI volume issue on Windows.
+    <li>Added support for digital music in mp3, flac and ogg formats. Like Chocolate Doom, music backend must be changed to "MIDI / MP3 / OGG / FLAC" in Setup executable.
+    <li>Windows: all saved games now stored in "savegames" folder.
+    <li>Changed screenshot filename template to: screenshot-game-num.png.
+</ul>
+
+<b>Doom</b>
+
+<ul>
+    <li>Colored blood no longer using custom sprites, colorization done via color translation tables.
+    <li>Added optional colored HUD. Can be activated via in-game menu “Gameplay” as well as by changing colored_hud to “1” in configuration file.
+    <li>Added intermission screen after finishing ExM8, which making possible to know total time of completed episode.
+    <li>Added brightmaps for explosive and burnring barrels, torches, candelabra and floor lamps.
+    <li>Wide screen: all backgrounds graphically extended to wide mode.
+    <li>Disabled error when player is walking through a sector with unknown specific.
+    <li>Gamma-correction changing no longer color screen in red if level was finished with player’s pain palette.
+    <li>In-game options menu completely overhauled.
+    <li>Level flipping now available only via command line parameter -fliplevels or by changing flip_levels to “1” in configuration file.
+    <li>Empty savegame slots now darkened.
+    <li>Game skill level now appearing along with level stats on automap.
+    <li>Russian: fixed grammatical typo in "Получено BFG9000! О, да." > "Получено BFG9000! О да."
+</ul>
+
+<b>SIGIL</b>
+<br><br>
+Implemented translation of COMPAT version.
+<br><br>
+
+<b>Jaguar Doom</b>
+<br><br>
+Upgraded to Yaguar Doom project, which including:
+
+<ul>
+    <li>Jaguar HUD.
+    <li>More correct firing rate and mechanics (but still not as correct as they were in Yaguar).
+    <li>Intermission screen.
+    <li>Ending text screen and font.
+    <li>Ending “casting” screen.
+    <li>Few safe bugs and specifics of game world.
+</ul>
+
+It can be started as before:
+<ul>
+    <li><code>russian-doom.exe -jaguar</code>
+    <li><code>russian-doom-wide.exe -jaguar</code>
+</ul>
+
+<b>Press Beta</b>
+
+<ul>
+    <li>Added brightmaps for TEKWALL2 and TEKWALL5 textures.
+</ul>
+
+<b>Heretic</b>
+
+<ul>
+    <li>Implemented wide screen mode executable.
+    <li>Added wide screen HUD by Hellser, Neoworm, TerminusEst13 и PSTrooper.
+    <li>Added optional colored HUD. Can be activated via in-game menu “Gameplay” as well as by changing colored_hud to 1 in configuration file.
+    <li>Gargoyles eyes now colored golden while Ring of Invincibility effect.
+    <li>Health vial on fullscreen HUD now representing player’s health.
+    <li>Weapon bobbing amplitude reduced if player is changing run mode to walk mode. Not applied in -vanilla mode.
+    <li>Intermission screen now showing total time.
+    <li>Added intermission screen after finishing ExM8, which making possible to know total time of completed episode.
+    <li>Level’s out of bounds now colored with black color.
+    <li>Added optional colored blood for Mages and Liches. Can be activated via in-game menu “Gameplay” as well as by changing colored_blood to “1” in configuration file.
+    <li>Added optional negative health showing. Can be activated via in-game menu “Gameplay” as well as by changing negative_health to “1” in configuration file.
+    <li>Looking direction will be reset if game is loaded without mouse look.
+    <li>Russian: "Морфийное яйцо" changed to "Яйцо превращения".
+    <li>Game skill level now appearing along with level stats on automap.
+</ul>
+
+<b>Hexen</b>
+
+<ul>
+    <li>Implemented wide screen mode executable.
+    <li>Fixed a visual bug with showing “-1” mana in some instances.
+    <li>Looking direction will be reset if game is loaded without mouse look.
+    <li>Game skill level now showing on automap.
+    <li>Health vial on fullscreen HUD now representing player’s health.
+    <li>Added wide screen HUD and weapons by Neoworm. Some additional “widing” and pixel polishing was made independently.
+    <li>Armor icon on fullscreen HUD replaced to common shield.
+    <li>Glass shards of broken stained glass windows no longer disappear.
+</ul>
+
+
+<br>
+<hr size="1" color="#666666">
+<br><br>
+
+
+<b><span id="3.1a">Version 3.1a (02/09/2019)</span></b>
+<br><br>
+Small but important update on all three games.
+<br><br>
+
+<b>Updates:</b>
+<ul>
+    <li>Doom: same to the console versions, missing key for locked door or object will blink on status bar three times. Not in -vanilla mode. (thanks Fabian Greffrath)
+    <li>Heretic: fixed bug with slow projectiles speed in 5th and 6th skill levels. Projectiles speed in 6th skill level is equal to 5th skill level (thanks mykola-ambar and theleo_ua).
+    <li>Hexen: added Korax Russian voiceover, only for Russian language (great thanks Andrew Grischenko and Nemrtvi).
+</ul>
+
+
+<br>
+<hr size="1" color="#666666">
+<br><br>
+
+
+<b><span id="3.1">Version 3.1 (11/25/2018)</span></b>
+
+<br><br>
+
+<b>Changelog:</b>
+<ul>
+    <li>Doom, Heretic, Hexen: fixed missing Russian translation strings, brought by adding English language (thanks [LeD]Jake Crusher and Sabhotep).
+    <li>Doom, Heretic, Hexen: reduced ammount of gamma-correction levels, text message now showing used palette - original or improve (thanks Sabhotep).
+    <li>Press Beta: bonus palettes again working proper, like in original Press Beta.
+    <li>Jaguar Doom: cheat code IDBEHOLD no longer offering Light Amplification Visor (L) and Invisibility (I), they are not available in the game.
+    <li>Added experimental wide screen executable for Doom.
+    <li>Implemented brightmaps for SW2SATYR, SW2LION and SW2GARG, and also for TEKWALL2 and TEKWALL5 textures.
+    <li>Weapon bobbing amplitude will be reduced while walking (i.e. not running). Not in -vanilla.
+    <li>Remainings of text shadow now properly removing from screen bezel.
+    <li>Changed translation of "I'm too young to die" skill level, from "Я слишком молод" to "Мне рано умирать".
+    <li>God mode face will be blooded, to represent real player's health. Not in -vanilla.
+    <li>If player start is missing, game will report it instead of silent crashing (thanks mfrancis95).
+    <li>Alert and death sounds of Icon of Sin will no longer be breaked by player's "oof" sounds.
+    <li>After landing from too high height, BFG will squat and raise slowly than other weapons. Not in -vanilla.
+    <li>Sound of revealed secrets will no longer be breaked by bonus pickup sounds and others.
+    <li>Map fixes will no longer be applied for Shareware version of Doom 1.
+    <li>Fixed vanilla bug: game no longer crashing after using some numbers in IDMUS cheat code in Shareware and Registered version of Doom 1.
+    <li>Normal sound clipping will be applied on E4M8 of Ultimate Doom (thanks Fabian).
+    <li>Fixed vanilla bug: SSG only will now be shown in ARMS widget as weapon number 3, if player does not have a shotgun (thanks Brad and Fabian).
+    <li>Added ability to disable internal demos. Available in Optional Gameplay Enhancements in Setup executable, as well as in config files ("no_internal_demos" variable).
+    <li>Following improvement will no longer be applied in "-vanilla" mode:
+        <ul>
+        <li>Smoothed diminished lighting.
+        <li>Proper view height update on moving platforms.
+        <li>Pausing fuzz effect while paused game states.
+        <li>Missing Archvile's FLAMST sound.
+        </ul>
+</ul>
+
+
+<br>
+<hr size="1" color="#666666">
+<br><br>
+
+<b><span id="3.0">Version 3.0 (09/16/2018)</span></b>
+<br><br>
+Anniversary update! Two years ago first version of the project was released, and now all supported games have a support for English language.
+<br><br>
+Also, translated resources was restructured, so it is highly recommended to make a clean install of this version. 
+
+<br><br>
+<b>Most interesting:</b>
+<ul>
+
+<li>Implemented total conversion, a restoration of Doom for Atari Jaguar:
+    <ul>
+    <li>Major idea: "How Doom for Atari Jaguar will look like if it was created for PC."
+    <li>All Jaguar levels transfered and cleaned up from technical and visual bugs.
+    <li>Most of all Jaguar assets were recreated: game mechanics,  rate of fire, game palettes and automap. Sadly, screen rendering functions are not implemented.
+    <li>Enigmatic level <a href="https://doomwiki.org/wiki/Extramap.wad">Extra Map</a> has been logically finished and visually revamped. Player will find himself in a slightly mixed reality, fight through the horde of monsters and get the prize. It's made as a secret level, which is accessable from level 13.
+    <li>Used few resources from <a href="https://www.doomworld.com/forum/topic/72509-more-goodies-from-romero-doomed-source-maps-graphics/">Doom Dump</a> by John Romero and <a href="https://www.doomworld.com/forum/topic/97388-update-hisymaks-genmidi-an-enhanced-genmidi-lump-for-opl-synth/">GENMIDI</a> sound bank by Hisymak.
+    <li>Available in both English and Russian, depending on port's language settings.
+    <li>No additional downloads needed, game can be started as: <code>russian-doom.exe -jaguar</code>
+    </ul>
+<br>
+<li>All supported games now supporting fallback to English language. It can be choosen in the Main Menu of Setup executable by pressing F4 (don't forget to save the changes before quit), or by setting <code>english_language 1</code> in configuration files. The language is chosen individually for each game.
+</ul>
+
+<b>Other updates:</b>
+
+<ul>
+    <li>Extenstion of config files were changed from <code>.cfg</code> to <code>.ini</code>. The structure and contents weren't changed.
+    <li>Weapon will no longer squat down after falling from high height in "-vanilla" mode.
+    <li>(<a href="https://doomwiki.org/wiki/Key_pickup_resets_palette">DoomWiki</a>) Fixed a "Key pickup resets palette" bug. Fix is not applied in "-vanilla" game mode.
+    <li>Small improvement in controls in uncapped FPS mode.
+</ul>
+
+
+<br>
+<hr size="1" color="#666666">
+<br><br>
+
+
+<b><span id="2.7">Версия 2.7 (06/11/2018)</span></b>
+<br><br>
+Uncapped framerate now optionally available by default, with taking vertical synchorization into account. Traditional 35 fps is still available.
+<br><br>
+This version is available in both x86 and x64 editions. Please note that because of code specifics, x64 edition does not have any real performance benefits, but if you preffer to run native x64 executable in native x64 OS, you are free to do this. :)
+<br><br>
+
+<b>Updates on Doom:</b>
+<br>
+
+<ul>
+<b>Improvements:</b>
+<br><br>
+<li>Reworked "Ultra Nightmare!" skill level:
+    <ul>
+    <li>Range of received dagame decreased.
+    <li>Increased monsters movement speed.
+    <li>Fixed bug with monsters specific was not returning to initial values after choosing different skill level.
+    <li>In general, skill level now more stands for fun rather than for nervous game.
+    </ul>
+<li>All levels of The Plutonia Experement has been checked for legit 100% kills/items/secret stats. Done minor corrections.
+<li>Romero's head (Boss Brain) will no longer be randomly flipped.
+<li><code>VERSION</code> cheat code now indicating binary's architecture.
+<li>Menu elements can be scrolled with mouse wheel.
+<li>Local time widget now available in <code>-vanilla</code> mode and still toggleable by pressing "/" button.
+<li>Automap will show kill/secret/items scatistics, as well as level time (varible: "automap_stats").
+<li>Added brightmap for SW2SKULL texture in The Plutonia Experement.
+<li>Implemented optional crosshair, static red and with health indication. Can be toggled by pressing "<code>X</code>" button (variables: "crosshair_draw", "crosshair_health" и "crosshair_scale").
+<li>Added optional ability to walk under/over monsters (variable: "over_under").
+<li>Torque (sliding corpses from the edges) becomes optional.
+<li>Improved and original game palettes consolidated into one. Original will be activated on gamma-correction level 4.25 and higher.
+<li>Added Crispy HUD with player's face. Can be activated by pressing "<code>+</code>" and available right after traditional Doom HUD.
+<li>Significantly improved green blood's BLUGC0 sprite.
+<li>Weapon bobbing now also available in network games and demos.
+<li>Fuzzy transparency now paused in paused game states.
+<li>Moving mouse cursor on inactive game window no longer move camera.
+<li>Implemented simple <a href="https://tcrf.net/Proto:Doom_(PC,_1993)/Doom_1.9_Special_Edition">Doom 1.9 Special Edition</a> emulation. In fact, it's a fourth episode of Ultimate Doom in its raw stage. Emulation contains:
+    <ul>
+    <li>Can be started as: <code>russian-doom.exe -gameversion doomse -iwad doom.wad</code> (and require an IWAD from Ultimate Doom).
+    <li>Music is changed in accordance of DoomSE.
+    <li>Episode four using a sky from episode.
+    <li>Lost Souls aren't bouncing from floor and ceiling.
+    <li>Bugs and crashes aren't preserved, episode can be finished normally.
+    </ul>
+</ul>
+    
+<ul>
+<b>Bugs fixed:</b>
+<br><br>
+
+<li>Fixed vanilla bug with incorrecly limited ammout of diminished lightning levels.
+<li>Press Beta: fixed a bug with missing HELP1 screen.
+<li>Pause now working correctly on intermission and text screens. Additionaly, it fixes music lockups in some cases after loading new level.
+<li>Game will give a proper error message in case of detected Compressed ZDBSP on the map, and will not lock up as invisible process.
+</ul>
+
+<b>Updates on Heretic and Hexen:</b>
+<br>
+
+<ul>
+<b>Heretic only:</b>
+</ul>
+
+<ul>
+<li>Implemented statistics on automap.
+<li>Applied brightmap to the sprite of teleporting D'Sparil.
+<li>Torque (sliding corpses from the edges) becomes optional. 
+<li>Fixed barely notable bug with shaking health chain's wiggle on death player while opening and closing automap.
+<li>Artifacts dropped by monsters will no longer be counted.
+<li>Added new skill level: "Кошмаром исполнен я":
+    <ul>
+    <li>Range of received dagame slightly increased.
+    <li>Monsters misilies speed slightly increased.
+    <li>Monsters movenet speed increased.
+    <li>Amount of ammo not increased.
+    <li>Cheat codes are available.
+    </ul>
+</ul>
+
+<ul>
+<b>Hexen only:</b>
+</ul>
+
+<ul>
+<li>Fixed floor texture distortion while camera rotating.
+<li>Applied brightmap to "TPORTX" texture.
+<li>Added new skill levels for all three player classes:
+    <ul>
+    <li>"Вершитель" for Warrion, "Апостол" for Cleric, "Великий архимаг" for Mage.
+    <li>Range of received dagame slightly increased.
+    <li>Monsters misilies speed slightly increased.
+    <li>Ammount of received mana is not increased.
+    <li>Cheat codes are available.
+    </ul>
+</ul>
+</ul>
+
+<ul>
+<b>Common:</b>
+</ul>
+
+<ul>
+<li>Added optional local time widget, available by pressing "/" button.
+<li>Implemented optional crosshair, static red and with health indication. Can be toggled by pressing "<code>X</code>" button (variables: "crosshair_draw", "crosshair_health" и "crosshair_scale").
+<li>Mostly fixed texture "sparkles" bug (thanks again Brad Harding for idea and code!).
+<li>Pause now working correctly on intermission and text screens. Additionaly, it fixes music lockups in some cases after loading new level.
+<li>Improved and original game palettes consolidated into one. Original will be activated on gamma-correction level 4.25 and higher.
+<li>Fixed vanilla bug with incorrecly limited ammout of diminished lightning levels.
+<li>Moving mouse cursor on inactive game window no longer move camera.
+<li>Finished translations of critical error messages.
+</ul>
+
+<b>Updates on SETUP.exe:</b>
+<br>
+
+<ul>
+<li>Standard and advanced display options logically consolidated into one page.
+<li>Mono sfx mode now available in audio setting and no longer available as command line parameter.
+<li>Optional gameplay setting section ("Дополнительные параметры игры") logically restructured by categories:
+    <ul>
+    <li>Visual
+    <li>Audible
+    <li>Tactical
+    <li>Physical
+    <li>Gamepley
+    <li>Crosshair
+    </ul>
+<li>Updated online help pages.
+</ul>
+
+
+<br>
+<hr size="1" color="#666666">
+<br><br>
+
+
+<b><span id="2.6">Version 2.6 (04/11/2018)</span></b>
+
+<br><br>
+<b>Updates on Doom:</b>
+<br>
+
+<ul>
+<b>Most interesting:</b>
+<br><br>
+<li>Finished sub-project of fixing common errors and mistakes for vanilla maps:
+    <ul>
+    <li>No modified maps are included in game archives, all corrects made throug the code.
+    <li>Multiple fixes of horizontal and vertical texture offsets.
+    <li>Fixed missing textures for preventing HOM effect.
+    <li>Removed items that were placen outside level's bounds.
+    <li>Additionaly used few textures from John Romero's Doom dump: blue teleport now leading to Wolfenstein level, white with gold pentagram to Fortress of Mystery.
+        Also restored SWATER animation sequence on applied in few placed in Doom 2 levels.
+    <li>Now it is possible to finish all levels of Doom 1 and Doom 2 with 100% K/I/S ratio.
+    <li>In rare cases: corrected floor and ceiling texture to more logically proper (mostly beneath the doors).
+    <li>In exceptional cases: corrected map vertexes for making some wall lamps looking proper.
+    <li>Overall amount of corrections: 3550+ in all vanilla game series of Doom 1, Doom 2, TNT and Plutonia.
+    <li>Improvement is optional and can be disabled in Setup executable or in configuration file (variable: "fix_map_errors"). It is also not available in <code>-vanilla</code> game mode.
+    <li>Note: improvement not available in IWADs with version below 1.9.
+    </ul>
+</ul>
+
+<ul>
+<b>Improvements:</b>
+<br><br>
+    
+<li>Linedef specific 56 (crushed) will now crush everyone to death. This will fix a trapping bug on Deimos Lab (E2M4).
+<li>Monster's hitscan attacks now also hitting floors and ceilings.
+<li>Added thematical backgrounds from Wolfenstein 3-D for intermission texts of MAP31 and MAP32 of Doom 2.
+<li>Sky textures will no longer be scaled if loaded PWAD does not have any sky patches or PNAMES/TEXTURES lumps.
+<li>Deactivated powerups using a <code>IDBEHOLD</code> cheat code, using a different string: "Предмет деактивирован".
+<li>Cheat codes are allowed in Ultra-Nightmare skill. Enjoy any level with <code>IDFA</code> code!
+<li>Animated sprites of candle and candelabra (not available in <code>-vanilla</code> mode).
+</ul>
+
+<ul>
+<b>Technical:</b>
+<br><br>
+
+<li>By disabling aspect ratio correctiion game window will use whole screen area.
+<li>Screenshots now saving in PNG format. Saving in PCX still optionally available.
+<li>Tiny improvement in transparency table loading.
+<li>Nuked OPL3 by maestro Alexey Khokholov updated to version 1.8.
+<li>Windows: error messages are no longer cut in some instances and showing in full lenght.
+</ul>
+
+
+<ul>
+<b>Bugs fixed:</b>
+<br><br>
+
+<li>Light Amplification Visor will no longer slightly affect sky texture.
+<li>Changing music volume while game is paused will no longer resume music playing.
+<li>Fixed vanilla bug when player was falling into a wall after loading game which was saved standing on edge.
+<li>Fixed vanilla bug with missing sound Archvile's sound DSFLAMST.
+<li>Fixed vanilla bug when status bar was redrawn with small delay after closing HELP screen.
+<li>Fixed vanilla bug when moster was able to stuck near key locked door (linedef specifics: 32, 33, 34).
+<li>Fixed rare vanilla bug when switches on lower segments was not able to change in some cases.
+<li>Fixed rare vanilla monster exclusion bug (<a href="https://doomwiki.org/wiki/Doom_II_monster_exclusion_bug">DoomWiki</a>).
+<li>Fixed small vanilla bug when player's view height was updating with delay on moving lifts and platforms.
+<li>Freedoom now using correct improved palette.
+</ul>
+
+<b>Updates on Heretic and Hexen:</b>
+<br>
+
+<ul>
+<li>Fixed vanilla bug when music don't resume playing after disable game pause in some cases.
+<li>Fixed vanilla bug when player was falling into a wall after loading game which was saved standing on edge.
+<li>Heretic: hitscan attacks (Elven Wand and Dragon Claw) now colliding with floors and ceilings.
+<li>Hexen: optional fake contrast will no longer appear on foggy levels.
+</ul>
+
+</ul>
+
+<br>
+<hr size="1" color="#666666">
+<br><br>
+
+<b><span id="2.5">Version 2.5 (02/11/2018)</span></b>
+
+
+<br><br>
+<b>Updates on Doom:</b>
+<br>
+
+<ul>
+<b>Most interesting:</b>
+<br><br>
+<li>Implemented new skill level - "Ultra Nightmare!":
+<ul>
+<li>Monster's behaviour will be same to <code>-fast</code>.
+<li>Monsters are not ressurecting.
+<li>Monster's speed slightly increased. 
+<li>Increased damage range (i.e. not actual damage) from monsters aprox. to 70%. Damage from nukage, lava and crushers are not changed.
+<li>Amount of ammunition received is not doubled.
+</ul>
+<li>Implemented translation and "logically finished" restoration of Doom Press Beta.
+<ul>
+<li>No need to download anything, it's available "from the box" with command line parameter: <code>russian-doom.exe -beta</code>.
+<li>Game mechanics recreaed mostly fully, except few specific bugs.
+<li>Implemended working system of player's life and artifacts counter.
+<li>Fixed all technical bugs in three maps, but visual bugs are preserved.
+<li>Cheat codes are available only from Beta.
+<li>Not implemented: scoring system and BFG which figing 40 cells.
+</ul>
+</ul>
+
+<ul>
+<b>Improvements:</b>
+<br><br>
+<li>Different wall brightmaps now working correct on different wall segments. Additionally, brightmap will be applied to charging state of BFG900 (red lights).
+<li>Improved mouse look. Missilies will no longer explode on impact with sky ceilings, and richochet puffs will be appeared on floor and ceilings (thanks Fabian Greffrath for this!). Mouse looks is now also safe for network games.
+<li>Added toggalabe widget of system local time. Binded to "<code>/</code>" by default, can be rebinded in the Setup executable.
+<li>Automap now able to draw huge levels.
+<li>Mostly fixed texture "sparkles" bug (thanks Brad Harding for idea and code!)
+<li>Implemented optional infra green visor from Press Beta. (config file variable: "infragreen_visor").
+<li>Green respawn fog will now appear in any direction of Deathmatch spawn spots.
+<li>HUD's arms widget will no longer be appeared in some rare cases of noclip mode usage.
+<li>Level's "out of bounds" will be colored black.
+<li>Implemented support and translation of ALL version of Shareware Doom 1, starting from 0.99. Note: demos will play only in version 1.6 and higher (thanks Brad Harding for inspiration!)
+<li>Game will no longer crash on opening HELP screens in IWAD version lower 1.9.
+<li>Corrected translation of TNT's MAP14: Металлургия -> Cталелитейный завод.
+<li>Added numerical indication of volume and mouse sensivity sliders.
+<li>Fixed rare vanilla bug of incorrect backround of arms numbers after opening/closing automap.
+<li>Game world will no longer be rendered if dead player is crushed and placed under the closed door.
+<li>Player will no longer pickup a key, if already have same in inventory.
+<li>Player will always pickup automap item, even if he already have it to make 100% items possible on levels with few automaps. Notable example is MAP27 of Hell on Earth.
+</ul>
+
+
+<b>Updated on Heretic and Hexen:</b>
+<ul>
+<li>Improved wall brightmapping. Now different brightmaps working properly on different wall segments.
+<li>Game engine will now use hash-table for slightly faster preloading.
+<li>[Heretic] Fixed typo: "часовая бомба древниъ > древних".
+<li>[Hexen] Fake contrast becomes optional. (config file variable: "fake_contrast").
+</ul>
+
+
+
+
+<br>
+<hr size="1" color="#666666">
+<br><br>
+
+<b><span id="2.4">Version 2.4 (12/31/2017)</span></b>
+<br><br>
+
+Brightmapping for wall textures has been rewritten and now safe for performance. Nothing will be changed visually, though. 
+<br><br>All the games now have togglable mouse look. Default key is "<code>~</code>", can be rebinded in Setup executable.
+<br><br>
+Heretic's engine becomes much more powerful, a lot of original bugs has been fixed, as well as engine becomes limit removing. There's also implemented full brightmapping and reworked fullscreen HUD.
+<br><br>
+Hexen's engine still a bit antique, but implemented full brightmapping and reworked fullscreen HUD will make a huge sense.
+<br><br>
+Sadly, any saved games from previous version will not work.
+<br><br>
+I've also would like to personally thank <b>theleo_ua</b> for help with testing, nice ideas, and most important - for the inspiration of start working on Heretic and Hexen! Leo's streams can be found on Twitch (<a href="https://www.twitch.tv/theleo_ua">twitch.tv/theleo_ua</a>), don't forget to subscribe! :-)
+
+<br><br>
+<b>Updates in DOOM:</b>
+<br>
+
+<ul>
+<b>Improvements:</b>
+<br><br>
+<li>Implemented mouse look, by amplitude it's similar to Heretic. Can be toggled by pressing "<code>~</code>" and rebinded in Setup executable.
+<li>Implemented floating spheres-powerups with 1/3 amplitude of Heretic. Disabled by default, but maybe there are fans of this feature (config file variable: "floating_powerups").
+<li>Fixed bug with TNT Evilution textures with waterfall/techno panes.
+<li>Created "even taller" skies that will cover whole mouse look amplitude without necessity of sky texture scaling.
+<li>Corpses will no longer be "freezed" on ledges in some cases, and will "slide" down from them. Implementation based on Torque method from founding father Lee Killough.
+</ul>
+
+<ul>
+<b>Translation:</b>
+<br><br>
+<li>The names of fourth episode has been verified with
+<a href="https://github.com/JNechaevsky/russian-doom/issues/22">Russian synodal translation</a>, two names corrected:
+    <ul>
+    <li>Истинное отвращение -> Истинная ненависть
+    <li>Непокорное зло -> Неудержимое зло
+    </ul>
+</ul>
+
+<b>Updates in Heretic:</b>
+<br>
+
+<ul>
+<b>Improvements:</b>
+<br><br>
+<li>Implemented mouse look, by amplitude it's similar to Heretic. Can be toggled by pressing "<code>~</code>" and rebinded in Setup executable.
+
+<li>Implemented full brightmapping for sprites, HUD weapons, walls and floors/ceilings (config file variable: "brightmaps").
+<li>Wall's fake contrast becomes optional and disabled by default (config file variable: "fake_contrast").
+<li>Limit of mouse sensitivity in the game menu increased from 9 to 255. Game will no longer crash if slider will be placed outside of bar - slider will have dimmed color in most left position, and colored red if it's placed outside the bar.
+<li>"<code>CapsLock</code>" now toggles always run mode. 
+<li>Monster's death animation will be flipped randomly (config file variable: "randomly_flipcorpses"). Additionally it affects hanged corpses, skulls and moss.
+<li>Added notification about discovered secrets (config file variable: "secret_notification").
+<li>Opened game map will be updated while player is walking through the level.
+<li>Weapons now will have bobbing (1/2 of standard amplitude) while firing in movement. (config file variable: "weapon_bobbing").
+<li>Full screen HUD significally improved, giving to player all necessary information. Additionally, added screen size without any HUD.
+<li>Two gibs from dead Gargoyle will no longed disappear in few seconds and no longer will be freezed in air.
+<li>Bobbing animation of Staff and Gauntlets, empowered by Tome of Power will be smoothen.
+<li>Save game field and network chat now accepts all symbols (х, ъ, ж, э, б, ю, as well as [, ], :, ", / and \).
+</ul>
+
+<ul>
+<b>Technical improvements:</b>
+<br><br>
+
+<li>Command line parameter <code>-MONOSFX</code> now working.
+<li>Command line parameter <code>-VANILLA</code> now working. Note: this mode will not bring back any vanilla-specific bugs. 
+<li>Command line parameter <code>-FLIPLEVELS</code> now working, making game levels mirrored. Additionally, this mode can be set in Setup executable, effect will be same. Mirroring is safe for saved games, for example, level can be started in normal mode, saved, and loaded with mirrored mode - everything will be fine. 
+<li>Door's reopening and reclosing will play an moving door sound "sfx_dormov".
+<li>Dead player will no longer making "oof" sound when falling to the ground.
+<li>Added "<code>VERSION</code>" cheat code, that will show project's version and release date.
+<li>Similary to Hexen, now it is possible to bind any key for all the Artefacts. There are no default bindings.
+<li>Monster's aggression and targets now be preserved in saved games.
+<li>Default mouse senility in not 5 (like in Doom).
+<li>Added texts for changed gamma-correction levels.
+<li>Graphical startup now disabled by default.
+</ul>
+
+<ul>
+<b>Limit-removing:</b>
+<br><br>
+
+<li>Game engine strengthened significantly:
+    <ul>
+    <li>Renderer upgraded to 32-bit integer math.
+    <li>Fixed wall wobble/wiggle.
+    <li>Fixed floor textures shaking and distortion.
+    <li>Fixed Tutti-Frutti bug.
+    <li>The chance of Slime Trail appearing significantly reduced.
+    <li>Added support for extended nodes (but not for non-standard).
+    <li>Removed BLOCKMAP limit.
+    <li>Almost completely removed MAXINTERCEPTS limit.
+    <li>Removed MAXVISPLANES, MAXDRAWSEGS и MAXVISSPRITE limits.
+    </ul>
+</ul>
+
+<ul>
+<b>Fixed bugs:</b>
+<br><br>
+<li>Optionally fixed bug of unaffected sky by gold invulnerability palette (config file variable: "invul_sky").
+<li>Fixed original bug of one missing yellow bonus palette.
+<li>Yellow palette of picked up bonus now lasts 5 seconds maximum.
+<li>Hitscan attacks will no longer disappear on ledges.
+<li>Disabled error call of <code>SOLIDSEGS OVERFLOW</code>, that comes from Chocolate Heretic.
+<li>Missing wall textures no longer crashing the game.
+<li>Missing floor/ceiling textures no longer crashing the game, they will be rendered as sky.
+<li>Items with unknown id no longer crashing the game.
+<li>Sectors with unknown effect id no longer crashing the game.
+<li>Using a door with unassigned line id no longer crashing the game.
+<li>Monsters no longer can stuck in doorways.
+<li>Sector segments with same floor/ceiling textures will be rendered as different visplanes. This will fix a bugs with "bleeding" water in some levels.
+<li>Fixed missing 1 pixel line of transparent sprites.
+<li>Fixed logical bug with transparency: transparent HUD weapons will also be affected by yellow invulnerability palette.
+</ul>
+
+<b>Updates in Hexen:</b>
+<br>
+<ul>
+<b>Improvements:</b>
+<br><br>
+<li>Implemented mouse look, by amplitude it's similar to Heretic. Can be toggled by pressing "<code>~</code>" and rebinded in Setup executable.
+<li>Implemented full brightmapping for sprites, HUD weapons, walls and floors/ceilings (config file variable: "brightmaps").
+<li>Limit of mouse sensitivity in the game menu increased from 9 to 255. Game will no longer crash if slider will be placed outside of bar - slider will have dimmed color in most left position, and colored red if it's placed outside the bar.
+<li>"<code>CapsLock</code>" now toggles always run mode.
+<li>Full screen HUD significantly improved, giving to player all necessary information. Additionally, added screen size without any HUD.
+<li>Added "<code>VERSION</code>" cheat code, that will show project's version and release date
+<li>Command line parameter <code>-MONOSFX</code> now working.
+<li>Command line parameter <code>-VANILLA</code> now working. Note: this mode will not bring back any vanilla-specific bugs.
+<li>Opened game map will be updated while player is walking through the level.
+<li>Save game field and network chat now accepts all symbols (х, ъ, ж, э, б, ю, as well as [, ], :, ", / and \).
+<li>Fixed a bug with missing music in unpatched version of Hexen: Deathkings of the Dark Citadel.
+</ul>
+
+<ul>
+<b>Translation:</b>
+<br><br>
+<li>Fixed small typos and incorrections.
+</ul>
+
+
+<b>Updates in SETUP.exe:</b>
+<br>
+<ul>
+<li>The section of optional enhancements "Дополнительные параметры игры" now also available for Heretic and Hexen.
+<li>Software rendering variable (force_software_rendered) now also available as menu item in the section of advanced display options.
+</ul>
+
+<br>
+<hr size="1" color="#666666">
+<br><br>
+
+
+<b><span id="2.3">Version 2.3 (11/25/2017)</span></b>
+<br><br>
+I'm happy to release version 2.3 on my 32th birthday. :-)
+<br><br>
+Many vanilla bugs, as well as my own has been fixed, added new optional visual gameplay features. In general, project becomes more stable and nicer.
+<br><br>
+Implemented brightmapping for textures and few sprites. The idea comes from Strife, where bright pixels were set through PLAYPAL and COLORMAP combination. At the moment, implementation is mostly finished, but requires some technical optimization. I am very grateful to Brad Harding for his amazing research of bright colors and tables - my bright maps are based on them.
+<br><br>
+Freedoom Phase 1&2 and FreeDM support and translation has been added! Just like with other games, there is no need to load any translation resources manually, the game can be runned as simply as:
+<br><code>russian-doom.exe -iwad freedoom1.wad</code> or <code>freedoom2.wad</code>
+<br><br>
+Added three new command line parameters (exclusively for Doom):
+<br><br>
+<code>-vanilla</code> 
+<br>Similarly to DOS version, this will disable all optional enhancements, making the game feeling more original-like. Parameter does not do any changes in config file. Note: this mode will not bring back any vanilla-specific bugs.
+<br><br>
+<code>-fliplevels</code> 
+<br>Game levels will be mirrored. Additionally, this mode can be set in Setup executable, effect will be same. Mirroring is safe for saved games, for example, level can be started in normal mode, saved, and loaded with mirrored mode - everything will be fine.
+<br><br>
+<code>-monosfx</code>
+<br>Emulation of mono-speaker SFX. Will be useful for playing the game in one earphone or in case of having some problems with real audio hardware.
+
+
+<br><br>
+<b>Updates in DOOM:</b>
+
+<ul>
+<b>Technical improvements:</b>
+<br><br>
+<li>(<a href="https://doomwiki.org/wiki/Gamma_correction_resets_palette">DoomWiki</a>) Fixed "Gamma correction resets palette" bug.
+<li>(<a href="https://doomwiki.org/wiki/Revenant_tracers_desync_internal_demos">DoomWiki</a>) Fixed "Revenant tracers desync internal demos" bug.
+<li>(<a href="https://doomwiki.org/wiki/Wrong_sound_for_exit_switches">DoomWiki</a>) Optionally fixed "Wrong sound for exit switches". Fix disabled by default (config file variable: "correct_endlevel_sfx").
+<li>Three original Lost Soul bugs (<a href="https://doomwiki.org/wiki/Lost_soul_target_amnesia">DoomWiki</a>, <a href="https://doomwiki.org/wiki/Lost_soul_colliding_with_items">DoomWiki</a>, <a href="https://doomwiki.org/wiki/Lost_soul_charging_backwards">DoomWiki</a>) consolidated in one optional fix. Disabled by default (config file variable: "agressive_lost_souls").
+<li>(<a href="https://doomwiki.org/wiki/Mancubus_fireball_clipping">DoomWiki</a>) Fixed "Mancubus fireball clipping" bug.
+<li>(<a href="https://doomwiki.org/wiki/Hitscan_attacks_hit_invisible_barriers_in_large_open_areas">DoomWiki</a>) Fixed "Hitscan attacks hit invisible barriers in large open areas" bug.
+<li>Added signed Crispy HUD with text elements. It will be available right after tradition Doom HUD by changing view size.
+<li>Fixed bug when it was possible to see player's face in Crispy HUD while using noclip mode.
+<li>Slightly improved quality of text shadows (TINTMAP) and corrected horizontal offset - now it equals 1 pixel, not 0,5.
+<li>Fixed a rare bug with automatically closing door after 30 seconds in Doom 2's MAP27.
+<li>DEHACKED lump from pwad files will be loaded automatically.
+<li>Missing or incorrect floor/ceiling textures will no longer crash the game, they will be rendered as sky texture.
+<li>Now it is possible to complete E1M8, E4M6, E4M8 and MAP07 without cheat codes while "-nomonsters" mode.
+<li>Some frames of Spider Mastermind's death will be in full brightness.
+<li>Added <code>"VERSION"</code> cheat code, that will show project's version and release date.
+<li>Weapons now will have bobbing (1/2 of standard amplitude) while firing in movement. Additionally it fixes visual issue of "shaking" shotguns. Chainsaw's sawing is totally unique (config file variable: "weapon_bobbing").
+<li>Buttons and switches position will be preserved in saved games.
+<li>Yellow pickup palette will no longer be freezed on dead player.
+<li>Inverted white colormap will be removed from dead player.
+<li>Quick saving menu now have own title "БЫСТРОЕ СОХРАНЕНИЕ" instead of standard "СОХРАНИТЬ ИГРУ".
+<li>(<a href="https://doomwiki.org/wiki/Ghost_monster#All-ghosts_effect">DoomWiki</a>) Removed MAXINTERCEPTS limit, that was causing rare "All-ghosts" effect.
+<li><code>PrintScreen</code> key is set by default now, no need to bind it additionally in setup executable.
+<li>Added support for combined keys on HUD, created graphics.
+<li>Fixed original bug with missing FIRELAV2 texture. Now animation sequence working correctly, and the texture itself taken from John Romero's Doom dump files.
+<li>(<a href="https://doomwiki.org/wiki/Partial_invisibility_effect#Vertical_cutoff">DoomWiki</a>) Fixed missing one pixel line in fuzz effect.
+<li>(<a href="https://doomwiki.org/wiki/Tag_667#Bugs">DoomWiki</a>) Sector tag 667 will rise only once, despite of amount of killed and resurrected Arachnotrons.
+<li>(<a href="https://doomwiki.org/wiki/Lopsided_final_boss_explosions">DoomWiki</a>) Centered Icon of Sin death explosions.
+<li>Added <code>"IDKA"</code> cheat code, that will give only keys.
+<li>ENDOOM no longer will be appeared by default.
+<li>Completely rewritten fix for de-breaking firing sound by player's "oof!". Now sound behavior is much more like original Doom.
+<li>M_DOOM titles are no longer overlaying HUD messages.</li>
+<li>(<a href="https://doomwiki.org/wiki/Lost_soul_clipping_problems">DoomWiki</a>) Fixed Lost Soul appearing outside level boundary.
+<li>Fixed 1% damage bug.
+<li>Default music mode changed from OPL2 to OPL3.
+<li>Fake contrast now optional and disabled by default (config file variable: "fake_contrast").
+<li>Logical and audible corrections in the behavior of switches.
+</ul>
+
+<ul>
+<b>Gameplay:</b>
+<br><br>
+<li>Added squished sprite of Spider Mastermind. Something like easter egg, that can be seen on MAP06 of Doom II.
+<li>Cheat code <code>"IDDQD"</code> will resurrect dead player.
+<li>In case of having berserk strength, black medkit will appear on Crispy HUD in ammo section.
+<li>Yellow palette of picked up bonus now lasts 5 seconds maximum.
+<li>Removed two magenta pixels from Wolfenstein guard's attacking frame (SSWVF0).
+<li>Visually improved PUNG*, SHTG* и MILF* sprites: removed overbright pixels as well as few pixels corrected.
+<li>Visually improved SKY2 and SKY3 for Doom 2.
+<li>Fixed bug of missing yellow key on TNT's map 31.
+<li>Added exploded Doomguy's face animation sequence from Atari Doom, and one from frame for crushed state from PSX Doom.
+</ul>
+
+<ul>
+<b>Translation:</b>
+<br><br>
+<li>By compatibility reasons, intermission screen again using only "Уровень завершен" and "Загружается уровень" for all levels.
+<li>Corrected small typos in ENDOOM screens.
+<li>Corrected E3M7 level name: "Лимб" changed to "Врата в Лимб".
+</ul>
+
+<b>Updates in Heretic and Hexen:</b>
+<ul>
+<li>Menu elements and game texts now have shadows.
+<li>Fixed bug when HUD weapons was 1px higher while player's idle.
+<li>Heretic: by compatibility reasons, intermission screen again using only "Уровень завершен" and "Загружается уровень" for all levels.
+<li>Hexen: fixed bug of glitched INTERPIC background.
+<li>Hexen: translated startup screen title.
+</ul>
+
+<b>Updates in SETUP.exe:</b>
+<ul>
+<li>Added support and translation of large forn (thanks theleo_ua for notifying).
+<li>Advanced display options section is renamed from "Эксперементальные функции" to "Рендеринг".
+<li>Completely rewritten experimental smoothing function. While being disabled, it making game picture absolutelly sharp and crisp. In case of activation, game picture will be just a little bit blurred, similary to Chocolate Doom.
+<li>integer scaling (Целочисленное масштабирование окна) and VGA porch (Мерцание бордюров (VGA)) has been removed from setup executable but still available in configuration file.
+<li>Doom only: logically restructured gameplay features section, added new elements.
+<br><br>
+    Графика:
+    <ul>
+    <li>Брайтмаппинг текстур и спрайтов</li>
+    <li>Имитация контрастного освещения стен</li>
+    </ul>
+    Звук:
+    <ul>
+    <li>Корректный звук завершения уровня</li>
+    </ul>
+    Геймплей:
+    <ul>
+    <li>Покачивание оружия при стрельбе в движении</li>
+    <li>Повышенная агрессивность Потерянных душ</li>
+    <li>Зеркальное отражение уровней</li>
+    </ul>
+</ul>
+
+
+<br>
+<hr size="1" color="#666666">
+<br><br>
+
+
+<b><span id="2.2">Version 2.2 (04/03/2017)</span></b>
+<br><br>
+The <a href="https://doomwiki.org/wiki/Russian_Doom">project</a> as well as it's <a href="https://doomwiki.org/wiki/Julian_Nechaevsky">author</a> are honored to have own pages on the Doomwiki! Besides, project source codes now available on <a href="https://github.com/JNechaevsky/russian-doom">GitHub</a>.
+<br><br>A lot of work has been made on both technical and visual functional. Now available "middle" resolution (640x400), dimmed palettes are completely reworked and improved, added many intermediate levels of gamma-correction, added more optional gameplay features, added Crispy-exclusive fullscreen HUD and many many other things.
+<br><br>Added Deathmatch 3.0 mode - weapons will remain on ground, but ammo and artifacts will disappear and respawn after 30 seconds. Many thanks to Alexandre-Xavier Labonte-Lamoureux for his code, perfectly nice and simple solution!
+<br><br>Also added improved support and translation of The Master Levels for Doom II.
+<br><br>Completed writing of project's <a href="http://jnechaevsky.users.sourceforge.net/projects/rusdoom/philosophy.html">Philosophy</a>, updated <a href="http://jnechaevsky.users.sourceforge.net/projects/rusdoom/setup/index.html">online help</a> of Setup executable.
+
+<br><br>
+<b>Updates on DOOM:</b>
+
+<ul>
+<b>Translation:</b>
+<br><br>
+<li>Added improved support and translation of the <a href="http://store.steampowered.com/app/9160">Master-Levels for Doom II</a>.
+<li>Improved few pixels in the status bar.
+<li>Improved few pixels in the lowercase letter "я".
+<li>Improved TNT help screen: removed "Дьяволюция" title, improved palette.
+<li>Title "НОВАЯ ИГРА" will be also appeared while episode selection in Doom I.
+
+<br><br>
+<b>Gameplay:</b>
+<br><br>
+
+<li>Added unique feature: in god mode (iddqd or sphere), hero's eyes will be colored yellow while grinning/rampage states! Additionally, few pixels was fixed on hero's hair.
+<li>(<a href="https://github.com/JNechaevsky/russian-doom/issues/1">Git</a>) Created and implemented tall sky textures for preventing any sky leaks and unaesthetic vertical repeating.
+<li>Added unique full screen HUD from Crispy Doom. It appears after traditional HUD by pressing <code>"+"</code> button.
+<li>Added Deathmatch 3.0 mode - weapons will remain on ground, but ammo and artifacts will disappear and respawn after 30 seconds.
+<li>Added ability to remove saved games in Save/Load game menus.
+<li>Added swirling liquids (enabled by default).
+<li>Improved randomization of dead marines colors.
+<li>After finishing level Tower of Babel it's graphic will not disappear from intermission screen.
+<li>Standard controls changed to WADS+E, always run turned on, vertical mouse movement turned off.
+<li>Weapon sounds will no longer be breaked by player's "oof!" and pain sounds.
+<li>Added shadows for menu items and texts (enabled by default).
+<li>Added ability to display negative player's health after death (disabled by default).
+<li>Added support for random horizontal mirroring of death animations (enabled by default).
+<li>Improved and increased transparency (from 16% to 20%). Teleport flash will no longer have bad looking yellow colors. In general, transparency is still low-key.
+<li>Disabled prompt Y/N for quick saving and loading. Now F6/F9 will immediately saves/loads game if quicksaving slot was chosen (optional, enabled by default).
+<li>Zombieman's firing frame will be in full bright.
+
+<br><br>
+<b>Technical imporevements:</b>
+<br><br>
+
+<li>Added implementation of higher resolution (640x400)! Classical 320x200 mode still available by pressing <code>F5</code>.
+<li>Completely reworked and improved my dimmed palettes. If game looks too dark, brightness can be increased by pressing <code>F11</code>.
+<li>Any PWAD files now will be loaded after Russian translated PWADs.
+<li>Fixed original bug, when music continue to play and barely can be heard even if it's volume was set to 0.
+<li>Config files default.cfg, heretic.cfg and hexen.cfg will no longer be created. All information will be stored in russian-doom/heretic/hexen.cfg.
+<li>Created intermediate levels of gamma-correction: x.25, x.5, и x.75 for each level.
+<li>File <code>tranmap.dat</code> will no longer be created.
+<li>Bug with missing line id of door spec 117 fixed for sure. Additionally, sound "oof!" will be played not globally but by player who activates it.
+<li>Added support for 16 sprite rotations.
+<li>Floor texture distortion problem while changing lightning now fixed for both screen detail modes.
+<li>Doubled MAXBUTTONS limit (16*2).
+<li>Game window will remember on which screen it should be started in full screen.
+<li>Game window will always grab mouse cursor on closing ingame menus.
+<li>Improved vertical sync support.
+<li>Fixed bug with missing DPSLOP2 sound, that was crashing game while playing with PC Speaker effects.
+<li>Massive code cleanup for preventing compiler warning on Windows and Linux.
+</ul>
+
+<b>Updates on Heretic and Hexen:</b>
+
+<ul>
+<li>Added implementation of higher resolution (640x400)! Classical resolution (320x200) will no longer be available.
+<li>Standard controls changed to WADS+E (Space for jumping in Hexen), always run turned on, vertical mouse movement turned off.
+</ul>
+
+<b>Обновление SETUP.exe:</b>
+
+<ul>
+<li>All new optional gameplay features and enhancement are placed in "Дополнительные параметры игры" section.
+<li>Added new experimental features to the additional display options:
+    <ul>
+    <li>Texture smoothing (Сглаживание текстур): very nice algorithm offered by SDL library, but not even close enough to be as good as HQ scaling. The function is unfinished - screen borders will have mirrored 1 monitor pixels of opposite sides of the screen. Recommended for acquaintance only.
+    <li>Disabling screen wipe (Отключение эффекта плавной смены экрана): significantly speeds up the loading of levels and saved games, can be useful for debugging purposes.
+    <li>Flash borders (VGA porch emulation) (Мерцание бордюрами экрана): in case of activation, black screen borders will also flash while picking up items and getting hurt.
+    <li>Integer scaling (Целочисленное масштабирование окна): while resizing screen pixels will only increase by integer values: x2, x3 and so on. 
+    </ul>
+</ul>
+
+
+<br>
+<hr size="1" color="#666666">
+<br><br>
+
+<b><span id="2.1">Version 2.1 (02/17/2017)</span></b>
+<br><br>
+Project now partially based on <a href="https://www.chocolate-doom.org/wiki/index.php/Crispy_Doom">Crispy Doom</a> by Fabian Greffrath!
+<br><br>
+Engine becomes much more powerful, mostly all limits was removed, many vanilla bugs fixed and new optional gameplay enhancements added (and still can turned off to get almost completelly vanilla game feeling). However, this project is still recommended to play only vanilla Doom series.
+<br><br>
+I'm also infinitely grateful to Fabian for all his help, advices and endless patience. :-)
+<br><br>
+<b>Updates on DOOM:</b>
+<ul>
+<b>Translation:</b>
+<br><br>
+<li>The name «Эксперимент на Плутонии» globally replaced to «Эксперимент "Плутония"».
+<li>Added support and translation of No Rest for the Living addon. It does not require BFG Edition IWAD (i.e. will work with standard DOOM2.WAD), and must be started by command: <code>russian-doom.exe -file nerve.wad</code>
+<br>However, it will looks as a separate game, no any additional compatibility with BFG Edition IWAD was made.
+<li>Few global aesthetic corrections in lowercase letters "ц", "ш" and "щ".
+<li>Added missing pixel in volume menu title.
+<br><br>
+<b>Gameplay:</b>
+<br><br>
+<li>Added optional discreet transparency.
+<li>Added optional colored blood. This option will also makes dead players (map decoration) colored randomly.
+<li>Added optional intermission timer of total game time spended on levels.
+<li>Added optional sound for corpses crushing by doors, crushers, etc.
+<li>Added optional adility to disable yellow pickup screen flash. It does not affect powerup effects and disabled by default.
+<li>Dead player will no longer makes "oof" sound when falling from height.
+<li>Added optional ability to blow enemies to gibblets by killing them from SSG in close range.
+<li>Opened map will be updated in real time while player moves through level.
+<li>Added par times for fourth episode of Doom I (from BFG Edition).
+<li>Cheat code IDCLIP now works in Doom 1, IDSPISPOPD works in Doom 2 and other versions.
+<li>Now it is possible to select fist as weapon without berserk pack, even when chainsaw is gained.
+<li>Added TNTEM cheat code, that will destroy all enemies on current level.
+<li>Increased save game slots from 6 to 8.
+<li>Cyberdemon's attack frame now have fullbright flag.
+<li>Fixed cosmetic vanilla bug of SSG firing frame was too long for 1 tic.
+<li>Door's reopening and reclosing will play an opening or closing sound.
+<li>Added optional demonic red flash for monster's ressurection in Nightmare difficulty.
+<li>Pain Elemental's souls limit removing now working only in single player.
+<li>Palette optimisation will no longer requiere a separate wad file.
+<li>Command line parameters <code>-respawn</code>, <code>-fast</code> and <code>-nomonsters</code> will keep working after starting new game.
+<li><code>CapsLock</code> now toggles always run mode.
+<br><br>
+<b>Bugs fixed:</b>
+<br><br>
+<li>(<a href="https://doomwiki.org/wiki/Targets_not_preserved_in_saved_games">DoomWiki</a>) Fixed bug of targets are not preserved in saved games.
+<li>(<a href="https://doomwiki.org/wiki/Wall_wiggle_bug">Doomwiki</a>) Fixed "Wall wiggle" bug. Only for high detail.
+<li>(<a href="https://doomwiki.org/wiki/Spawn_spots_not_preserved_in_saved_games">DoomWiki</a>) Fixed bug of spawn spots not preserved in saved games.
+<li>(<a href="https://doomwiki.org/wiki/Medusa_effect">DoomWiki</a>) Fixed "Medusa effect" bug.
+<li>(<a href="https://doomwiki.org/wiki/Tutti-frutti_effect">DoomWiki</a>) Fixed "Tutti-frutti effect" bug. Only for high detail.
+<li>(<a href="https://doomwiki.org/wiki/Sector_type_17_is_disabled_after_loading_a_saved_game">DoomWiki</a>) Fixed bug of sector type 17 is disabled after loading a saved game.
+<li>(<a href="https://doomwiki.org/wiki/(0,0)_respawning_bug">DoomWiki</a>) Fixed (0,0) Respawning bug.
+<li>(<a href="https://doomwiki.org/wiki/Baron_attacks_a_monster_behind_him">DoomWiki</a>) Baron attacks a monster behind him bug fixed.
+<li>(<a href="https://doomwiki.org/wiki/Arch-Vile_fire_spawned_at_the_wrong_location">DoomWiki</a>) Arch-Vile's fire spawned at the wrong location bug fixed.
+<li>(<a href="https://doomwiki.org/wiki/Chaingun_makes_two_sounds_firing_single_bullet">DoomWiki</a>) Chaingun makes two sounds firing single bullet bug fixed.
+<li>(<a href="https://doomwiki.org/wiki/Fast_doors_reopening_with_wrong_sound">DoomWiki</a>) Fast doors reopening with wrong sound bug fixed.
+<li>(<a href="https://doomwiki.org/wiki/Fast_doors_make_two_closing_sounds">DoomWiki</a>) Fast doors make two closing sounds bug fixed (optional).
+<li>(<a href="https://doomwiki.org/wiki/Manual_doors_on_1S_lines_cause_an_illegal_operation">DoomWiki</a>) Manual doors on 1S lines cause an illegal operation bug fixed.
+<li>(<a href="https://doomwiki.org/wiki/Kill_percentage_flag_used_for_-nomonsters_and_respawning">DoomWiki</a>) Commander Keen will apear on MAP32 even with <code>-nomonsters</code> parameter, giving player ability to finish the level. 
+<li>(<a href="https://doomwiki.org/wiki/Moving_platform_heights_not_preserved_in_saved_games">DoomWiki</a>) Moving platform heights not preserved in saved games bug fixed.
+<li>(<a href="https://doomwiki.org/wiki/Demon_speed_bug">DoomWiki</a>) Demon speed bug with saving and loading game fixed.
+<li>(<a href="https://doomwiki.org/wiki/Slime_trail">DoomWiki</a>) Almost all slime trails fixed.
+<li>(<a href="https://doomwiki.org/wiki/Status_bar_face_hysteresis">DoomWiki</a>) Status bar face hysteresis fixed. Additionally, this fixes face hysteresis while loading saved game and entering new level.
+<li>(<a href="https://doomwiki.org/wiki/Sound_effects_behave_differently_on_level_8">DoomWiki</a>) Sound effects behave differently on level 8 bug fixed. Now there is will cutting in DOOM 2 and Final DOOM.
+<li>(<a href="https://github.com/fabiangreffrath/crispy-doom/issues/79">GitHub</a>) Sprites visible in sectors with no headroom bug fixed. 
+<li>Fixed bug of floor texture wiggle while changing lightning.
+<li>"HOM" error will no longer appear on sectors with both ceiling and floor sky texture.
+<li>Fixed logical bug with fading invincibility and light amplification visor.
+<br><br>
+<b>Technical imporevements:</b>
+<br><br>
+<li>Disabled error message "Solidsegs Overflow (vanilla may crash here)".
+<li>Improved protection from "Z_Malloc: failed on allocation of ..." error.
+<li>Nomial ammount of RAM (MIN_RAM) doubled and now equals 8 MB. Work ammount of RAM (DEFAULT_RAM) doubled and now equals 32 MB.
+<li>Completelly removed MAXVISPLANES, MAXDRAWSEGS, MAX_ADJOINING_SECTORS and MAXANIMS limits.
+<li>Completelly removed BLOCKMAP limit.
+<li>Partially implemented support of Extended Nodes, which will allow to load big and technically difficult levels (note: Boom-specific levels are not supported).
+<li>Limit of mouse sensitivity in the game is increased from 9 to 255. Game will no longer crash if slider will be placed outside of screen, slider will have dimmed color in most left position, and colored red if placed outside the bar.
+<li>Game will no longer crash if "IDMUS00" cheat code is typed.
+<li>Game will no longer crash if map contains unknown or missing texture/patch.
+<li>Disabled 64 kb. texture limit.
+<li>Game will no longer crash if map contains unknown thing (type / id).
+<li>Disabled 4046 lumps per wad limit.
+<li>Vanilla limits for saving games and demo recordings removed completelly.
+<li>Behaviour of <code>-file</code> now completely analogous to <code>-merge</code>. This allows painless loading pwads with new sprites (S_START / S_END) and also prevents from "Failed to duplicate string (length 0)" error.
+<li>Disabled 96 Kb. MUS/MIDI file limit.
+</ul>
+
+<b>Updates on Heretic and Hexen:</b>
+<ul>
+<li>Static limits increased:<pre>
+limit        factor
+MAXVISPLANES * 8
+MAXVISSPRITE * 24
+MAXDRAWSEGS  * 8
+MAXPLATS     * 256
+MAXLINEANIMS * 256
+MAXOPENINGS  * 4
+</pre>
+
+<li>Vanilla limits for saving games and demo recordings removed completelly.
+<li>Word "Секреты" globally replaced to "Тайники".
+<br><br>No further updates planned.
+</ul>
+
+<b>Updates on SETUP.exe:</b>
+<ul>
+<li>Online help now briefly translated.
+<li>Ex-compatibility section renamed to "Дополнительные параметры игры". Now it's available only for Doom.
+<li>(<a href="https://github.com/chocolate-doom/chocolate-doom/issues/840">#840</a>) fixed bug when wierd symbols appeared in key binding of non-US layout.
+<li>Few aesthetic corrections.
+</ul>
+
+<b>Updates on launcher:</b>
+<ul>
+<li>Added button for starting «Нет покоя для живых» (No Rest for the Living).
+<li>Added project version number.
+</ul>
+
+<b>Source codes:</b>
+<ul>
+<li>Small restructuring and updating project for Code::Blocks. 
+<li>From almost all of my code tab characters replaced to spaces, to accordance Chocolate Doom's <a href="https://github.com/chocolate-doom/chocolate-doom/blob/sdl2-branch/HACKING.md">Hacking</a> phylosophy.
+<li>Improved Linux support (compilation and installation). However, it is still necessary to copy some files manually (please reffer to <code>README.txt</code> in source code archive).
+</ul>
+
+<br>
+<hr size="1" color="#666666">
+<br><br>
+
+
+<b><span id="2.0">Version 2.0 (01/17/2017)</span></b>
+
+<br><br>
+Project has been migrated to SDL-2! Now regardless of the system screen resolution fullscreen picture will scaled without blurring, and it is also to change window mode from windowed to fullscreen by pressing Alt+Enter. 
+<br><br>
+Alas, game will not run anymore on Windows 9x-2000 operating systems.
+<br><br>
+<b>Updates on DOOM game:</b>
+<ul>
+<li>Many aesthetic changes to the menu items and level titles fonts, thereby 70% of graphics updated.
+<li>Translated title of games series: "Ад на Земле" (Hell on Earth), "Дьяволюция" (Evilution) and "Эксперимент на Плутонии" (The Plutonia Experiment), including TITLEPICs and M_DOOM graphics.
+<li>Added optional game palette fix, that makes game colors more good looking on modern monitors.
+<li>Raised original engine limits (thanks Andrey Budko for values):
+<ul>
+    <li>MAXVISPLANES: 128 -> 1024
+    <li>MAXVISSPRITES: 128 -> 4096
+    <li>MAXDRAWSEGS: 256 -> 2048
+    <li>MAXPLATS: 30 -> 7680
+    <li>SAVEGAMESIZE: 180224 -> 2883584
+    <li>MAXLINEANIMS: 64 -> 16384
+    <li>MAXOPENINGS: 16384 -> 65536 
+</ul>
+<li>Added tweak, that allows player to walk while in "Always Run" mode by pressing "Walk" button (thanks Fabian Greffrath).
+<li>Fixed bug of intermission screen, when title "Загружется" was missing on exiting from secret levels in Doom 1.
+<li>Fixed original bug when message "Получена крайне необходимая аптечка!" (Picked up a medikit that you really need!) was not appeared.
+<li>Fixed original bug of STARMS overlaying 2 pixel of player's face background in network game.
+<li>Fixed original bug when barrel and Lost Soul lefts blood pool on death from fast crusher. Now there is no pool, plus barrels are not bleeding while taking damage from crusher.
+<li>Added optional fix of original bug when sky was not colored while invulnerability state.
+<li>Added optional fix of original bug with missing "Ouch face".
+<li>Added optional fix of increasing Pain Elemental's amount of Lost Soul attacks, from 20 to 10240.
+<li>Elements of save and load game windows now centeren, added new capital titles.
+<li>Added new strings for ITYTD and Nightmare skill levels (Thanks Brad Harding):
+<ul>
+    <li>Получено 8 патронов для дробовика.
+    <li>Получено две ракеты.
+</ul>
+<li>Cheat codes IDFA and IDKFA now gives backpack. (Thanks Brad Harding)
+<li>Semantic changes in the texts: 
+<ul>
+    <li>Секрет(ы) > Тайник(и)
+    <li>для открытия требуется > для открытия нужен
+    <li>сообщения отключены > сообщения выключены
+</ul>
+<li>Added one pixel shadow for texts in help screens.
+<li>[Plutonia] Level "Врата Ада" (Gateway to Hell) now "загружаЮтся".
+<li>Program name now correctly displayed in Task Manager.
+</ul>
+<b>Updates on Heretic and Hexen games:</b>
+<ul>
+<li>Semantic changes in the text: "сообщения отключены" > "сообщения выключены".
+<li>Message "В игре нет других игроков!" now translated in network game.
+<li>[Hexen] Port will no longer crash with error "solidsegs overflow", on Hypostile level.
+<li>Added tweak, that allows player to walk while in "Always Run" mode by pressing "Walk" button (thanks Fabian Greffrath).
+<li>Different icons on title bar and names in Task Manager.
+</ul>
+<b>Updated Setup.exe</b>
+<ul>
+<li>Added optional optional game palette fix in "Настройка экрана > Дополнительно" section.
+<li>[Doom] All new optional fixes can be disabled/enabler in  "Настройки совместимости" section.
+<li>Aesthetic changes in text, removed irrelevant reduction of some words.
+<li>Fixed original Chocolate Doom bug of wrong pairing of Hexen player classes and skill levels.
+</ul>
+
+<br>
+<hr size="1" color="#666666">
+<br><br>
+
+<b>Version 1.1 (10/27/2016)</b>
+<br><br>
+Added the translation of games Heretic and Hexen, updated Launcher and Setup.exe
+<br><br>
+<b>Updates on DOOM game:</b>
+<ul>
+<li>The letter "Й" now has got stroke in top of the symbol.
+<li>Levels, which names are pointed in the plural number, intermission screen says "загружаются".
+<li>Doom 1 Registered now displays correct CREDIT and ENDOOM screens, not from Ultimate DOOM.
+<li>Final DOOM shows CREDIT screen on Russian language.
+<li>Fixed bug of original Final DOOM with missing DEMO4. Now DEMO4 plays only in Ultimate DOOM.
+<li>Skull icon (m_skull) no more overlays word "джойстика 2" in Final DOOM.
+<li>Tiny aestethic correction in chars of the game menu.
+<li>Some grammar mistakes corrected.
+</ul>
+<b>Added the Heretic translation:</b>
+<ul>
+<li>Translation supports all existing versions: Shareware (including Beta), Registered and Retail. Depending on game version different credits and ENDTEXT screens will be used.
+<li>Bug of original version is fixed, at which messages after saving game were stopped to display. Great thanks to CapnClever for investigation and fixing advice.
+<li>The graphics traditionnaly drawn in style of original game.
+</ul>
+<b>Added the Hexen translation:</b>
+<ul>
+<li>Translation supports all existing versions:  Shareware (Four levels demo), released version 1.1 and addon Deathkings of the Dark Citadel.
+<li>The graphics traditionnaly drawn in style of original game. Exception: status bad.
+<li>Bug of original version is fixed, at which on the level Gibbet passage to Heresiarch did not open.
+<li>Bug of Deathkings is fixed, at which on the level Locus Requiescat in the southern region you might fall between grate and stone hill. The passage now is a little wider, and takes the possibility for player to get out.
+</ul>
+<b>Updated Setup.exe:</b>
+<ul>
+<li>Added support for Heretic and Hexen. 
+<li>Some grammar corrections.
+</ul>
+<b>Updated Launcher:</b>
+<ul>
+<li>Redesigned interface.
+<li>Added support for new games.
+<li>Upon placing mouse cursor on buttons, popup message will tell which IWAD is necessary for game.
+</ul>
+
+<br>
+<hr size="1" color="#666666">
+<br><br>
+
+<b>Version 1.0 (09/16/2016)</b>
+<br><br>
+First initial release.
+
+
+</font></pre></body></html>
