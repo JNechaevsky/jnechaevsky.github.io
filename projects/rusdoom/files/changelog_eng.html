@@ -19,6 +19,72 @@
 <font face="segoe ui">
 
 
+<b><span id="4.3">Russian Doom 4.3 and Russian Heretic 4.1 (05/17/2020)</span></b>
+<br><br>
+
+Implemented selection between 4:3, 5:4, 16:9 and 16:10 display aspect ratios. Selection available in Rendering ingame menu, as well as in Setup executable. Executables "`*-wide.exe`" no longer needed and can be safely removed. In aspect ratios 16:9 and 16:10 minimal screen size will emulate 4:3 mode. (thanks @drfrag666, @fabiangreffrath and @DwarsYT).
+<br><br>
+<b>Common</b>
+<ul>
+    <li>Midiproc executable no longer checking version differences, all games can be installed into one folder.
+    <li>Windows OS only: on clean installation (i.e. w/o existing .ini config file), game language will be automatically set to English, if preferred system locale is not Russian, Ukrainian or Belorussian.
+    <li>Windows OS only: -devparm console now always using Consolas font for preventing incorrect characters appearing.
+    <li>Added support for borderless window frame, available in Display's Advanced option of Setup executable.
+    <li>Amount of available sound channels now capped to 8 when playing in -vanilla mode.
+    <li>Added support for mouse invert Y axis, available in Controls Setting as well as in Setup executable.
+    <li>Added an option to mute sound in inactive window, available in Sound Setting as well as in Setup executable.
+    <li>Added Sound System sound menu into Sound Settings.
+    <li>GUS patches now included for all games. Instruments mapping fixed for Doom by Simon Howard and for Heretic by Tom Klok are also included. Default patch is changed to "base/gus_patches", no additional changings needed.
+    <li>Setup program now using different color scheme for different games.
+    <li>Game now can be run on 15 and 16 bpp display color depths (thanks @wellslutw).
+    <li>Default level of gamma-correction slightly increased.
+    <li>Program compiler updated to GCC 10.1.0, updated all included DLLs to their actual versions.
+    <li>Various small performance improvements.
+</ul>
+
+<b>Doom</b>
+
+<ul>
+    <li>Fixed a bug when bullet puffs were hopping after shooting moving platforms.
+    <li>No Rest for the Living now using hellish sky texture on MAP04-08.
+    <li>Implemented support for various message colorization, available in Messages settings in Display options menu.
+    <li>Implemented optional feature to apply antialiasing for all automap lines and things. Can be toggled in Automap settings in Display options menu.
+    <li>Fixed a bug which was causing textures to change randomly in Back to Saturn X (thanks @mtvile666).
+    <li>Extra kills now will be shown in automap stats (thanks @mtvile666).
+    <li>Graphical patch for Ultra Nightmare skill level will no longer appear, if any of skill level patches replaced.
+    <li>TNTEM cheat code now showing amount of killed monsters.
+</ul>
+
+<b>Heretic</b>
+
+<ul>
+    <li>Fixed incorrect "on" on negative health feature (thanks @hfc2x).
+    <li>Implemented Level brightness feature from Unity Doom.
+    <li>Increased FPS widget limit from 999 to 9999.
+    <li>Local time widget updated to additional 12h and 24h time formats.
+    <li>Added Automap settings submenu into Display options menu.
+    <li>Implemented support for automap overlay and rotate mode. Default keys are "o" and "r".
+    <li>Antialiasing now applied to all available automap lines and things.
+    <li>Removed blue color from colored HUD.
+    <li>Fixed Tutti-Frutti effect on translucent sprites.
+    <li>Hitscan and missiles attacks now making splashed on water/lave/sludge.
+    <li>Fixed incorrect key pickup strings (thanks @hfc2x).
+    <li>Tally screen will no longer appear after finishing ExM8 in -vanilla game mode (thanks @hfc2x).
+    <li>Fixed vanilla bug, when finished secret level was not marker on wold map (thanks @hfc2x).
+    <li>Fixed missing shadows on world map.
+    <li>Added support for automap grid.
+    <li>Waterfall and wind ambient sound now always having proper stereo separation and volume.
+    <li>Automap now can properly potentially display huge levels.
+    <li>FPS and local time widgets will no longer appear in -vanilla game mode.
+    <li>NOISE cheat code working again.
+</ul>
+
+
+<br>
+<hr size="1" color="#666666">
+<br><br>
+
+
 <b><span id="4.2">Russian Doom 4.2 (03/21/2020)</span></b>
 <br><br>
 
