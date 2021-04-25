@@ -19,13 +19,102 @@
 <font face="segoe ui">
 
 
+<b><span id="4.7">Russian Doom 4.7 (04/25/2021)</span></b>
+<br><br>
+
+<ul>
+<li>Widescreen graphical assets upgraded to 21:9 display aspect ratio and now based on WidePix Masterwork by Nash Muhandes. Also, thanks Dasperal for helping with new Episode 3 bunny scrolling code.
+<li>Russian versions of titlepic, help, credits screen, and status bar backgrounds now matches to English ones far better.
+<li>Added support for tracker music in S3M/MOD/XM/IT/UMX formats. Hovewer, it's audiable only when music system is set to "MIDI/MP3/OGG/FLAC/TRACKER".
+<li>Fixed vanilla BLOCKMAP bug, when hitscan attack was able to pass trough things in some instances (thanks Terry Hearst). Technical analysis available on following video: <a href=" https://www.youtube.com/watch?v=-IYz6-KnvWU">https://www.youtube.com/watch?v=-IYz6-KnvWU</a>
+<li>Fixed incorrect, potentially higher damage inflicted by enemy hitscan attacks.
+<li>STBAR graphical patch now can be any size, and always will be properly centered independent from X coordinates given to the patch.
+<li>Improved status bar face and screen wiping effect randomizations. They will look same, but no longer dependent to game tics.
+<li>Player looking direction will now properly reset when mouse look is toggled off if game FPS too small or mouse look was toggled too fast.
+<li>Vertical attack angles will be accounted for fist/chainsaw attacks while mouse look up/down. Does not affect vertical autoaiming.
+<li>Fixed potentially missing greeting sound of Icon of Sin, if sound channels is set to 64 (thanks cubebert).
+<li>Pixel remaining will now be properly cleared in case of using custom menu graphics, places over the status bar (thanks cubebert).
+<li>Fixed small vanilla bug: blood splats was freezed at the end of animation in moving down platforms.
+<li>TNTEM cheat code no longer crashing the game in some weapon mods.
+<li>Game window can again be downscaled to 320x240 pixels.
+<li>Fixed potential Tutti-Frutti effect on translucent sprites.
+<li>Fixed incorrect netgame stats placement on tally screen.
+<li>Level Select menu no longer accessible in network game.
+<li>Overlaid automap remainings will be properly cleared after game ending while active, overlayed automap.
+<li>Improved HUD messages and automap line coloring code.
+<li>Intermission texts now can be skipped by both FIRE/USE keys. Intermission screens and text no longer can be skipped by PAUSE key (thanks Dasperal).
+<li>Fixed typo in "качество звучания" of Sound System menu.
+<li>Second typing of IDBEHOLDA will remove full Automap.
+<li>Reworked <a href="https://doomwiki.org/wiki/Mancubus_fireball_clipping">Mancubus fireball clipping</a> bug fix, which is also affecting rocket explosion in floor/ceiling segments. For now:
+    <ul>
+    <li>fix is not applying in "-vanilla" mode,
+    <li>explosion making a full damage in single player,
+    <li>explosion having just a visual effect in network game or demo.
+    </ul>
+<li>Unity edition IWADs now properly supported (additionally, they can be autoloaded with following names: doomunity.wad, doom2unity.wad, plutoniaunity.wad, tntunity.wad).
+<li>Removed redundant DLLs from MSYS enviroment (files no longer needed and can be removed from port's folder: libfluidsynth-2.dll, libgcc_s_dw2-1.dll, libstdc++-6.dll and libwinpthread-1.dll).
+<li>Default aspect ratio changed from 4:3 to 16:9.
+<li>Added CMake build system from Chocolate Doom (thanks Dasperal).
+<li>Various small code improvements.
+</ul>
+
+
+<br>
+<hr size="1" color="#666666">
+<br><br>   
+
+
 <b><span id="4.6.1">Russian Doom 4.6.1 (01/03/2021)</span></b>
+<br><br>
 
 <ul>
 <li>Implemented support for 21:9 display aspect ratio.
 <li>Improvements in wide screen rendering code.
 <li>Side borders of status bar no longer using custom graphical patches. Instead, IWAD graphics are used.
 <li>Updated SDL library to version 2.0.14.
+</ul>
+
+    
+<br>
+<hr size="1" color="#666666">
+<br><br>   
+
+
+<b><span id="4.3">Russian Heretic 4.3 (01/03/2021)</span></b>
+<br><br>
+
+<ul>
+<li>Implemented support for 21:9 display aspect ratio.
+<li>Updated SDL library to version 2.0.14.
+</ul>
+
+    
+<br>
+<hr size="1" color="#666666">
+<br><br>   
+
+
+<b><span id="4.1">Russian Hexen 4.1 (01/03/2021)</span></b>
+<br><br>
+
+<ul>
+<li>Renderer upgraded to use 32-bit integer math.
+<li>Fixed rare bug with potentian mobj->player number overflow.
+<li>Fixed incorrect CHESS* gfx placement in wide screen mode.
+<li>Added "Porch Palette Changing" menu item in Rendering menu.
+<li>Updated SDL library to version 2.0.14.
+</ul>
+
+    
+<br>
+<hr size="1" color="#666666">
+<br><br>    
+
+
+<b><span id="4.6">Russian Doom 4.6 (12/31/2020)</span></b>
+<br><br>
+
+<ul>
 <li>Implemented keyboard and mouse bindings menus, available in Controls section.
 <li>Added support for "Go to Next Level" / "Restart level" key binds.
 <li>Sampling frequency changing no longer requiers a restart.
@@ -65,24 +154,6 @@ autoload_doom2_pwad1          "base\D2SPFX19.WAD"</pre></ul>
 <li>Jaguar Doom: fixed potentially incorrect translucency.
 </ul>
 
-<b><span id="4.3">Russian Heretic 4.3 (01/03/2021)</span></b>
-
-<ul>
-<li>Implemented support for 21:9 display aspect ratio.
-<li>Updated SDL library to version 2.0.14.
-</ul>
-
-<b><span id="4.1">Russian Hexen 4.1 (01/03/2021)</span></b>
-
-<ul>
-<li>Renderer upgraded to use 32-bit integer math.
-<li>Fixed rare bug with potentian mobj->player number overflow.
-<li>Fixed incorrect CHESS* gfx placement in wide screen mode.
-<li>Added "Porch Palette Changing" menu item in Rendering menu.
-<li>Updated SDL library to version 2.0.14.
-</ul>
-
-
 
 <br>
 <hr size="1" color="#666666">
@@ -116,44 +187,6 @@ Project's four years anniversary!
         <li>Target highlighting + Health: consolidated two previous options.
     </ul>
 </ul>
-
-
-<br>
-<hr size="1" color="#666666">
-<br><br>
-
-
-<b><span id="4.4">Russian Heretic 4.2 (09/19/2020)</span></b>
-<br><br>
-
-
-<ul>
-    <li>Fixed placemnt of "Advisor" graphics in emulated 4:3 display aspect ratio.
-    <li>Added interpolation for automap rotate mode.
-    <li>Added weapon bobbing interpolation.
-    <li>Added support for dedicated music tracks for each map (like in <a href="https://www.doomworld.com/forum/topic/114080-raven-midi-pack-project-complete/">RAVEN MIDI Pack project</a>).
-    <li>Changed crosshair's "Health Indication" to "Indication", new available options:
-    <ul>
-        <li>Static: no crosshair coloring.
-        <li>Health: crosshair will be colored according to player's health.
-        <li>Target highlighting: crosshair will be highlighted when target is present in attack line.
-        <li>Target highlighting + Health: consolidated two previous options.
-    </ul>
-</ul>
-
-
-<br>
-<hr size="1" color="#666666">
-<br><br>
-
-
-<b><span id="4.0">Russian Hexen 4.0 (16.09.2020)</span></b>
-<br><br>
-
-This is a new major version of the project. Mostly everything has been updated, including menu system, features and wide screen modes. It is highly recommended to make a clean installation.
-<br><br>
-Special thanks to Dasperal for improving ACS scripting system, which allowed to change game language in hot-mode, as well as for other improvements!
-<br><br>
 
 
 <br>
