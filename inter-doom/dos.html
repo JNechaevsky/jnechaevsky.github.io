@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" lang="ru">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>International Doom - DOS version</title>
+    <link rel="help" href="mailto:www-validator@w3.org" />
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
+    <link rel="start" href="./" title="DOS version" />
+	<meta name="author" content="Julia Nechaevskaya">
+</head>
+
+<body bgcolor="#000000" text="#999999" link="#0078ff" alink="#7fbbff" vlink="#0078ff">
+<font face="segoe ui">
+
+<style type="text/css">
+    html { overflow-y: scroll; }
+    a {text-decoration: none; }
+    .code { background: #e8e8e8; }
+</style>
+
+<body bgcolor="#000000" text="#999999" link="#0078ff" alink="#7fbbff" vlink="#0078ff">
+<font face="segoe ui">
+
+<table width="800" border="0" align="center" cellpadding="0" cellspacing="0">
+<td valign="top">
+
+<table style="width:800px;height:52px;">
+<tr valign="middle">
+    <td align="center" valign="middle"><font size="4"><b><a href="../index.html">Projects</a></b></font></td>
+    <td align="center" valign="middle"><font size="4"><b><a href="inter-doom/index.html" style="color: #7fbbff">International Doom</a></b></font></td>
+    <td align="center" valign="middle"><font size="4"><b><a href="../crl/index.html">CRL</a></b></font></td>
+    <td align="center" valign="middle"><font size="4"><b><a href="../music.html">Music</a></b></font></td>
+    <td align="center" valign="middle"><font size="4"><b><a href="../author.html">Author</a></b></font></td>
+</tr>
+</table>
+
+<hr size="1" color="#333333">
+
+<table style="width:800px;height:52px;">
+<tr valign="middle">
+    <td align="center" valign="middle"><font size="4"><b><a href="index.html">Download</a></b></font></td>
+    <td align="center" valign="middle"><font size="4"><b><a href="dos.html" style="color: #7fbbff">DOS</a></b></font></td>
+    <td align="center" valign="middle"><font size="4"><b><a href="media.html">Media</a></b></font></td>
+    <td align="center" valign="middle"><font size="4"><b><a href="https://github.com/JNechaevsky/inter-doom/wiki">Project's Wiki</a></b></font></td>
+    <td align="center" valign="middle"><font size="4"><b><a href="https://github.com/JNechaevsky/inter-doom/">GitHub Page</a></b></font></td>
+</tr>
+</table>
+
+<br>
+
+
+Версия проекта для DOS обладает несколько меньшим функционалом нежели основной проект, но так или иначе, это версия практически полностью идентична оригинальным версиям игр, выпущенным в 1993-1994 годах. Свершилось!
+<br><br>
+
+<b><font size="4">Навигация:</font></b>
+<ul>
+    <li><a href="#about">О проекте</a></li>
+    <li><a href="#starting">Установка и запуск</a></li>
+    <li><a href="#screenshots">Скриншоты</a></li>
+    <li><a href="#cmdline">Новые параметры командной строки</a></li>
+    <li><a href="#dosbox">Рекомендуемые параметры DOSBox</a></li>
+    <li><a href="#download">Скачать</a></li>
+</ul>
+
+
+<span id="about"><b><font size="4">О проекте</font></b></span>
+<br><br>
+Версия для DOS основана на порте <a href="http://github.com/nukeykt/PCDoom-v2">PCDoom</a> от Алексея Хохолова (Alexey Khokholov) и <a href="github.com/axdoomer/doom-vanille">Doom Vanille</a> от Александрэ-Ксавье Лабонт-Ламуре (Alexandre-Xavier Labonte-Lamoureux), используются значительные улучшения из порта <a href="http://fabiangreffrath.github.io/crispy-doom">Crispy Doom</a> от Фабиана Греффрата (Fabian Greffrath). Одобрение на распространение получено от всех авторов.
+<br><br>
+Проект, все его материалы и исходные коды доступны по лицензии <a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.ru.html">GNU GPL v2</a>.
+<br><br>
+
+Проект представляет из себя максимально возможный русскоязычный перевод игр: 
+<ul>
+    <li>DOOM Shareware</li>
+    <li>DOOM 1</li>
+    <li>The Ultimate DOOM</li>
+    <li>DOOM II: Hell on Earth</li>
+    <li>Final DOOM: TNT Evilution</li>
+    <li>Final DOOM: The Plutonia Experiment</li>
+</ul>
+
+
+Помимо перевода, порт оснащён разнообразным визуальным функционалом, позволяющим несколько визуально разнообразить (но не нарушить) игровой процесс, но сохранён и классический ("ванильный") режим. Переведённые ресурсы уникальны для каждой игры.
+<br><br><br>
+
+
+<span id="starting"><b><font size="4">Установка и запуск</font></b></span>
+<br><br>
+
+<b>Минимальные системные требования:</b>
+<ul>
+    <li>Операционная система: MS-DOS или FreeDOS. Допускается эмулятор DOSBox.</li>
+    <li>Процессор: Intel 386DX или выше.</li>
+    <li>Оперативная память: 16 MB, рекоммендуется 24 MB.</li>
+</ul>
+
+<b>Необходимые IWAD-файлы для запуска:</b>
+<ul>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+    <tr><td width="25%">Doom Shareware</td><td width="35%">DOOM1.WAD</td></tr>
+    <tr><td width="25%">Doom / Ultimate DOOM</td><td width="35%">DOOM.WAD</td></tr>
+    <tr><td width="25%">DOOM II: Hell on Earth</td><td width="35%">DOOM2.WAD</td></tr>
+    <tr><td width="25%">Final DOOM: TNT Evilution</td><td width="35%">TNT.WAD</td></tr>
+    <tr><td width="25%">Final DOOM: Plutonia Experiment</td><td width="35%">PLUTONIA.WAD</td></tr>
+</table>
+</ul>
+
+
+<b>Как запустить игру?</b>
+<br><br>
+С помощью штатной команды "-iwad". Пример запуска DOOM I:<br>
+RUSDOOM.EXE -iwad DOOM.WAD
+<br><br>
+
+Если параметр явно не указан и присутствует несколько IWAD-файлов, 
+автоматически запустится DOOM II. 
+<br>Если присутствует только один IWAD-файл, то
+он запустится автоматически.
+<br><br><br>
+
+
+<span id="screenshots"><b><font size="4">Скриншоты</font></b></span>
+<br><br>
+
+Все скриншоты кликабельны.
+<br><br>
+
+<a href="screenshots/dos/1.png"><img src="screenshots/dos/1_small.png"></a> <a href="screenshots/dos/2.png"><img src="screenshots/dos/2_small.png"></a> <a href="screenshots/dos/3.png"><img src="screenshots/dos/3_small.png"></a> <a href="screenshots/dos/4.png"><img src="screenshots/dos/4_small.png"></a>
+<br><br><br>
+
+<span id="cmdline"><b><font size="4">Новые параметры командной строки</font></b></span>
+<br><br>
+
+<b>-iwad</b><br>
+Возможность выбора IWAD-файла для запуска игры.
+<br><br>
+
+<b>-vanilla</b><br>
+Активация "ванильного" режима, отключающего почти все украшательства, такие как
+цветная кровь, текст с тенями и другие. Не затрагивает увеличение статических
+лимитов движка и исправление багов.
+<br><br>
+
+<b>-mb</b><br>
+Возможность явно указать сколько оперативной памяти может использовать игра 
+под свои нужды. Стандартное и минимальное значение равно 2, максимальное 64.
+<br>Пример использования: rusdoom.exe -mb 32
+<br><br>
+
+<b>-dm3</b><br>
+Активация режима игры Дефматч 3.0. Оружие будет оставаться после поднятия, все
+остальные предметы будут исчезать и появляться заново через 30 секунд.
+<br><br>
+<br>
+
+
+<span id="dosbox"><b><font size="4">Рекомендуемые параметры DOSBox</font></b></span>
+<br><br>
+Для получения наиболее качественной полноэкранной картинки при игре через эмулятор DOSBox, рекомендую установить следующие параметры в конфигурационном файле dosbox.conf:
+<br><br>
+<code>
+fullresolution=fixed<br>
+output=openglnb<br>
+aspect=true<br>
+</code>
+<br>
+
+Если русские символы отображаются кракозяблами, укажите русскую раскладку в параметре keyboardlayout:
+<br><br>
+<code>
+keyboardlayout=RU
+</code>
+<br><br>
+
+Для включения музыки в формате Gravis UltraSound, разрешите его использование:
+<code>
+gus=true
+</code>
+
+Также понадобятся патчи GUS, ознакомьтесь с <a href="https://github.com/JNechaevsky/russian-doom/blob/master/src_dos/ultrasnd/README.md">инструкцией</a> по их установке для DOSBox.
+
+<br><br><br>
+
+<span id="download"><b><font size="4">Скачать</font></b></span>
+<br><br>
+Ссылки на архив с портом и исходные коды доступны в основном разделе <a href="download.html">скачивания</a>.
+
+
+<br><br><br>
+</body></html>
