@@ -36,10 +36,56 @@
 
 <br>
 
-<b><font size="4">Haven't released yet!</font></b>
+CRL is a continuation of <a href="https://doomwiki.org/wiki/Chocorenderlimits">Chocorenderlimits</a> source port, created by <a href="https://doomwiki.org/wiki/RestlessRodent">RestlessRodent</a>.
+
+Armed with new features, QoL and technical improvements, it provides the ability to assist mappers in creation of Vanilla compatible maps, as well as checking some specific scenarios via additional ingame modes. The tilde [~] key opens the in-game menu which can be used to change the settings and features.
+
 <br><br>
 
+<b><font size="4">Download verion 1.0 (March 31, 2023)</font></b>
+<br><br>
+<li>Windows (32-bit): <a href="https://github.com/JNechaevsky/CRL/releases/download/crl-1.0/crl-1.0-win32.zip">crl-1.0-win32.zip</a>
+<li>Windows (64-bit): <a href="https://github.com/JNechaevsky/CRL/releases/download/crl-1.0/crl-1.0-win64.zip">crl-1.0-win64.zip</a>
 
+<br><br>
+Source code is available on GitHub project page: <a href="https://github.com/JNechaevsky/CRL">https://github.com/JNechaevsky/CRL</a>
+
+<br><br>
+<b><font size="4">Major features</font></b>
+
+<br><br>
+CRL keeps original Chocorenderlimits idea of being crash-prone source port, and instead of crashing on most of cases, it will print ingame/console warnings.
+
+<br><br>
+<b>Game modes</b>
+<br><br>
+<li>Spectating. Allows camera to move freely though the level. Use moving keys for horizontal camera movement and mouse wheel for vertical.
+<li>Freeze. Freezes game world. Player will not be able to receive damage by touching monsters projectiles and environmental dagame.
+<li>Notarget. Monsters will not react to player neither after see them, not after hearing a player's sound.
+
+<br><br>
+<b>Counters</b>
+<br><br>
+
+There are two type of counters: playstate and render. First one represeng map-specific limits, while second one representing rendering/drawing limits. Port will not crash in case of overflow will happen. Instead, counter will start to blink. Short names stands for:
+
+<br><br>
+<b>Playstate counters</b>
+<br><br>
+
+<li><b>BRN:</b> Number of Icon of Sin monster spawner targets. The more vanilla limit of 32 is overflowed, the more chance of critical error increases, especially if multiple spawners are placed on map. This counter is appearing if at least one spawner target is placed on map.
+<li><b>ANI:</b> Number of lines with scrolling animations (line effect №48). Vanilla will crash with "Too many scrolling wall linedefs" message if map contains 65 or more such lines.
+<li><b>BTN:</b> Number buttons pressed in simultaneously. Vanilla will crash with "P_StartButton: no button slots left!" message if more than 16 plats will be pressed in one second.
+<li><b>PLT:</b> Number of active of in-stasis platforms. Vanilla will crash with "P_AddActivePlat: no more plats!" message if more than 30 plats will be active.
+
+<br><br>
+<b>Render counters</b>
+<br><br>
+
+<li><b>SPR:</b> Number of rendered sprites, but due to the nature of how engine handles them, not all of them might be really visible.
+<li><b>SEG:</b> Number of rendered wall segments. Overflowing vanilla limit of 256 will resulting a HoM effect.
+<li><b>PLN:</b> Number of rendered floor and ceiling visplanes. Overflowing vanilla limit of 128 may result both HoM effect, as well as crashing.
+<li><b>OPN:</b> "Openings". Erm... 🤔
 
 <br><br><br>
 </body></html>
