@@ -37,8 +37,12 @@
 <br>
 
 CRL is a continuation of <a href="https://doomwiki.org/wiki/Chocorenderlimits">Chocorenderlimits</a> source port, created by <a href="https://doomwiki.org/wiki/RestlessRodent">RestlessRodent</a>.
-
-Armed with new features, QoL and technical improvements, it provides the ability to assist mappers in creation of Vanilla compatible maps, as well as checking some specific scenarios via additional ingame modes. The tilde [~] key opens the in-game menu which can be used to change the settings and features.
+<br><br>
+Armed with new features, QoL and technical improvements, it provides the ability to assist mappers in creation of Vanilla compatible maps, as well as checking some specific scenarios via additional ingame modes. The grave/tilde <b>[~]</b> key opens the in-game menu which can be used to change the settings and features.
+<br><br>
+Major idea is still same - this is crash-prone source port, which will print ingame warnings instead of crashings. However, no changes were made to drawing code and important bugs like Tutti-Frutti and Medusa are still here, to preserve DOS executable behavior and look. Medusa is no longer critical though, and not crashing Windows executable. For vanilla-compatibility purposes, despite of being crash-prone in complex game scenes, this is not limit-removing source port and it will not be able to load huge maps.
+<br><br>
+Important bits of code has been ported from <a href="https://github.com/jnechaevsky/inter-doom">International Doom</a>, <a href="http://github.com/fabiangreffrath/crispy-doom">Crispy Doom</a> and <a href="https://github.com/bradharding/doomretro">DOOM Retro</a>.
 
 <br><br>
 
@@ -49,19 +53,20 @@ Armed with new features, QoL and technical improvements, it provides the ability
 
 <br><br>
 Source code is available on GitHub project page: <a href="https://github.com/JNechaevsky/CRL">https://github.com/JNechaevsky/CRL</a>
+<br>
+Old versions of original Chocorenderlimits can be found on <a href="https://github.com/JNechaevsky/CRL/releases/tag/Historical">Historical</a> page.
 
 <br><br>
 <b><font size="4">Major features</font></b>
 
 <br><br>
-CRL keeps original Chocorenderlimits idea of being crash-prone source port, and instead of crashing on most of cases, it will print ingame/console warnings.
-
-<br><br>
 <b>Game modes</b>
 <br><br>
-<li>Spectating. Allows camera to move freely though the level. Use moving keys for horizontal camera movement and mouse wheel for vertical.
-<li>Freeze. Freezes game world. Player will not be able to receive damage by touching monsters projectiles and environmental dagame.
-<li>Notarget. Monsters will not react to player neither after see them, not after hearing a player's sound.
+
+<li><b>Spectator mode.</b> Allows camera to move freely though the level. Use moving keys for horizontal camera movement and mouse wheel for vertical.
+<li><b>Freeze mode.</b> Freezes game world. Player will not be able to receive damage by touching monsters projectiles and environmental damage.
+<li><b>No target mode.</b> Monsters will not react to player neither after see them, not after hearing a player's sound.
+<li><b>No momentum mode.</b> As stated in Doom source code: "Not really a cheat, just a debug aid."
 
 <br><br>
 <b>Counters</b>
@@ -82,10 +87,10 @@ There are two type of counters: playstate and render. First one represeng map-sp
 <b>Render counters</b>
 <br><br>
 
-<li><b>SPR:</b> Number of rendered sprites, but due to the nature of how engine handles them, not all of them might be really visible.
-<li><b>SEG:</b> Number of rendered wall segments. Overflowing vanilla limit of 256 will resulting a HoM effect.
+<li><b>SPR:</b> Number of rendered sprites. Due to the nature of how engine handles them, not all of them might be really visible, but still rendered.
+<li><b>SEG:</b> Number of rendered wall segments. Overflowing vanilla limit of 256 will resulting a HoM effect sooner or later.
 <li><b>PLN:</b> Number of rendered floor and ceiling visplanes. Overflowing vanilla limit of 128 may result both HoM effect, as well as crashing.
-<li><b>OPN:</b> "Openings". Erm... 🤔
+<li><b>OPN:</b> Number of rendered openings.
 
 <br><br><br>
 </body></html>
