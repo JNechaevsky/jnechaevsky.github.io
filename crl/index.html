@@ -46,10 +46,10 @@ Important bits of code has been ported from <a href="https://github.com/jnechaev
 
 <br><br>
 
-<b><font size="4">Download verion 1.1 (April 15, 2023)</font></b>
+<b><font size="4">Download verion 1.3 (May 16, 2023)</font></b>
 <br><br>
-<li>Windows (32-bit): <a href="https://github.com/JNechaevsky/CRL/releases/download/crl-1.1/crl-1.1-win32.zip">crl-1.1-win32.zip</a>
-<li>Windows (64-bit): <a href="https://github.com/JNechaevsky/CRL/releases/download/crl-1.1/crl-1.1-win64.zip">crl-1.1-win64.zip</a>
+<li>Windows (32-bit): <a href="https://github.com/JNechaevsky/CRL/releases/download/crl-1.3/crl-1.3-win32.zip">crl-1.3-win32.zip</a>
+<li>Windows (64-bit): <a href="https://github.com/JNechaevsky/CRL/releases/download/crl-1.3/crl-1.3-win64.zip">crl-1.3-win64.zip</a>
 
 <br><br>
 Source code is available on GitHub project page: <a href="https://github.com/JNechaevsky/CRL">https://github.com/JNechaevsky/CRL</a>
@@ -88,6 +88,7 @@ There are two type of counters: playstate and render. First one represeng map-sp
 <br><br>
 
 <li><b>SPR:</b> Number of rendered sprites. Due to the nature of how engine handles them, not all of them might be really visible, but still rendered.
+<li><b>SSG:</b> Number of rendered solid segments. Overflowing vanilla limit of 32 may resulting a crash.
 <li><b>SEG:</b> Number of rendered wall segments. Overflowing vanilla limit of 256 will resulting a HoM effect sooner or later.
 <li><b>PLN:</b> Number of rendered floor and ceiling visplanes. Overflowing vanilla limit of 128 may result both HoM effect, as well as crashing.
 <li><b>OPN:</b> Number of rendered openings.
