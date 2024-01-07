@@ -38,60 +38,32 @@
 
 CRL is a continuation of <a href="https://doomwiki.org/wiki/Chocorenderlimits">Chocorenderlimits</a> source port, created by <a href="https://doomwiki.org/wiki/RestlessRodent">RestlessRodent</a>.
 <br><br>
-Armed with new features, QoL and technical improvements, it provides the ability to assist mappers in creation of Vanilla compatible maps, as well as checking some specific scenarios via additional ingame modes. The grave/tilde <b>[~]</b> key opens the in-game menu which can be used to change the settings and features, few extra key bindings are available in Setup executable / Configure CRL Controls menu.
+Armed with new features, QoL and technical improvements, it provides the ability to assist mappers in creating vanilla-compatible maps, as well as checking some specific scenarios via additional in-game modes. The grave/tilde <b>[~]</b> key opens the in-game menu which can be used to change the settings and features.
 <br><br>
-Major idea is still same - this is crash-prone source port, which will print ingame warnings instead of crashings. However, no changes were made to drawing code and important bugs like Tutti-Frutti and Medusa are still here, to preserve DOS executable behavior and look. Medusa is no longer critical though, and not crashing Windows executable. For vanilla-compatibility purposes, despite of being crash-prone in complex game scenes, this is not limit-removing source port and it will not be able to load huge maps.
+The main idea is still the same: this is a crash-prone source port that prints in-game warnings instead of crashes. However, no changes have been made to the drawing code, and important bugs like Tutti-Frutti and Medusa are still there to preserve DOS executable behavior and look. Medusa is no longer critical, however, and does not crash Windows executables. For vanilla-compatibility purposes, despite of being crash-prone in complex game scenes, this is not limit-removing source port and it will not be able to load huge maps.
 <br><br>
 Important bits of code has been ported from <a href="https://github.com/jnechaevsky/inter-doom">International Doom</a>, <a href="http://github.com/fabiangreffrath/crispy-doom">Crispy Doom</a> and <a href="https://github.com/bradharding/doomretro">DOOM Retro</a>.
+<br><br>
+Please visit the <a href="https://github.com/JNechaevsky/CRL/wiki">project's Wiki</a> for more details and information. There is also an official thread on the <a href="https://www.doomworld.com/forum/topic/134756-chocorenderlimitscrl-16-september-7-2023/">Doom World</a> forum.
+<br><br>
+
+<b><font size="4">Download CRL Doom, verion 1.7 (January 3, 2024)</font></b>
+<br><br>
+<li>Windows (32-bit): <a href="https://github.com/JNechaevsky/CRL/releases/download/crl-1.7/crl-1.7-win32.zip">crl-1.7-win32.zip</a>
+<li>Windows (64-bit): <a href="https://github.com/JNechaevsky/CRL/releases/download/crl-1.7/crl-1.7-win64.zip">crl-1.7-win64.zip</a>
 
 <br><br>
 
-<b><font size="4">Download verion 1.6 (September 7, 2023)</font></b>
+<b><font size="4">Download CRL Heretic, verion 1.0 (June 12, 2023)</font></b>
 <br><br>
-<li>Windows (32-bit): <a href="https://github.com/JNechaevsky/CRL/releases/download/crl-1.6/crl-1.6-win32.zip">crl-1.6-win32.zip</a>
-<li>Windows (64-bit): <a href="https://github.com/JNechaevsky/CRL/releases/download/crl-1.6/crl-1.6-win64.zip">crl-1.6-win64.zip</a>
+<li>Windows (32-bit): <a href="https://github.com/JNechaevsky/CRL/releases/download/crl-hr-1.0/crl-heretic-1.0-win32.zip">crl-heretic-1.0-win32.zip</a>
+<li>Windows (64-bit): <a href="https://github.com/JNechaevsky/CRL/releases/download/crl-hr-1.0/crl-heretic-1.0-win64.zip">crl-heretic-1.0-win64.zip</a>
 
 <br><br>
 Source code is available on GitHub project page: <a href="https://github.com/JNechaevsky/CRL">https://github.com/JNechaevsky/CRL</a>
 <br>
 Old versions of original Chocorenderlimits can be found on <a href="https://github.com/JNechaevsky/CRL/releases/tag/Historical">Historical</a> page.
 
-<br><br>
-<b><font size="4">Major features</font></b>
-
-<br><br>
-<b>Game modes</b>
-<br><br>
-
-<li><b>Spectator mode.</b> Allows camera to move freely though the level. Use moving keys for horizontal camera movement and mouse wheel for vertical.
-<li><b>Freeze mode.</b> Freezes game world. Player will not be able to receive damage by touching monsters projectiles and environmental damage.
-<li><b>No target mode.</b> Monsters will not react to player neither after see them, not after hearing a player's sound.
-<li><b>No momentum mode.</b> As stated in Doom source code: "Not really a cheat, just a debug aid."
-
-<br><br>
-<b>Counters</b>
-<br><br>
-
-There are two type of counters: playstate and render. First one represeng map-specific limits, while second one representing rendering/drawing limits. Port will not crash in case of overflow will happen. Instead, counter will start to blink. Short names stands for:
-
-<br><br>
-<b>Playstate counters</b>
-<br><br>
-
-<li><b>BRN:</b> Number of Icon of Sin monster spawner targets. The more vanilla limit of 32 is overflowed, the more chance of critical error increases, especially if multiple spawners are placed on map. This counter is appearing if at least one spawner target is placed on map.
-<li><b>ANI:</b> Number of lines with scrolling animations (line effect №48). Vanilla will crash with "Too many scrolling wall linedefs" message if map contains 65 or more such lines.
-<li><b>BTN:</b> Number buttons pressed in simultaneously. Vanilla will crash with "P_StartButton: no button slots left!" message if more than 16 plats will be pressed in one second.
-<li><b>PLT:</b> Number of active of in-stasis platforms. Vanilla will crash with "P_AddActivePlat: no more plats!" message if more than 30 plats will be active.
-
-<br><br>
-<b>Render counters</b>
-<br><br>
-
-<li><b>SPR:</b> Number of rendered sprites. Due to the nature of how engine handles them, not all of them might be really visible, but still rendered.
-<li><b>SSG:</b> Number of rendered solid segments. Overflowing vanilla limit of 32 may resulting a crash.
-<li><b>SEG:</b> Number of rendered wall segments. Overflowing vanilla limit of 256 will resulting a HoM effect sooner or later.
-<li><b>PLN:</b> Number of rendered floor and ceiling visplanes. Overflowing vanilla limit of 128 may result both HoM effect, as well as crashing.
-<li><b>OPN:</b> Number of rendered openings.
 
 <br><br><br>
 </body></html>
