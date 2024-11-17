@@ -1,45 +1,24 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123032687-2"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'UA-123032687-2');
-    </script>
-
     <title>File to C style array converter</title>
     <meta charset="utf-8" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Coverts any file to a C style array. Useful if you want to embed/store a file (binary, text, image, whatever) into your code! It can also do image color format and size coversion. Use it for your Arduino or other embedded projects." />
     <link rel="icon" type="image/png" href="Images/favicon.png">
     <link rel="stylesheet" href="css/style.css" />
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
-    <script src="scripts/arrayUtils.js" type="text/javascript"></script>
-    <script src="scripts/imageConverter.js" type="text/javascript"></script>
-    <script src="scripts/stringConverter.js" type="text/javascript"></script>
-    <script src="scripts/main.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="scripts/arrayUtils.js" defer></script>
+    <script src="scripts/imageConverter.js" defer></script>
+    <script src="scripts/stringConverter.js" defer></script>
+    <script src="scripts/main.js" defer></script>
 </head>
 <body>
-    <h1><img src="Images/icon.svg" width="32px"> File to C style array converter<span class="versionInfo" >v:&nbsp;<span id="versionInfo"></span></span>
-        <br/>
-        <span class="additionalInfo">
-        <span id="description">&nbsp;</span> <a href="" id="gitLink" target="_blank"></a>
-        </span>
-    </h1>
-    <hr/>
+    <h1>&nbsp;<img src="Images/icon.svg" width="32px">&nbsp;File to C style array converter</span></h1>
     <p>
-        Select a file: <input type="file" id="inFileInput" value="" />
+        <label for="inFileInput" class="custom-file-label">Select a file to convert...</label>
+<input type="file" id="inFileInput">
     </p>
     <fieldset>
-        <legend>File info 
-            <div class="tooltip">
-                <span class="tooltiptext">This section contains basic information on the uploaded file.<br/>If it is an image, the size in pixel and a preview will be shown</span>
-            </div>
+        <legend>File info
         </legend>
         <div>
             <label for="fiName">Name</label>
@@ -70,15 +49,6 @@
         <legend>Conversion settings</legend>
         <div>
             <label for="selFormat">Code format
-                <div class="tooltip">
-                    <span class="tooltiptext">The array declaration will contain bytes in this format.<br/>So if you have choosen "Hex (0x00)", it will give you this output:
-<pre>
-static const unsigned char awesomeimage[] = {
-  0x00, 0xff, 0xff
-};
-</pre>                        
-                    </span>
-                </div>
             </label>
             <select id="selFormat">
                 <option value="HEX0">Hex (0x00)</option>
@@ -89,18 +59,12 @@ static const unsigned char awesomeimage[] = {
         </div>
         <div class="fileIsImage">
             <label for="cbForceBinary">Treat as binary
-                <div class="tooltip">
-                    <span class="tooltiptext">This tells the converter to treat the current file as a binary, eventhough it is an image.<br/>Every image conversion option will be disabled.<br/>Also will exclude the widht and height info from the output.</span>
-                </div>
             </label>
             <input type="checkbox" id="cbForceBinary" />
         </div>
         <hr class="fileIsImage"/>
         <div class="fileIsImage">
             <label id="lblPaletteMod" for="cbPaletteMod">Palette mod
-                <div class="tooltip">
-                    <span class="tooltiptext">This controls the output palette format of the image<br/>For more info on this, please see <a href="https://en.wikipedia.org/wiki/Color_depth" target="_blank">the WikiPedia aricle on color depth</a></span>
-                </div>
             </label>
             <select id="cbPaletteMod" class="imageConversionOption">
                 <option value="32">32 bit RGBA (4bytes/pixel)</option>
@@ -116,33 +80,21 @@ static const unsigned char awesomeimage[] = {
         </div>
         <div class="fileIsImage">
             <label for="txtResizeX">Resize
-                <div class="tooltip">
-                    <span class="tooltiptext">Fill only one of the size boxes to resize the image maintaining the original spect ratio.<br/>Keep both empty, if you do not want to change the size.</span>
-                </div>
             </label>
             <input type="text" id="txtResizeX" class="imageConversionOption shortInput" />&nbsp;x&nbsp;<input type="text" id="txtResizeY" class="imageConversionOption shortInput" />&nbsp;(Fill only one to maintain aspect ratio)
         </div>
         <div class="fileIsImage">
             <label for="cbMultiLine" class="imageConversionOption">Multi line
-                <div class="tooltip">
-                    <span class="tooltiptext">The bytes in the array will be split into multiple lines, roughly matching the aspect ratio of the image.<br/>Unselect this to have all the bytes in a single row.</span>
-                </div>
             </label>
             <input type="checkbox" id="cbMultiLine" class="imageConversionOption" checked />
         </div>
         <div class="fileIsImage image1BitModeOnly">
             <label for="cbForColumnRead" class="imageConversionOption image1BitModeOnly">Optimize for column read
-                <div class="tooltip">
-                    <span class="tooltiptext">For applications where you need to display the image one 8bit column at a time - as opposed to the normal mode where you plot the image by row.<br/><b>Row read optimized:</b><img alt="" src="Images/RowReadOptimized_small.png"/><br/><b>Column read optimized:</b><img alt="" src="Images/ColumnReadOptimized_small.png"/><br/>This is only available in 1bit mode!</span>
-                </div> 
             </label>
             <input type="checkbox" id="cbForColumnRead" class="imageConversionOption image1BitModeOnly" />
         </div>
         <div class="fileIsImage">
             <label for="cbSeparateBytes" class="imageConversionOption">Separate bytes of pixels
-                <div class="tooltip">
-                    <span class="tooltiptext">If ticked every byte of every pixel will be added to the array separately. Otherwise one item in the array will represent all bytes of one pixel.</span>
-                </div> 
             </label>
             <input type="checkbox" id="cbSeparateBytes" class="imageConversionOption"/>
         </div>
@@ -153,11 +105,6 @@ static const unsigned char awesomeimage[] = {
                 <option value="be">Big-endian</option>
             </select>
         </div>
-        <!--<div class="fileIsImage">
-            <label for="cbArrayType">Array type</label>
-            <input type="radio" name="cbArrayType" value="SINGLE" class="imageConversionOption" checked />Single
-            <input type="radio" name="cbArrayType" value="PERPIXEL" class="imageConversionOption" />Per pixel
-        </div>-->
         <hr/>
         <div>
             <label for="cbStatic">static</label>
@@ -192,12 +139,9 @@ static const unsigned char awesomeimage[] = {
         </div>
         <div>
             <label for="cbPROGMEM">PROGMEM</label>
-            <input type="checkbox" id="cbPROGMEM" value="PROGMEM" checked />
+            <input type="checkbox" id="cbPROGMEM" value="PROGMEM"/>
         </div>
         <div>
-            <div class="tooltip">
-                <span class="tooltiptext">These control the signature generated.<br/>Please note, not all of them make sense in all languages!</span>
-            </div> 
             <span id="spnSignaturePreview" class="signaturePreview">...</span>
         </div>
     </fieldset>
@@ -215,4 +159,3 @@ static const unsigned char awesomeimage[] = {
     </fieldset>
 </body>
 </html>
-<!-- https://www.w3schools.com/css/css_tooltip.asp -->
