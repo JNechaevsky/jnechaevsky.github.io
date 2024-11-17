@@ -1,4 +1,4 @@
-/* General styles */
+/* [PN] General styles */
 
 body {
     background-color: #002740;
@@ -18,20 +18,26 @@ a:active {
 }
 
 .container {
-    width: 90%; /* Use responsive width */
-    max-width: 800px; /* Limit width for larger screens */
+    width: 90%; /* [PN] Use responsive width */
+    max-width: 800px; /* [PN] Limit width for larger screens */
     margin: 0 auto;
     padding: 20px 0;
 }
 
-/* Navigation */
+.small-text {
+    font-size: 0.75em; /* [PN] Reduce font size to 80% of the parent */
+    color: #d4eaff; /* [PN] Optional: make the text a bit lighter for emphasis */
+}
+
+
+/* [PN] Navigation */
 
 .menu {
     display: flex;
     justify-content: center;
-    gap: clamp(10px, 7%, 64px); /* Minimum 10px, proportionally 7% of width, maximum 64px */
+    gap: clamp(10px, 7%, 64px); /* [PN] Minimum 10px, proportionally 7% of width, maximum 64px */
     margin-bottom: 30px;
-    flex-wrap: wrap; /* Allow navigation to wrap to the next line on smaller screens */
+    flex-wrap: wrap; /* [PN] Allow navigation to wrap to the next line on smaller screens */
 }
 
 .menu a {
@@ -45,7 +51,7 @@ a:active {
     color: #d4eaff;
 }
 
-/* Sections */
+/* [PN] Sections */
 
 h2 {
     text-align: center;
@@ -65,7 +71,7 @@ hr {
     margin: 20px 0;
 }
 
-/* Additional */
+/* [PN] Additional */
 
 p {
     margin: 10px 0;
@@ -76,7 +82,7 @@ p {
     padding: 2px 4px;
 }
 
-/* Music related */
+/* [PN] Music related */
 
 .music-list {
     list-style: none;
@@ -100,21 +106,21 @@ p {
     font-style: italic;
 }
 
-/* Profile related */
+/* [PN] Profile related */
 
 .profile {
-    display: flex; /* Text and image are aligned in one row */
-    align-items: flex-start; /* Align to the top edge */
+    display: flex; /* [PN] Text and image are aligned in one row */
+    align-items: flex-start; /* [PN] Align to the top edge */
     margin-bottom: 20px;
 }
 
 .profile-image {
-    width: auto; /* Retain the original image size */
+    width: auto; /* [PN] Retain the original image size */
     height: auto;
-    margin-right: 15px; /* Add space to the right of the image */
+    margin-right: 15px; /* [PN] Add space to the right of the image */
     border-radius: 50%;
 }
 
 .profile-text {
-    flex: 1; /* Text occupies the remaining space */
+    flex: 1; /* [PN] Text occupies the remaining space */
 }
