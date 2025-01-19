@@ -17,6 +17,10 @@ a:active {
     color: #82bdff;
 }
 
+a:hover {
+    color: #82bdff;
+}
+
 .container {
     width: 90%; /* [PN] Use responsive width */
     max-width: 800px; /* [PN] Limit width for larger screens */
@@ -48,6 +52,10 @@ a:active {
 
 .menu a.active {
     text-decoration: underline;
+    color: #d4eaff;
+}
+
+.menu a:hover {
     color: #d4eaff;
 }
 
