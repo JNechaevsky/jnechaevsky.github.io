@@ -55,7 +55,7 @@
     width: 50%;
     overflow: hidden;
     z-index: 2;
-    border-right: 2px solid #fff;
+    border-right: 2px solid #fff6;
     transition: width 0s;
 }
 .slider-img--bottom {
@@ -209,6 +209,7 @@
                     let offsetX = e.clientX - boxRect.left;
                     offsetX = Math.max(0, Math.min(offsetX, boxRect.width));
                     let percent = (offsetX / boxRect.width) * 100;
+                    percent = Math.max(0, Math.min(percent, 99.9));
                     imgClip.style.width = percent + '%';
                     sliderHandle.style.left = percent + '%';
                 });
