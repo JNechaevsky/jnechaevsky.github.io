@@ -137,7 +137,7 @@ p {
     width: auto; /* [PN] Retain the original image size */
     height: auto;
     margin-right: 15px; /* [PN] Add space to the right of the image */
-    border-radius: 50%;
+    border-radius: 10%;
 }
 
 .profile-text {
