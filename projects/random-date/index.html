@@ -1,0 +1,370 @@
+<!--
+  MIT License
+  
+  Copyright (c) 2025 Polina "Aura" N.
+  Copyright (c) 2025 Julia Nechaевskaya
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Генерация календарных дат</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: #1e1e1e;
+      color: #d4d4d4;
+      font-family: 'Roboto', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      display: flex;
+      background: #242430;
+      border-radius: 20px;
+      box-shadow: 0 0 18px #101019;
+      padding: 28px 36px;
+      gap: 36px;
+      min-width: 900px;
+    }
+    .settings {
+      min-width: 320px;
+      max-width: 340px;
+      background: #22232b;
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .settings label {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 6px;
+      color: #90caf9;
+      letter-spacing: 0.03em;
+    }
+    .settings input, .settings select {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: none;
+      background: #2e2f38;
+      color: #d4d4d4;
+      font-size: 15px;
+      outline: none;
+      margin-bottom: 2px;
+      transition: background 0.2s;
+    }
+    .settings input:focus, .settings select:focus {
+      background: #313346;
+    }
+    .weekdays {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+    .weekday-btn {
+      flex: 1;
+      padding: 4px 0;
+      border: none;
+      border-radius: 6px;
+      background: #313346;
+      color: #d4d4d4;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .weekday-btn.active {
+      background: #165b99;
+      color: #fff;
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .btn {
+      padding: 9px 22px;
+      background: #165b99;
+      border: none;
+      color: #fff;
+      border-radius: 7px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.16s;
+      font-weight: bold;
+      margin-right: 6px;
+    }
+    .btn:hover { background: #2188e1; }
+    .results {
+      min-width: 330px;
+      background: #20212c;
+      border-radius: 16px;
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+    }
+    .results-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 14px;
+      gap: 14px;
+    }
+    .export-btn {
+      background: #2e2f38;
+      color: #90caf9;
+      border: none;
+      border-radius: 7px;
+      padding: 7px 13px;
+      margin-right: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .export-btn:hover { background: #165b99; color: #fff; }
+    .date-list {
+      font-family: 'JetBrains Mono', 'Consolas', 'monospace';
+      font-size: 17px;
+      line-height: 1.8;
+      letter-spacing: 0.03em;
+      margin-top: 6px;
+      white-space: pre;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .date-row {
+      display: flex;
+      align-items: center;
+      user-select: none;
+      cursor: default;
+    }
+    .date-idx {
+      color: #555e7a;
+      min-width: 32px;
+      max-width: 32px;
+      text-align: right;
+      margin-right: 10px;
+      font-size: 17px;
+      font-family: 'JetBrains Mono', 'Consolas', 'monospace';
+      opacity: 0.7;
+      user-select: none;
+      pointer-events: none;
+      line-height: 1.8;
+      display: flex;
+      align-items: center;
+    }
+    .date-value {
+      color: #fff;
+      font-size: 17px;
+      font-family: 'JetBrains Mono', 'Consolas', 'monospace';
+      user-select: text;
+      line-height: 1.8;
+      display: flex;
+      align-items: center;
+    }
+    @media (max-width: 1050px) {
+      .container { flex-direction: column; min-width: 0; }
+      .settings, .results { max-width: 100%; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <form class="settings" id="settings">
+    <div>
+      <label for="count">Количество</label>
+      <input type="number" id="count" min="1" max="100" value="5">
+    </div>
+    <div>
+      <label for="from">От</label>
+      <input type="date" id="from" value="2024-06-17">
+    </div>
+    <div>
+      <label for="to">До</label>
+      <input type="date" id="to" value="2025-06-17">
+    </div>
+    <div>
+      <label>Дни недели</label>
+      <div class="weekdays" id="weekdays">
+        <button type="button" class="weekday-btn active" data-val="1">Пн</button>
+        <button type="button" class="weekday-btn active" data-val="2">Вт</button>
+        <button type="button" class="weekday-btn active" data-val="3">Ср</button>
+        <button type="button" class="weekday-btn active" data-val="4">Чт</button>
+        <button type="button" class="weekday-btn active" data-val="5">Пт</button>
+        <button type="button" class="weekday-btn active" data-val="6">Сб</button>
+        <button type="button" class="weekday-btn active" data-val="0">Вс</button>
+      </div>
+    </div>
+    <div>
+      <label for="format">Формат</label>
+      <input type="text" id="format" value="DD.MM.YYYY">
+    </div>
+    <div>
+      <label>Сортировка</label>
+      <select id="sort">
+        <option value="none">Без сортировки</option>
+        <option value="asc">По возрастанию</option>
+        <option value="desc">По убыванию</option>
+      </select>
+    </div>
+    <div class="controls">
+      <button class="btn" type="submit">Сгенерировать</button>
+      <button class="btn" type="button" id="clear">Очистить</button>
+    </div>
+  </form>
+  <div class="results">
+    <div class="results-header">
+      <span>Результат</span>
+      <button class="export-btn" id="copy-btn" title="Копировать в буфер обмена" style="margin-right: 8px;">
+        <svg height="18" width="18" fill="#90caf9" viewBox="0 0 20 20"><rect x="5" y="4" width="9" height="12" rx="2" fill="#165b99"/><rect x="8" y="2" width="9" height="12" rx="2" fill="none" stroke="#90caf9" stroke-width="1.5"/></svg>
+        <span>Копировать</span>
+      </button>
+      <button class="export-btn" id="export-txt">TXT</button>
+      <button class="export-btn" id="export-json">JSON</button>
+      <button class="export-btn" id="export-csv">CSV</button>
+    </div>
+    <div class="date-list" id="date-list"></div>
+  </div>
+</div>
+<script>
+  // Utils
+  function pad(n) { return n < 10 ? '0' + n : n; }
+  function formatDate(date, fmt) {
+    let d = pad(date.getDate());
+    let m = pad(date.getMonth() + 1);
+    let y = date.getFullYear();
+    return fmt
+      .replace(/DD/g, d)
+      .replace(/MM/g, m)
+      .replace(/YYYY/g, y)
+      .replace(/YY/g, ('' + y).slice(2));
+  }
+  function getRandomDate(from, to, weekdays) {
+    let attempts = 0;
+    while (attempts++ < 1000) {
+      let d = new Date(from.getTime() + Math.random() * (to.getTime() - from.getTime()));
+      if (weekdays.includes(d.getDay())) return d;
+    }
+    return null;
+  }
+
+  // Controls
+  const weekdaysBtns = Array.from(document.querySelectorAll('.weekday-btn'));
+  weekdaysBtns.forEach(btn => {
+    btn.onclick = () => {
+      btn.classList.toggle('active');
+    };
+  });
+
+  // Main
+  document.getElementById('settings').onsubmit = function(e) {
+    e.preventDefault();
+    let count = +document.getElementById('count').value;
+    let from = new Date(document.getElementById('from').value);
+    let to = new Date(document.getElementById('to').value);
+    let fmt = document.getElementById('format').value.trim();
+    let sort = document.getElementById('sort').value;
+    let weekdays = weekdaysBtns.filter(b => b.classList.contains('active')).map(b => +b.dataset.val);
+
+    let res = [];
+    let tries = 0;
+    while (res.length < count && tries++ < 3000) {
+      let d = getRandomDate(from, to, weekdays);
+      if (!d) break;
+      let key = d.toISOString().slice(0,10);
+      if (!res.some(x => x.key === key)) {
+        res.push({ date: new Date(d), key });
+      }
+    }
+    if (sort === 'asc') res.sort((a,b) => a.date - b.date);
+    else if (sort === 'desc') res.sort((a,b) => b.date - a.date);
+    let result = res.map(r => formatDate(r.date, fmt));
+    // Генерация с визуально отделёнными номерами
+    const dl = document.getElementById('date-list');
+    dl.innerHTML = '';
+    result.forEach((v, i) => {
+      const row = document.createElement('div');
+      row.className = 'date-row';
+      const idx = document.createElement('span');
+      idx.className = 'date-idx';
+      idx.textContent = (i+1);
+      const val = document.createElement('span');
+      val.className = 'date-value';
+      val.textContent = v;
+      row.appendChild(idx);
+      row.appendChild(val);
+      dl.appendChild(row);
+    });
+    window._dates = result;
+  };
+  document.getElementById('clear').onclick = function() {
+    document.getElementById('date-list').innerHTML = '';
+    window._dates = [];
+  };
+  // Export
+  function saveAs(data, name) {
+    let a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([data], {type:'text/plain'}));
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>document.body.removeChild(a), 400);
+  }
+  document.getElementById('export-txt').onclick = function() {
+    if (window._dates?.length) saveAs(window._dates.join('\n'), 'dates.txt');
+  };
+  document.getElementById('export-json').onclick = function() {
+    if (window._dates?.length) saveAs(JSON.stringify(window._dates, null, 2), 'dates.json');
+  };
+  document.getElementById('export-csv').onclick = function() {
+    if (window._dates?.length) saveAs(window._dates.join('\n'), 'dates.csv');
+  };
+  // Copy to clipboard
+  document.getElementById('copy-btn').onclick = function() {
+    if (window._dates?.length) {
+      navigator.clipboard.writeText(window._dates.join('\n')).then(() => {
+        const btn = document.getElementById('copy-btn');
+        let prev = btn.innerHTML;
+        btn.innerHTML = '<svg height="18" width="18" fill="#90caf9" viewBox="0 0 20 20"><rect x="5" y="4" width="9" height="12" rx="2" fill="#165b99"/><rect x="8" y="2" width="9" height="12" rx="2" fill="none" stroke="#90caf9" stroke-width="1.5"/></svg> <span>Копировать</span>';
+        btn.style.background = '#2e7d32';
+        setTimeout(()=>{
+          btn.innerHTML = prev;
+          btn.style.background = '';
+        }, 1400);
+      });
+    }
+  };
+  // Init empty
+  window._dates = [];
+</script>
+</body>
+</html>
