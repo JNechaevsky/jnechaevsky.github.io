@@ -67,6 +67,23 @@
       justify-content: space-between;
       align-items: center;
       margin-top: 16px;
+      flex-wrap: nowrap;
+      gap: 8px;
+    }
+    .left-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .checkboxes {
+      display: flex;
+      gap: 16px;
+      font-size: 14px;
+    }
+    label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
     button {
       padding: 10px 20px;
@@ -118,7 +135,13 @@
     <h2>Проверка на некириллические символы</h2>
     <textarea id="text-input" placeholder="Вставьте текст для проверки..."></textarea>
     <div class="button-row">
-      <button onclick="checkText()">Проверить</button>
+      <div class="left-controls">
+        <button onclick="checkText()">Проверить</button>
+        <div class="checkboxes">
+          <label><input type="checkbox" id="allow-punctuation" checked>Разрешить пунктуацию</label>
+          <label><input type="checkbox" id="allow-digits" checked>Разрешить цифры</label>
+        </div>
+      </div>
       <span class="status" id="status-msg"></span>
     </div>
     <div id="output" class="output"></div>
@@ -132,11 +155,17 @@
       'a': 'а', 'e': 'е', 'o': 'о', 'c': 'с', 'p': 'р', 'x': 'х'
     };
 
-    function isCyrillicChar(char) {
-      return /^[А-Яа-яЁё \-]$/.test(char);
+    function isCyrillicChar(char, allowPunctuation, allowDigits) {
+      if (/[А-Яа-яЁё \-—]/.test(char)) return true;
+      if (allowPunctuation && /[!?\(\).,;:\t]/.test(char)) return true;
+      if (allowDigits && /[0-9]/.test(char)) return true;
+      return false;
     }
 
     function checkText() {
+      const allowPunctuation = document.getElementById('allow-punctuation').checked;
+      const allowDigits = document.getElementById('allow-digits').checked;
+
       const input = document.getElementById('text-input').value;
       const lines = input.split(/\r?\n/);
       const output = document.getElementById('output');
@@ -153,7 +182,7 @@
         let lineHasErrors = false;
 
         for (const char of line) {
-          if (isCyrillicChar(char) || char === '') {
+          if (isCyrillicChar(char, allowPunctuation, allowDigits) || char === '') {
             lineHTML += char;
           } else {
             lineHTML += `<span class="bad-char">${char}</span>`;
