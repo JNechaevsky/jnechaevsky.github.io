@@ -21,9 +21,6 @@
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
-
-  DOCX Unprotector
-  Unprotect `.docx` files from editing restrictions directly in the browser.
 -->
 
 <!DOCTYPE html>
@@ -31,8 +28,8 @@
 <head>
   <meta charset="UTF-8">
   <title>DOCX Unprotector</title>
-  <link rel="shortcut icon" href="../../img/favicon.ico" type="image/x-icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="../../img/favicon.ico" type="image/x-icon" />
   <style>
     body {
       margin: 0;
@@ -90,8 +87,8 @@
 </head>
 <body>
   <div class="upload-box" id="drop-area">
-    <p>Drop a file here to upload</p>
-    <label for="fileInput">or click here</label>
+    <p>Перетащите файл для загрузки сюда</p>
+    <label for="fileInput">или нажмите здесь</label>
     <input type="file" id="fileInput" accept=".docx">
   </div>
 
@@ -113,7 +110,7 @@
 
     async function handleFile(file) {
       if (!file || !file.name.endsWith('.docx')) {
-        alert('Only .docx files are supported');
+        alert('Поддерживаются только файлы .docx');
         return;
       }
       try {
@@ -121,7 +118,7 @@
         const zip = await JSZip.loadAsync(arrayBuffer);
         const settingsPath = 'word/settings.xml';
         if (!zip.files[settingsPath]) {
-          alert('The file does not contain settings.xml');
+          alert('Документ не содержит settings.xml');
           return;
         }
         const settingsText = await zip.files[settingsPath].async('string');
@@ -130,7 +127,7 @@
         const blob = await zip.generateAsync({ type: 'blob' });
         saveAs(blob, 'unprotected_' + file.name);
       } catch (err) {
-        alert('Error processing the file');
+        alert('Ошибка обработки файла');
         console.error(err);
       }
     }
