@@ -4,32 +4,25 @@
   <meta charset="UTF-8">
   <title>Проверка кириллического текста</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Modern, minimal CSS -->
+  <link rel="stylesheet" href="../../styles.css">  
+
+  <!-- Inline CSS -->
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: #1e1e1e;
-      color: #d4d4d4;
-      font-family: 'JetBrains Mono', monospace;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      padding: 40px 20px;
-    }
     .container {
       max-width: 800px;
       width: 100%;
-      background: #242430;
+      background: #0a1d2b;
       border-radius: 16px;
       box-shadow: 0 0 20px #101019;
       padding: 24px;
     }
     textarea {
-      width: calc(100% - 24px);
+      width: 100%;
       height: 200px;
-      background: #2e2f38;
-      color: #d4d4d4;
+      background: #01101a;
+      color: #d4eaff;
       border: none;
       border-radius: 8px;
       padding: 12px;
@@ -47,9 +40,9 @@
     }
     .checkboxes {
       display: flex;
-      gap: 16px;
+      gap: 24px;
+      margin-left: 10px;
       align-items: center;
-      font-size: 14px;
     }
     label {
       display: flex;
@@ -57,7 +50,7 @@
       gap: 4px;
     }
     button {
-      padding: 10px 20px;
+      padding: 12px 20px;
       background: #165b99;
       color: #fff;
       border: none;
@@ -70,28 +63,27 @@
       box-sizing: border-box;
     }
     button:hover {
-      background: #2188e1;
+      background: #4ea1ff;
     }
     .status {
-      font-size: 15px;
       color: #90ee90;
     }
     .status.error {
       color: #ff6f6f;
     }
     .output {
-      margin-top: 24px;
+      margin-top: 12px;
       white-space: pre-line;
       font-size: 16px;
-      background: #2e2f38;
+      background: #01101a;
       padding: 12px;
       border-radius: 8px;
     }
     #fix-btn {
-      margin-top: 24px;
+      margin-top: 12px;
     }
     #copy-btn {
-      margin-top: 24px;
+      margin-top: 12px;
       width: 160px;
     }
     .line-ok {
@@ -105,10 +97,11 @@
       color: #ff4f4f;
     }
   </style>
+
 </head>
 <body>
   <div class="container">
-    <h2>Проверка на некириллические символы</h2>
+    <h2 style="text-align:center">Проверка на некириллические символы</h2>
     <textarea id="text-input" placeholder="Вставьте текст для проверки..."></textarea>
     <div class="button-row">
       <div style="display: flex; align-items: center; gap: 12px;">
