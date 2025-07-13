@@ -1,145 +1,294 @@
-/* [PN] General styles */
+/* ----------  CSS-variables  ---------- */
+
+:root {
+    --bg:#011726;
+    --bg-card:#0a1d2b;
+    --accent:#4ea1ff;
+    --accent-hover:#98c9ff;
+    --text:#d4eaff;
+    --muted:#9bbcd6;
+    --border:#165b99;
+    --radius:10px;
+    --shadow:0 8px 24px rgba(0,0,0,.35);
+    --font: "Segoe UI",sans-serif;
+}
+
+/* ----------  Global types  ---------- */
+
+* {
+	margin:0;
+	padding:0;
+	box-sizing:border-box;
+}
+
+html {
+	scroll-behavior:smooth
+}
 
 body {
-    background-color: #002740;
-    color: #d4eaff;
-    font-family: "Segoe UI", sans-serif;
-    margin: 0;
-    padding: 0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font);
+    line-height:1.6;
+    padding:2rem 1rem;
 }
 
 a {
-    text-decoration: none;
-    color: #4ea1ff;
-}
-
-a:active {
-    color: #82bdff;
+	color:var(--accent);
+	text-decoration:none;
+	border-bottom: 2px solid transparent;
+	transition:.2s;
 }
 
 a:hover {
-    color: #82bdff;
+	color:var(--accent-hover);
+	/*
+	border-bottom: 1px solid transparent;
+	border-bottom-color: var(--accent-hover);
+	*/
 }
 
-.container {
-    width: 90%; /* [PN] Use responsive width */
-    max-width: 800px; /* [PN] Limit width for larger screens */
-    margin: 0 auto;
-    padding: 20px 0;
-}
-
-.small-text {
-    font-size: 0.75em; /* [PN] Reduce font size to 80% of the parent */
-    color: #d4eaff; /* [PN] Optional: make the text a bit lighter for emphasis */
-}
-
-kbd {
-    background: #165b99;               /* [PN] Глубокий синий, как разделители */
-    border: 1px solid #4ea1ff;         /* [PN] Акцентная голубая рамка */
-    border-radius: 4px;
-    box-shadow: inset 0 0 3px #082234; /* [PN] Внутреннее затемнение для рельефа */
-    padding: 2px 6px;
-    font-family: monospace;
-    font-size: 0.95em;
-    color: #d4eaff;                    /* [PN] Основной цвет текста, чтобы читалось */
-}
-
-
-/* [PN] Navigation */
-
-.menu {
-    display: flex;
-    justify-content: center;
-    gap: clamp(10px, 7%, 64px); /* [PN] Minimum 10px, proportionally 7% of width, maximum 64px */
-    margin-bottom: 30px;
-    flex-wrap: wrap; /* [PN] Allow navigation to wrap to the next line on smaller screens */
-}
-
-.menu a {
-    font-size: 1.1em;
-    font-weight: bold;
-    color: #4ea1ff;
-}
-
-.menu a.active {
-    text-decoration: underline;
-    color: #d4eaff;
-}
-
-.menu a:hover {
-    color: #d4eaff;
-}
-
-/* [PN] Sections */
-
-h2 {
-    text-align: center;
-}
-
-h3 {
-    text-align: center;
-}
-
-h4 {
-    text-align: center;
-}
+b,strong{color:var(--text)}
 
 hr {
     border: none;
-    border-top: 1px solid #165b99;
+    border-top: 1px solid #35628a; /* 165b99 */
     margin: 20px 0;
 }
 
-/* [PN] Additional */
+/* ----------  Container  ---------- */
+
+.container {
+	width: 90%;
+    max-width:800px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    gap:1.0rem;
+}
+
+/* ----------  Navigation  ---------- */
+
+nav {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:clamp(.75rem,3vw,2rem);
+    font-weight:600;
+}
+
+nav a {
+    padding:.25rem 0;
+    border-bottom:2px solid transparent;
+    transition:.2s;
+	font-size:1.2em;
+	font-weight:700;
+}
+
+nav a:hover,
+nav a:focus {
+    border-bottom-color:var(--accent-hover);
+}
+
+nav a.active {
+    color:var(--text);
+    border-bottom-color:var(--text);
+}
+
+/* ----------  Sections  ---------- */
+
+section {
+    background:var(--bg-card);
+    border-radius:var(--radius);
+    padding:1rem 1.5rem;
+    box-shadow:var(--shadow);
+}
+p {
+    margin:.5rem 0 1.25rem;
+}
+
+.small-text{font-size:.8em;color:var(--muted)}
+
+/* ----------  Cards  ---------- */
+
+.card {
+    background:var(--bg-card);
+    border-radius:var(--radius);
+    padding:1.75rem 1.5rem;
+    box-shadow:var(--shadow);
+}
+
+h3 {
+	margin-bottom:.5rem;
+	color:var(--text);
+	font-size:1.2rem
+}
+
+h4 {
+	margin:.75rem 0 .25rem;
+	color:var(--text);
+	font-size:1.0rem;
+	font-weight:600
+}
 
 p {
-    margin: 10px 0;
+	margin:1rem 0 1rem;
 }
 
-.code {
-    background: #e8e8e8;
-    padding: 2px 4px;
+li {
+	margin-left:1.5rem;
 }
 
-/* [PN] Music related */
+/* ----------  Download lists  ---------- */
+
+/* 
+<ul class="download-list">
+
+class="download-list">
+.download-list {
+    list-style:"⬇ ";
+    padding-left:1rem;
+
+}
+.download-list li {
+	margin:.35rem 0
+}
+*/ 
+
+/* ----------  Music tracks  ---------- */
 
 .music-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:.5rem;
 }
 
 .music-list li {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px 0;
-    border-bottom: 1px solid #165b99;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:.5rem .75rem;
+	margin-left:0.0rem;
+    background:rgba(255,255,255,.05);
+    border-radius:calc(var(--radius) / 2);
+    transition:.2s;
 }
 
-.music-list li:last-child {
-    border-bottom: none;
+.music-list li:hover{background:rgba(255,255,255,.08)}
+.music-list span{color:var(--muted);font-size:.875em}
+
+/* ----------  Screenshots grid  ---------- */
+
+.screenshots {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:.75rem;
+    margin-top:.5rem;
 }
 
-.music-list span {
-    color: #abd3ff;
-    font-style: italic;
+.screenshots a {
+    display:block;
+    border-radius:var(--radius);
+    overflow:hidden;
+    transition:transform .2s;
 }
 
-/* [PN] Profile related */
+.screenshots a:hover{transform:scale(1.05)}
+.screenshots img{width:100%;height:auto;display:block}
 
-.profile {
-    display: flex; /* [PN] Text and image are aligned in one row */
-    align-items: flex-start; /* [PN] Align to the top edge */
-    margin-bottom: 20px;
+/* ---------- Profile card ---------- */
+
+.profile-card {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    background:var(--bg-card);
+    border-radius:var(--radius);
+    padding:1.5rem 2rem;
+    box-shadow:var(--shadow);
+    gap:1rem;
 }
 
-.profile-image {
-    width: auto; /* [PN] Retain the original image size */
-    height: auto;
-    margin-right: 15px; /* [PN] Add space to the right of the image */
-    border-radius: 10%;
+.profile-card img {
+    width:160px;
+    height:160px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid var(--accent);
 }
 
-.profile-text {
-    flex: 1; /* [PN] Text occupies the remaining space */
+.profile-card h1 {
+    font-size:1.75rem;
+    font-weight:600;
+}
+
+.profile-card p {
+    color:var(--muted);
+    max-width:75ch;
+}
+
+/* ---------- Contact grid ---------- */
+
+.contact-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:.75rem;
+    text-align:center;
+}
+
+.contact-grid a {
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    color:var(--accent);
+    padding:.75rem 1rem;
+    border-radius:var(--radius);
+    transition:.2s;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.contact-grid a:hover {
+    background:var(--accent);
+    color:var(--bg);
+    transform:translateY(-2px);
+}
+
+/* ---------- Quote ---------- */
+
+blockquote {
+    text-align:center;
+    font-style:italic;
+    font-size:1.125rem;
+    color:var(--muted);
+    position:relative;
+}
+
+blockquote::before,
+blockquote::after {
+    content:"";
+    display:block;
+    width:40px;
+    height:2px;
+    background:var(--accent);
+    margin:.75rem auto;
+}
+
+/* ---------- [PN] Keyboard key ---------- */
+
+kbd {
+    background: #165b99;
+    border: 1px solid #4ea1ff;
+    border-radius: 4px;
+    box-shadow: inset 0 0 3px #082234;
+    padding: 2px 6px;
+    font-family: monospace;
+    font-size: 0.95em;
+    color: #d4eaff;
+}
+
+/* ----------  Adative  ---------- */
+@media(max-width:520px) {
+    .card{padding:1.5rem 1rem}
 }
