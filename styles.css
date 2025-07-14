@@ -19,6 +19,9 @@
 	margin:0;
 	padding:0;
 	box-sizing:border-box;
+	/* [PN] Scroll bars */
+	scrollbar-width: auto;            /* auto | thin | none */
+	scrollbar-color: #4ea1ff #0a1d2b; /* ползунок / трек */
 }
 
 html {
@@ -54,6 +57,25 @@ hr {
     border: none;
     border-top: 1px solid #35628a; /* 165b99 */
     margin: 20px 0;
+}
+
+/* [PN] Dropdown list */
+select {
+    background-color: #011726;
+    color: #d4eaff;
+    border: 1px solid #165b99;
+    border-radius: 6px;
+    padding: 6px;
+    /*
+    padding: 6px 12px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('arrow.svg');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    */
 }
 
 /* ----------  Container  ---------- */
