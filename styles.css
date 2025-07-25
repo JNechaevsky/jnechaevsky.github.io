@@ -59,6 +59,27 @@ hr {
     margin: 20px 0;
 }
 
+code {
+    font-size: 1.15em; /* Чуть больше базового размера */
+    font-family: monospace; /* Сохраняем моноширинный шрифт */
+    color: var(--accent-hover); /* Можно использовать акцентный цвет */
+    background: rgba(74, 161, 255, 0.1);  /* Легкий фон */
+    padding: 0.1em 0.3em; /* Небольшие отступы */
+    border-radius: 3px; /* Скругление углов */
+}
+
+pre {
+    white-space: pre;
+    overflow-x: auto;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-family: monospace;
+    color: var(--text);
+}
+
 /* [PN] Dropdown list */
 select {
     background-color: #011726;
@@ -310,7 +331,74 @@ kbd {
     color: #d4eaff;
 }
 
+/* ---------- Subnaviation ---------- */
+
+.subnav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Центрирование по умолчанию */
+    margin-top: 0.0rem; /*  Подвигаем ближе к основному меню */
+    margin-bottom: 0.0rem; 
+    font-size: 0.9em; /* Чуть меньше размер текста */
+    gap: clamp(0.5rem, 2vw, 1.2rem); /* Меньше отступы между ссылками */
+    
+}
+
+.subnav a {
+    font-weight: 500; /* Чуть менее жирный шрифт */
+    padding: 0.15rem 0; /* Меньше вертикальные отступы */
+    border-bottom-width: 1px; /* Тонкая линия подчеркивания */
+}
+
+.subnav a.active {
+    border-bottom-width: 1px; /* Тонкая линия для активной ссылки */
+}
+
+/* ---------- Compact table ---------- */
+
+.compat-table {
+    width: 50%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95em;
+}
+
+.compat-table th,
+.compat-table td {
+    padding: 0.15rem 1rem;
+    text-align: left;
+    border: 1px solid var(--border);
+}
+
+.compat-table th {
+    background-color: rgba(74, 161, 255, 0.15);
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.compat-table tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.compat-table tr:hover {
+    background-color: rgba(74, 161, 255, 0.1);
+}
+
 /* ----------  Adative  ---------- */
+
 @media(max-width:520px) {
-    .card{padding:1.5rem 1rem}
+    .card {
+        padding:1.5rem 1rem
+    }
+    .subnav {
+        font-size: 0.85em;
+        gap: 0.7rem;
+    }
+    .compat-table {
+        font-size: 0.85em;
+    }
+    .compat-table th,
+    .compat-table td {
+        padding: 0.5rem;
+    }
 }
