@@ -11,12 +11,12 @@
 
     <!-- SEO keywords and description -->
     <meta name="description" content="International Doom - small, functional and simple source port, created with help, efforts, and bits of code from people around the world.">
-    <meta name="keywords" content="doom port, chocolate doom, vanilla, open source, doom engine, retro gaming, classic fps, doom, sigil, freedoom, no rest for the living, chex quest, heretic, hexen, deahtkings">
+    <meta name="keywords" content="doom port, chocolate doom, vanilla, open source, doom engine, retro gaming, classic fps, doom, sigil, freedoom, no rest for the living, chex quest, heretic, hexen, deathkings">
 
     <!-- Modern, minimal CSS -->
     <link rel="stylesheet" href="../styles.css">
 
-    <link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="help" href="mailto:www-validator@w3.org">
     <link rel="start" href="./" title="International Doom">
 </head>
@@ -34,19 +34,44 @@
         </nav>
 
         <!-- About -->
-        <section>
-            <h3 style="text-align:center">About</h3>
+        <section id="about">
+            <nav class="subnav">
+                <a href="#about">About</a>
+                <a href="#download">Download</a>
+                <a href="#features">Features</a>
+                <a href="#compatibility">Compatibility</a>
+                <a href="#supported">Supported games</a>
+                <a href="#license">License</a>
+            </nav>
+            
             <p>
-                Small, functional and simple source port, created with help, efforts, and bits of code from people around the world.
-                The project is based on <a href="https://github.com/chocolate-doom/chocolate-doom">Chocolate Doom</a> and
-                <a href="http://github.com/fabiangreffrath/crispy-doom">Crispy Doom</a>, with significant additions from
-                <a href="https://github.com/bradharding/doomretro">DOOM Retro</a>.
+                <strong>International Doom</strong> is a small, functional, and 
+                minimalist source port, built with help, collaboration, and code 
+                contributions from people around the world. It is based on 
+                <a href="https://github.com/chocolate-doom/chocolate-doom">Chocolate Doom</a> 
+                and <a href="http://github.com/fabiangreffrath/crispy-doom">Crispy Doom</a>, 
+                with notable additions from <a href="https://github.com/bradharding/doomretro">DOOM Retro</a>.
+            </p>
+            <p>
+                The mission of the project is to offer a choice between an enhanced and a classic gameplay experience.
+            </p>
+            <p>
+                International Doom supports high rendering resolutions, visual improvements, and optional gameplay adjustments, while preserving the ability to play in the spirit of the original vanilla Doom.
+            </p>
+            <p>
+                All enhancements are disabled by default — the port allows the player to decide which features to enable.
+                <br>
+                Special attention is given to cross-platform compatibility and low system requirements.
+            </p>
+            <p>
+                
             </p>
         </section>
 
         <!-- Download -->
-        <section>
+        <section id="download">
             <h3 style="text-align:center">Download</h3>
+
             <h4>International Doom, version 8.2 (released: May 25, 2025)</h4>
             <ul>
                 <li><img src="../img/icon_win64.png" width="16" height="16">&nbsp;&nbsp;<a href="https://github.com/JNechaevsky/international-doom/releases/download/8.2/inter-doom-8.2-win64.zip">Windows (64-bit)</a></li>
@@ -67,63 +92,74 @@
                 <li><img src="../img/icon_win32.png" width="16" height="16">&nbsp;&nbsp;<a href="https://github.com/JNechaevsky/international-doom/releases/download/8.2/inter-hexen-8.2-win32.zip">Windows (32-bit)</a></li>
                 <li><img src="../img/icon_linux64.png" width="16" height="16">&nbsp;&nbsp;<a href="https://github.com/JNechaevsky/international-doom/releases/download/8.2/inter-hexen-8.2-linux.appimage">Linux AppImage (64-bit)</a></li>
             </ul>
-
             <p>
                 Source code is available on GitHub:
                 <a href="https://github.com/JNechaevsky/international-doom/">https://github.com/JNechaevsky/international-doom/</a>
             </p>
+            <p class="small-text">
+                Note for XP users: <a href="https://www.catalog.update.microsoft.com/Search.aspx?q=XP%20service%20pack%203">Service Pack 3</a>, 
+                <a href="https://download.visualstudio.microsoft.com/download/pr/566435ac-4e1c-434b-b93f-aecc71e8cffc/0D59EC7FDBF05DE813736BF875CEA5C894FFF4769F60E32E87BD48406BBF0A3A/VC_redist.x86.exe">Microsoft Visual C++ 2015–2019 Redistributable</a> 
+                (x86) and an SSE2-compatible CPU are required.  
+            </p>
         </section>
 
-        <!-- Major features -->
-        <section>
-            <h3 style="text-align:center">Major features</h3>
+        <!-- Features -->
+        <section id="features">
+            <h3 style="text-align:center">Features</h3>
+
             <ul>
-                <li>Optional True Color render.</li>
-                <li>Up to 6× (1200p) rendering resolutions.</li>
+                <li>Optional True Color rendering.</li>
+                <li>Rendering resolutions up to 6× (1200p).</li>
                 <li>Uncapped framerate.</li>
-                <li>Additional, darker gamma-correction levels.</li>
+                <li>Additional, darker gamma correction levels.</li>
                 <li>Post-processing effects.</li>
-                <li>Support for OPL2, OPL3, MIDI, Fluidsynth and GUS music playback.</li>
-                <li>In-game keyboard and mouse bindings.</li>
-                <li>Various visual, audible, physical and demo enhancements.</li>
+                <li>Support for OPL2, OPL3, MIDI, FluidSynth, and GUS music playback.</li>
+                <li>In-game keyboard and mouse rebinding.</li>
+                <li>Various visual, sound, physics, and demo-related improvements.</li>
                 <li>Compatibility with vanilla-engine demos.</li>
-                <li>Removed limitations of vanilla engine.</li>
-                <li>Support for nodes in extended format (ZDBSP and DeePBSP).</li>
-                <li>Support for BEX/DEHEXTRA DeHackEd extensions.</li>
+                <li>Removal of original vanilla engine limitations.</li>
+                <li>Support for extended node formats (ZDBSP, DeePBSP).</li>
+                <li>Support for BEX and DEHEXTRA DeHackEd extensions.</li>
             </ul>
         </section>
 
         <!-- Compatibility -->
-        <section>
+        <section id="compatibility">
             <h3 style="text-align:center">Compatibility</h3>
+
             <p>
-                Gameplay features from “Physical” and “Compatibility-breaking” sections change game mechanics,
-                making it no longer 100 % original. However, these features are optional and never active in multiplayer
-                or demo recording/playing to provide maximum compatibility and prevent desyncs.
+                The port follows a <strong>limit-removing</strong> standard. BOOM, MBF, MBF21, ID24 specifications are <strong>not supported</strong>.
             </p>
             <p>
-                BOOM / MBF / MBF21 / ID24 specifications are not supported.
+                The port maintains full compatibility with vanilla demo recording 
+                and playback, and supports network play with Chocolate Doom, Crispy Doom, and Woof.
+            </p>
+            <p>
+                A minimal set of <strong>Physical</strong> and <strong>Compatibility-breaking</strong> features is available. These may slightly alter gameplay behavior compared to the original. However, such features are <strong>automatically disabled</strong> during multiplayer sessions and while recording or playing back demos.
             </p>
         </section>
 
         <!-- Supported games -->
-        <section>
+        <section id="supported">
             <h3 style="text-align:center">Supported games</h3>
+            <p>
+                The following games are supported:
+            </p>
             <ul>
                 <li>Doom shareware, registered, The Ultimate Doom</li>
-                <li>Doom II</li>
-                <li>No Rest for the Living</li>
+                <li>Doom II, No Rest for the Living</li>
                 <li>Final Doom</li>
                 <li>SIGIL and SIGIL II</li>
                 <li>Freedoom (Phase 1 and 2, FreeDM)</li>
-                <li>Heretic</li>
-                <li>Hexen</li>
+                <li>Heretic, Heretic: Shadow of the Serpent Riders</li>
+                <li>Hexen, Hexen: Deathkings of the Dark Citadel</li>
             </ul>
         </section>
 
         <!-- License -->
-        <section>
+        <section id="license">
             <h3 style="text-align:center">License</h3>
+
             <p>
                 International Doom is <a href="https://opensource.org/osd">Open Source</a> and licensed under the
                 <a href="https://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License v2</a>.

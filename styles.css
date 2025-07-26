@@ -182,7 +182,12 @@ li {
 	margin-left:1.5rem;
 }
 
-/* ----------  Download lists  ---------- */
+/* ----------  [PN] Download lists  ---------- */
+
+ul ul {
+    margin-left: 1.5em; /* или 2em, если хочешь чуть сильнее */
+    list-style-type: circle; /* можешь также попробовать disc, square, dash и т.п. */
+}
 
 /* 
 <ul class="download-list">
