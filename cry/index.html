@@ -9,10 +9,14 @@
     <meta http-equiv="pragma" content="no-cache">
     <title>CRY</title>
 
+    <!-- SEO keywords and description -->
+    <meta name="description" content="CRY is a non-conservative recreation of Jaguar Doom for PC.">
+    <meta name="keywords" content="doom port, jaguar doom, atari jaguar, jaguar console, vanilla, open source, doom engine, retro gaming, classic fps">
+
     <!-- Modern, minimal CSS -->
     <link rel="stylesheet" href="../styles.css">
 
-    <link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="help" href="mailto:www-validator@w3.org">
     <link rel="start" href="./" title="CRY">
 </head>
@@ -30,24 +34,33 @@
         </nav>
 
         <!-- About -->
-        <section>
-            <h3 style="text-align:center">About</h3>
+        <section id="about">
+            <nav class="subnav">
+                <a href="#about">About</a>
+                <a href="#download">Download</a>
+                <a href="#features">Features</a>
+                <a href="#screenshots">Screenshots</a>
+                <a href="#license">License</a>
+            </nav>
+            
             <p>
-                CRY is a non-conservative recreation of Jaguar Doom for PC, created on the
-                <a href="../inter-doom/index.html">International Doom</a> engine. For the accuracy of emulation,
-                a lot of code was taken from Jaguar Doom source code, including: damage formulas, monster behavior,
-                Nightmare skill mode, sector and line specials.
+                <strong>CRY</strong> is a reimagining of <strong>Jaguar Doom</strong> for PC, 
+                built on top of the <a href="../inter-doom/index.html">International Doom</a> engine. 
+                To ensure high emulation accuracy, substantial parts of the original <strong>Jaguar Doom</strong> 
+                code were integrated — including damage formulas, monster behavior, Nightmare difficulty mechanics, 
+                and sector/line specials.
             </p>
             <p>
-                My mission was not to make a carbon copy of Jaguar Doom for modern PCs. Instead, I was seeking
-                a balance between emulation accuracy, good looks, and general enjoyment, as well as paying as much
-                attention to details as I could.
+                The goal was never to create a 1:1 port of Jaguar Doom for modern systems. Instead, I aimed to 
+                strike a balance between authenticity, visual polish, and overall enjoyment — while paying close 
+                attention to detail wherever possible.
             </p>
         </section>
 
         <!-- Download -->
-        <section>
+        <section id="download">
             <h3 style="text-align:center">Download</h3>
+
             <h4>CRY, version 2.2 (May 25, 2025)</h4>
             <ul class="download-list">
                 <li><img src="../img/icon_win64.png" width="16" height="16">&nbsp;&nbsp;<a href="https://github.com/JNechaevsky/CRY/releases/download/2.2/cry-2.2-win-64.zip">Windows (64-bit)</a></li>
@@ -61,8 +74,25 @@
             </p>
         </section>
 
+        <!-- Features -->
+        <section id="features">
+            <h3 style="text-align:center">Features</h3>
+
+            <ul class="download-list">
+                <li>True Color render.</li>
+                <li>Up to x6 (1200p) rendering resolutions.</li>
+                <li>Uncapped framerate.</li>
+                <li>Colored sector lighting.</li>
+                <li>Additional darker gamma-correction levels.</li>
+                <li>Post-processing effects.</li>
+                <li>In-game keyboard and mouse bindings.</li>
+                <li>Various optional visual and gameplay enhancements.</li>
+                <li>Preserved most original Jaguar Doom playstate quirks.</li>
+            </ul>
+        </section>
+
         <!-- Screenshots -->
-        <section>
+        <section id="screenshots">
             <h3 style="text-align:center">Screenshots</h3>
             <p>Click to enlarge:</p>
             <div class="screenshots">
@@ -71,6 +101,18 @@
                 <a href="scrn_3.png"><img src="scrn_3.png"></a>
                 <a href="scrn_4.png"><img src="scrn_4.png"></a>
             </div>
+        </section>
+
+        <!-- License -->
+        <section id="license">
+            <h3 style="text-align:center">License</h3>
+            <p>
+                CRY is <a href="https://opensource.org/osd">Open Source</a> software, licensed under the
+                <a href="https://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License v2</a> and 
+                <a href="https://github.com/JNechaevsky/CRY/blob/main/COPYING-JAG.txt">Jaguar Doom Source 
+                Code license</a>. Information about the game's assets is provided in the 
+                <a href="https://github.com/JNechaevsky/CRY/blob/main/COPYING-RES.txt">COPYING-RES.txt</a> file.
+            </p>
         </section>
     </div>
 </body>
