@@ -19,6 +19,55 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="help" href="mailto:www-validator@w3.org">
     <link rel="start" href="./" title="International Doom">
+
+    <!-- Tiny helper for sliders (can stay inline) -->
+    <style>
+        /* Slider overrides to fit dark theme */
+        .slider-container {
+            position:relative;
+            width:100%;
+            max-width:640px;
+            margin:0 auto 2.5rem;
+            border-radius:var(--radius);
+            overflow:hidden;
+            box-shadow:var(--shadow);
+            aspect-ratio:16/9;
+            background:var(--bg-card);
+        }
+        .slider-img {
+            width:100%; height:100%;
+            object-fit:cover;
+            display:block;
+        }
+        .slider-img-clip {
+            position:absolute;
+            top:0; left:0;
+            width:50%; height:100%;
+            overflow:hidden;
+            border-right:4px solid #ffffff00;
+            transition:none;
+        }
+        .slider-handle {
+            position:absolute;
+            top:0; left:50%;
+            width:4px; height:100%;
+            background: rgba(255,255,255,0.25);
+            cursor:ew-resize;
+            transform:translateX(-50%);
+            z-index:3;
+        }
+        @media(max-width:700px){
+            .slider-container { aspect-ratio:16/9; }
+        }
+        .slider-img-clip img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: left top;   /* та же точка, что и у bottom-слоя */
+          display: block;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -41,6 +90,7 @@
                 <a href="#features">Features</a>
                 <a href="#compatibility">Compatibility</a>
                 <a href="#supported">Supported games</a>
+                <a href="#screenshots">Screenshots</a>
                 <a href="#license">License</a>
             </nav>
             
@@ -156,6 +206,95 @@
             </ul>
         </section>
 
+        <!-- Screenshots -->
+        <section id="screenshots">
+            <h3 style="text-align:center">Screenshots</h3>
+
+            <!-- Common screenshots -->
+            <div class="screenshots">
+                <a href="screenshots/scrn_1.png"><img src="screenshots/scrn_1.png"></a>
+                <a href="screenshots/scrn_2.png"><img src="screenshots/scrn_2.png"></a>
+                <a href="screenshots/scrn_3.png"><img src="screenshots/scrn_3.png"></a>
+                <a href="screenshots/scrn_4.png"><img src="screenshots/scrn_4.png"></a>
+            </div>
+
+            <div class="screenshots">
+                <a href="screenshots/scrn_5_full.png"><img src="screenshots/scrn_5.png"></a>
+                <a href="screenshots/scrn_6_full.png"><img src="screenshots/scrn_6.png"></a>
+                <a href="screenshots/scrn_7_full.png"><img src="screenshots/scrn_7.png"></a>
+                <a href="screenshots/scrn_8_full.png"><img src="screenshots/scrn_8.png"></a>
+                
+            </div>
+
+            <br>
+
+            <h3 style="text-align:center">Post-processing effects</h3>
+
+            <!--
+            <p style="text-align:center; color:var(--muted);">Slide the handle left or right to compare before / after.</p>
+            -->
+
+            <!-- Supersampled Smoothing -->
+            <h4 style="text-align:center">Supersampled Smoothing</h4>
+            <div class="slider-container">
+                <img src="screenshots/postproc/smooth_on.png" class="slider-img" alt="Smooth ON">
+                <div class="slider-img-clip"><img src="screenshots/postproc/smooth_off.png" alt="Smooth OFF"></div>
+                <div class="slider-handle"></div>
+            </div>
+
+            <!-- Overbright Glow -->
+            <h4 style="text-align:center">Overbright Glow</h4>
+            <div class="slider-container">
+                <img src="screenshots/postproc/ob_1_on.png" class="slider-img" alt="Overbright ON">
+                <div class="slider-img-clip"><img src="screenshots/postproc/ob_1_off.png" alt="Overbright OFF"></div>
+                <div class="slider-handle"></div>
+            </div>
+
+            <div class="slider-container">
+                <img src="screenshots/postproc/ob_2_on.png" class="slider-img" alt="Overbright ON 2">
+                <div class="slider-img-clip"><img src="screenshots/postproc/ob_2_off.png" alt="Overbright OFF 2"></div>
+                <div class="slider-handle"></div>
+            </div>
+
+            <!-- Soft Bloom -->
+            <h4 style="text-align:center">Soft Bloom</h4>
+            <div class="slider-container">
+                <img src="screenshots/postproc/bloom_1_on.png" class="slider-img" alt="Bloom ON">
+                <div class="slider-img-clip"><img src="screenshots/postproc/bloom_1_off.png" alt="Bloom OFF"></div>
+                <div class="slider-handle"></div>
+            </div>
+
+            <div class="slider-container">
+                <img src="screenshots/postproc/bloom_2_on.png" class="slider-img" alt="Bloom ON 2">
+                <div class="slider-img-clip"><img src="screenshots/postproc/bloom_2_off.png" alt="Bloom OFF 2"></div>
+                <div class="slider-handle"></div>
+            </div>
+
+            <!-- Analog RGB Drift -->
+            <h4 style="text-align:center">Analog RGB Drift</h4>
+            <div class="slider-container">
+                <img src="screenshots/postproc/an_drift_on.png" class="slider-img" alt="Analog ON">
+                <div class="slider-img-clip"><img src="screenshots/postproc/an_drift_off.png" alt="Analog OFF"></div>
+                <div class="slider-handle"></div>
+            </div>
+
+            <!-- Depth of Field Blur -->
+            <h4 style="text-align:center">Depth of Field Blur</h4>
+            <div class="slider-container">
+                <img src="screenshots/postproc/dofb_on.png" class="slider-img" alt="DOF ON">
+                <div class="slider-img-clip"><img src="screenshots/postproc/dofb_off.png" alt="DOF OFF"></div>
+                <div class="slider-handle"></div>
+            </div>
+
+            <!-- Screen Vignette -->
+            <h4 style="text-align:center">Screen Vignette</h4>
+            <div class="slider-container">
+                <img src="screenshots/postproc/vignette_on.png" class="slider-img" alt="Vignette ON">
+                <div class="slider-img-clip"><img src="screenshots/postproc/vignette_off.png" alt="Vignette OFF"></div>
+                <div class="slider-handle"></div>
+            </div>
+        </section>
+
         <!-- License -->
         <section id="license">
             <h3 style="text-align:center">License</h3>
@@ -166,5 +305,33 @@
             </p>
         </section>
     </div>
+
+    <!-- Slider script -->
+    <script>
+        document.querySelectorAll('.slider-container').forEach(container => {
+            const clip = container.querySelector('.slider-img-clip');
+            const handle = container.querySelector('.slider-handle');
+            let dragging = false;
+
+            handle.addEventListener('mousedown', () => {
+                dragging = true;
+                document.body.style.userSelect = 'none';
+            });
+            document.addEventListener('mouseup', () => {
+                dragging = false;
+                document.body.style.userSelect = '';
+            });
+            document.addEventListener('mousemove', e => {
+                if (!dragging) return;
+                const rect = container.getBoundingClientRect();
+                let x = e.clientX - rect.left;
+                x = Math.max(0, Math.min(x, rect.width));
+                const pct = (x / rect.width) * 100;
+                clip.style.width = pct + '%';
+                handle.style.left = pct + '%';
+            });
+        });
+    </script>
+
 </body>
 </html>

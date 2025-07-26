@@ -233,6 +233,7 @@ class="download-list">
     grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
     gap:.75rem;
     margin-top:.5rem;
+    box-shadow:var(--shadow);
 }
 
 .screenshots a {
