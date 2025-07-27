@@ -316,50 +316,17 @@
     </div>
 
     <!-- Slider script -->
-    <script>
-        document.querySelectorAll('.slider-container').forEach(container => {
-            const clip = container.querySelector('.slider-img-clip');
-            const handle = container.querySelector('.slider-handle');
-            let dragging = false;
+    <script src="../assets/js/slider.js"></script>
 
-            function setSliderPosition(clientX) {
-                const rect = container.getBoundingClientRect();
-                let x = clientX - rect.left;
-                x = Math.max(0, Math.min(x, rect.width));
-                const pct = (x / rect.width) * 100;
-                clip.style.width = pct + '%';
-                handle.style.left = pct + '%';
-            }
-
-            function startDrag(e) {
-                dragging = true;
-                document.body.style.userSelect = 'none';
-                if (e.type.startsWith('touch')) {
-                    setSliderPosition(e.touches[0].clientX);
-                }
-            }
-
-            function stopDrag() {
-                dragging = false;
-                document.body.style.userSelect = '';
-            }
-
-            function onDrag(e) {
-                if (!dragging) return;
-                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                setSliderPosition(clientX);
-            }
-
-            handle.addEventListener('mousedown', startDrag);
-            handle.addEventListener('touchstart', startDrag, { passive: true });
-
-            document.addEventListener('mouseup', stopDrag);
-            document.addEventListener('touchend', stopDrag);
-
-            document.addEventListener('mousemove', onDrag);
-            document.addEventListener('touchmove', onDrag, { passive: false });
-        });
-    </script>
+    <!-- [PN] Scroll-to-top Button -->
+    <button id="scrollTopBtn" aria-label="Scroll to top" style="--btn-size:48px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+        <!-- Круговая обводка    --> <circle r="45" cx="50" cy="50"/>
+        <!-- Стрелка: ножка      --> <line x1="50" y1="70" x2="50" y2="35" stroke="white" stroke-width="4" stroke-linecap="round"/>
+        <!-- Стрелка: наконечник --> <polyline points="35,50 50,35 65,50" stroke="white" stroke-width="4" stroke-linecap="round" fill="none"/>
+        </svg>
+    </button>
+    <script src="../assets/js/scroll-to-top.js"></script>
 
 </body>
 </html>
