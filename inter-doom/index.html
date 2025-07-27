@@ -47,14 +47,25 @@
             border-right:4px solid #ffffff00;
             transition:none;
         }
+        /* [PN] область захвата слайдера */
         .slider-handle {
-            position:absolute;
-            top:0; left:50%;
-            width:4px; height:100%;
-            background: rgba(255,255,255,0.25);
-            cursor:ew-resize;
-            transform:translateX(-50%);
-            z-index:3;
+            position: absolute;
+            top: 0; left: 50%;
+            width: 22px; height: 100%;
+            background: transparent; /* Прозрачный фон, чтобы не мешал */
+            cursor: ew-resize;
+            transform: translateX(-75%);
+            z-index: 3;
+        }
+        /* [PN] отображаемая полоска */
+        .slider-handle::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 50%;
+            width: 2px; height: 100%;
+            background: rgba(152, 201, 255, 0.35);
+            transform: translateX(-50%);
+            pointer-events: none; /* чтобы не мешал кликам */
         }
         @media(max-width:700px){
             .slider-container { aspect-ratio:16/9; }
@@ -230,9 +241,7 @@
 
             <h3 style="text-align:center">Post-processing effects</h3>
 
-            <!--
-            <p style="text-align:center; color:var(--muted);">Slide the handle left or right to compare before / after.</p>
-            -->
+            <p style="text-align:center; color:var(--muted);" >Slide the handle left or right to compare before / after.</p>
 
             <!-- Supersampled Smoothing -->
             <h4 style="text-align:center">Supersampled Smoothing</h4>
