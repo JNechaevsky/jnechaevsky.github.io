@@ -181,6 +181,16 @@ p {
 
 li {
 	margin-left:1.5rem;
+	color: var(--text);
+}
+
+li::marker {
+	color: var(--muted); /* ← цвет точки */
+}
+
+li.download {
+	margin-left:1.0rem;
+	list-style: none;
 }
 
 /* ----------  [PN] Download lists  ---------- */

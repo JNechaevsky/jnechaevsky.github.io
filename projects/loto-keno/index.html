@@ -30,8 +30,14 @@
         </nav>
 
         <!-- About -->
-        <section>
-            <h3 style="text-align:center">Loto Keno! What is this game, anyway?</h3>
+        <section id="about">
+            <nav class="subnav">
+                <a href="#about">About</a>
+                <a href="#controls">Controls</a>
+                <a href="#download">Download</a>
+                <a href="#screenshots">Screenshots</a>
+                <a href="#license">License</a>
+            </nav>
             <p>
 				Somewhere around 2005, the idea for a simple "even-or-odd" guessing game was born. It wasn't really a concept
 				or a design — more of an expressive outburst based on funny sounds like "bood-bood-bood!" and "aa-ooo-ooo!".
@@ -46,10 +52,12 @@
             </p>
             <p>
                 And so, the game emerged:
-                <li>Featuring ridiculous quotes.</li>
-                <li>Sporting hot-swappable multilingual support (EN/DE/RU).</li>
-                <li>Embracing authentic CGA low-res visuals.</li>
-                <li>Requiring zero skill, but offering maximum attitude.</li>
+                <ul>
+                    <li>Featuring ridiculous quotes.</li>
+                    <li>Sporting hot-swappable multilingual support (EN/DE/RU).</li>
+                    <li>Embracing authentic CGA low-res visuals.</li>
+                    <li>Requiring zero skill, but offering maximum attitude.</li>
+                </ul>
             </p>
             <p>
                 So, what's the goal of the game?
@@ -61,7 +69,7 @@
         </section>
 
         <!-- Controls -->
-        <section>
+        <section id="controls">
             <h3 style="text-align:center">Controls</h3>
             <ul>
                 <li><kbd>←</kbd> and <kbd>→</kbd> — switch between "Blub-blub-blub!" and "A-OOOO-OOO-Oo!"</li>
@@ -72,26 +80,22 @@
         </section>
 
         <!-- Download -->
-        <section>
+        <section id="download">
             <h3 style="text-align:center">Download</h3>
             <h4>Loto Keno, version 1.0 (April 6, 2025)</h4>
             <ul>
-                <li><a href="https://github.com/JNechaevsky/loto-keno/releases/download/1.0/loto-keno-1.0-win64.zip">Windows (64-bit)</a></li>
-                <li><a href="https://github.com/JNechaevsky/loto-keno/releases/download/1.0/loto-keno-1.0-win32.zip">Windows (32-bit)</a></li>
-                <li><a href="https://github.com/JNechaevsky/loto-keno/releases/download/1.0/loto-keno-1.0-linux64.AppImage">Linux AppImage (64-bit)</a></li>
+                <li class="download"><a href="https://github.com/JNechaevsky/loto-keno/releases/download/1.0/loto-keno-1.0-win64.zip"><img src="../../img/icon_win64.png" width="16" height="16">&nbsp;&nbsp;Windows (64-bit)</a></li>
+                <li class="download"><a href="https://github.com/JNechaevsky/loto-keno/releases/download/1.0/loto-keno-1.0-win32.zip"><img src="../../img/icon_win32.png" width="16" height="16">&nbsp;&nbsp;Windows (32-bit)</a></li>
+                <li class="download"><a href="https://github.com/JNechaevsky/loto-keno/releases/download/1.0/loto-keno-1.0-linux64.AppImage"><img src="../../img/icon_linux64.png" width="16" height="16">&nbsp;&nbsp;Linux AppImage (64-bit)</a></li>
             </ul>
             <p>
-                Loto Keno is <a href="https://opensource.org/osd">Open Source</a> and licensed under the
-                <a href="https://opensource.org/license/mit">The MIT License</a>.<br>
-                Source code is available on GitHub project page: 
-                <a href="https://github.com/JNechaevsky/loto-keno">https://github.com/JNechaevsky/loto-keno</a><br>
+                Source code is available on <a href="https://github.com/JNechaevsky/loto-keno">GitHub</a>.
             </p>
         </section>
 
         <!-- Screenshots -->
-        <section>
+        <section id="screenshots">
             <h3 style="text-align:center">Screenshots</h3>
-            <p>Click to enlarge:</p>
             <div class="screenshots">
                 <a href="scrn_1.jpg"><img src="scrn_1.jpg" alt="Screenshot 1"></a>
                 <a href="scrn_2.jpg"><img src="scrn_2.jpg" alt="Screenshot 2"></a>
@@ -99,6 +103,15 @@
                 <a href="scrn_4.jpg"><img src="scrn_4.jpg" alt="Screenshot 4"></a>
             </div>
         </section>
+
+        <!-- License -->
+        <section id="license">
+            <h3 style="text-align:center">License</h3>
+            <p>
+                Loto Keno is <a href="https://opensource.org/osd">Open Source</a> and licensed under the <a href="https://opensource.org/license/mit">The MIT License</a>.
+            </p>
+        </section>
+
     </div>
 
     <!-- [PN] Scroll-to-top Button -->
