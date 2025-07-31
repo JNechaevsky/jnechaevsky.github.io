@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Julia Nechaevskaya">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>Julia Nechaevskaya – Projects</title>
+
+    <!-- Modern, minimal CSS -->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+
+    <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
+    <link rel="help" href="mailto:www-validator@w3.org">
+    <link rel="start" href="./" title="Projects">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <nav>
+            <a href="index.html" class="active">Projects</a>
+            <a href="inter-doom/index.html">International Doom</a>
+            <a href="crl/index.html">CRL</a>
+            <a href="cry/index.html">CRY</a>
+            <a href="music.html">Music</a>
+            <a href="author.html">Author</a>
+        </nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Countdown Timer (v2 layout) -->
+<style>
+  .preset-options label {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    color: var(--muted);
+    border: 1px solid transparent;
+    transition: 0.2s;
+    user-select: none;
+  }
+
+  .preset-options label:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .preset-options input[type="radio"] {
+    display: none;
+  }
+
+  .preset-options input[type="radio"]:checked + span {
+    color: var(--text);
+    background: rgba(78, 161, 255, 0.15);
+    border-color: var(--accent);
+  }
+
+  .time-inputs input[type="number"] {
+    background-color: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 6px;
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .time-inputs label {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  #startBtn,
+  #resetBtn {
+    min-width: 7rem;
+    background: var(--accent);
+    border: none;
+    border-radius: var(--radius);
+    padding: 0.6rem 1.2rem;
+    font-weight: bold;
+    color: var(--bg);
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  #startBtn:hover,
+  #resetBtn:hover {
+    background: var(--accent-hover);
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const presetRadios = document.querySelectorAll('input[name="preset"]');
+    const hoursInput = document.getElementById('hours');
+    const minutesInput = document.getElementById('minutes');
+    const secondsInput = document.getElementById('seconds');
+    const countdownDisplay = document.getElementById('countdown');
+    const startBtn = document.getElementById('startBtn');
+    let countdownInterval;
+    let totalSeconds = 0;
+    let paused = false;
+
+    presetRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        const val = radio.value;
+        if (val === '3') {
+          hoursInput.value = 0;
+          minutesInput.value = 3;
+          secondsInput.value = 0;
+        } else if (val === '5') {
+          hoursInput.value = 0;
+          minutesInput.value = 5;
+          secondsInput.value = 0;
+        } else if (val === '10') {
+          hoursInput.value = 0;
+          minutesInput.value = 10;
+          secondsInput.value = 0;
+        } else if (val === '15') {
+          hoursInput.value = 0;
+          minutesInput.value = 15;
+          secondsInput.value = 0;
+        }
+      });
+    });
+
+    function formatTime(val) {
+      return val.toString().padStart(2, '0');
+    }
+
+    function getFormattedTime(secs) {
+      const hrs = Math.floor(secs / 3600);
+      const mins = Math.floor((secs % 3600) / 60);
+      const seconds = secs % 60;
+      return `${formatTime(hrs)}:${formatTime(mins)}:${formatTime(seconds)}`;
+    }
+
+    function updateDisplay() {
+      countdownDisplay.textContent = getFormattedTime(totalSeconds);
+    }
+
+    function tick() {
+      if (totalSeconds <= 0) {
+        clearInterval(countdownInterval);
+        countdownDisplay.style.color = '#ff5a5a';
+        startBtn.textContent = 'Start';
+        paused = false;
+        return;
+      }
+      totalSeconds--;
+      updateDisplay();
+    }
+
+    startBtn.addEventListener('click', () => {
+      countdownDisplay.style.color = '';
+
+      if (startBtn.textContent === 'Start' || startBtn.textContent === 'Resume') {
+        if (!paused) {
+          totalSeconds =
+            parseInt(hoursInput.value) * 3600 +
+            parseInt(minutesInput.value) * 60 +
+            parseInt(secondsInput.value);
+        }
+        updateDisplay();
+        countdownInterval = setInterval(tick, 1000);
+        startBtn.textContent = 'Pause';
+        paused = false;
+      } else if (startBtn.textContent === 'Pause') {
+        clearInterval(countdownInterval);
+        startBtn.textContent = 'Resume';
+        paused = true;
+      }
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      clearInterval(countdownInterval);
+      countdownDisplay.style.color = '';
+      const hrs = parseInt(hoursInput.value);
+      const mins = parseInt(minutesInput.value);
+      const secs = parseInt(secondsInput.value);
+      totalSeconds = hrs * 3600 + mins * 60 + secs;
+      updateDisplay();
+      startBtn.textContent = 'Start';
+      paused = false;
+    });
+  });
+</script>
+
+<section>
+  <h3 style="text-align:center">Countdown Timer</h3>
+
+  <div class="card" style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-start; justify-content: space-between;">
+
+    <!-- Left: Settings -->
+    <div style="flex: 1 1 60%; min-width: 280px;">
+
+      <!-- Presets -->
+      <div class="preset-options" style="margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: 1rem;">
+        <label><input type="radio" name="preset" value="3"><span>3 min</span></label>
+        <label><input type="radio" name="preset" value="5" checked><span>5 min</span></label>
+        <label><input type="radio" name="preset" value="10"><span>10 min</span></label>
+        <label><input type="radio" name="preset" value="15"><span>15 min</span></label>
+      </div>
+
+      <!-- Input fields -->
+      <div class="time-inputs" style="display: flex; gap: 1rem; align-items: center;">
+        <div>
+          <label for="hours">Hours</label><br>
+          <input type="number" id="hours" min="0" value="0" style="width: 4rem;">
+        </div>
+        <div>
+          <label for="minutes">Minutes</label><br>
+          <input type="number" id="minutes" min="0" max="59" value="5" style="width: 4rem;">
+        </div>
+        <div>
+          <label for="seconds">Seconds</label><br>
+          <input type="number" id="seconds" min="0" max="59" value="0" style="width: 4rem;">
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right: Controls -->
+    <div style="flex: 0 1 auto; display: flex; flex-direction: column; gap: 1rem;">
+      <button id="startBtn">Start</button>
+      <button id="resetBtn">Reset</button>
+    </div>
+  </div>
+
+  <!-- Timer Output -->
+  <p style="font-size: 2rem; text-align: center; margin-top: 2rem;">
+    <span id="countdown">00:05:00</span>
+  </p>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- [PN] Scroll-to-top Button -->
+    <button id="scrollTopBtn" aria-label="↑" style="--btn-size:48px;">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <!-- Круговая обводка    --> <g transform="rotate(-90 50 50)"><circle r="45" cx="50" cy="50"/></g>
+        <!-- Стрелка: ножка      --> <line x1="50" y1="70" x2="50" y2="35" stroke="white" stroke-width="4" stroke-linecap="round"/>
+        <!-- Стрелка: наконечник --> <polyline points="35,50 50,35 65,50" stroke="white" stroke-width="4" stroke-linecap="round" fill="none"/>
+        </svg>
+    </button>
+    <script src="assets/js/scroll-to-top.js"></script>
+
+</body>
+</html>
