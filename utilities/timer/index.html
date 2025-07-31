@@ -31,30 +31,30 @@
     }
 
         .preset-options label {
-        background: rgba(255, 255, 255, 0.05);
+        background-color: #124c80;
         padding: 0.4rem 0.8rem;
         border-radius: var(--radius);
         cursor: pointer;
-        color: var(--muted);
+        color: #fff;
         border: 1px solid transparent;
         transition: 0.2s;
         user-select: none;
+        font-weight: bold;
     }
 
     .preset-options label:hover {
-        background: rgba(255, 255, 255, 0.08);
-        color: var(--accent);
-        border-color: var(--accent);
+        background-color: #4ea1ff;
+        color: #fff;
+        transition: background-color 0.2s ease, color 0.2s ease;
     }
 
     .preset-options input[type="radio"] {
         display: none;
     }
 
-    .preset-options input[type="radio"]:checked + span {
-        color: var(--text);
-        background: rgba(78, 161, 255, 0.15);
-        border-color: var(--accent);
+    .preset-options label:has(input[type="radio"]:checked) {
+        background-color: #3f81cc;
+        color: white;
     }
 
     .time-inputs input[type="number"] {
@@ -83,11 +83,14 @@
         color: var(--bg);
         cursor: pointer;
         transition: 0.2s;
+        font-size: 16px;
+        
     }
 
     #startBtn:hover,
     #resetBtn:hover {
         background: var(--accent-hover);
+        font-size: 16px;
     }
     </style>
 
@@ -147,6 +150,7 @@
                         minutesInput.value = 0;
                         secondsInput.value = 0;
                     }
+                    resetTimer();
                 });
             });
 
@@ -189,6 +193,31 @@
                 }
             }
 
+            function resetTimer()
+            {
+                clearInterval(countdownInterval);
+                countdownDisplay.style.color = '';
+
+                const hrs = parseInt(hoursInput.value);
+                const mins = parseInt(minutesInput.value);
+                const secs = parseInt(secondsInput.value);
+                totalSeconds = hrs * 3600 + mins * 60 + secs;
+                totalSecondsStart = totalSeconds;
+
+                updateDisplay();
+
+                const progressBar = document.getElementById('progressBar');
+                if (progressBar && totalSecondsStart > 0)
+                {
+                    const scale = totalSeconds / totalSecondsStart;
+                    progressBar.style.transform = `scaleX(${scale})`;
+                    progressBar.style.backgroundColor = 'var(--accent)';
+                }
+
+                startBtn.textContent = 'Start';
+                paused = false;
+            }
+
             startBtn.addEventListener('click', () =>
             {
                 countdownDisplay.style.color = '';
@@ -226,28 +255,7 @@
                 }
             });
 
-            document.getElementById('resetBtn').addEventListener('click', () =>
-            {
-                clearInterval(countdownInterval);
-                countdownDisplay.style.color = '';
-                const hrs = parseInt(hoursInput.value);
-                const mins = parseInt(minutesInput.value);
-                const secs = parseInt(secondsInput.value);
-                totalSeconds = hrs * 3600 + mins * 60 + secs;
-                totalSecondsStart = totalSeconds;
-                updateDisplay();
-
-                const progressBar = document.getElementById('progressBar');
-                if (progressBar && totalSecondsStart > 0)
-                {
-                    const scale = totalSeconds / totalSecondsStart;
-                    progressBar.style.transform = `scaleX(${scale})`;
-                    progressBar.style.backgroundColor = 'var(--accent)';
-                }
-
-                startBtn.textContent = 'Start';
-                paused = false;
-            });
+            document.getElementById('resetBtn').addEventListener('click', resetTimer);
         });
 </script>
 
@@ -263,7 +271,7 @@
                         <label><input name="preset" type="radio" value="10"/><span>10 min</span></label>
                         <label><input name="preset" type="radio" value="15"/><span>15 min</span></label>
                         <label><input name="preset" type="radio" value="30"/><span>30 min</span></label>
-                        <label><input name="preset" type="radio" value="60"/><span>60 min</span></label>
+                        <label><input name="preset" type="radio" value="60"/><span>1 hour</span></label>
                     </div>
                     <!-- Input fields -->
                     <div class="time-inputs" style="display: flex; gap: 1rem; align-items: center;">
