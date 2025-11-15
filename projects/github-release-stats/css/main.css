@@ -1,0 +1,223 @@
+html * {
+    font-family: 'Roboto', sans-serif;
+}
+
+a, a:hover {
+    color: #569cd6; /* [PN] Link color */
+}
+
+code {
+    font-family: 'Roboto Mono', monospace;
+    background-color: #2d2d2d; /* [PN] Default code block background */
+    color: #9cdcfe; /* [PN] Default code block text color */
+    white-space: nowrap;
+}
+
+body {
+    background-color: #1e1e1e; /* [PN] Dark theme background */
+    color: #d4d4d4; /* [PN] Light text for better contrast */
+    margin-bottom: 40px; /* [PN] Prevent text wrapping in code blocks */
+}
+
+.form-group {
+    width: 100%;
+}
+
+#username, #repository, #get-stats-button {
+    margin-top: 10px;
+    width: 100%;
+    background-color: #2d2d2d; /* [PN] Input fields background */
+    border: 1px solid #3c3c3c; /* [PN] Input fields border */
+    color: #d4d4d4; /* [PN] Input fields text color */
+}
+
+#stats-result {
+    margin-top: 50px;
+}
+
+.alert.output {
+    font-size: 18px;
+    text-align: center;
+}
+
+.total-downloads {
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.total-downloads h1 {
+    display: inline;
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.release {
+    background-color: #2d2d2d;
+    border: solid 1px #3c3c3c;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.release h3 .glyphicon {
+    cursor: default;
+    color: #569cd6;
+}
+
+.release h3 .badge {
+    cursor: default;
+    background-color: #569cd6;
+    color: #fff;
+}
+
+.release-hr {
+    border-top-color: #3c3c3c;
+}
+
+.latest-release {
+    background-color: rgba(20, 104, 192, 0.2);
+    border-color: rgba(86, 156, 214, 0.4);
+}
+
+/* [PN] Special background for <code> inside latest-release */
+.latest-release code {
+    background-color: rgba(20, 104, 192, 0.2); /* [PN] Highlighted blue background for code */
+    color: #d4d4d4; /* [PN] Light text for better readability */
+    border: 1px solid rgba(20, 104, 192, 0.4); /* [PN] Subtle border for emphasis */
+    padding: 2px 4px; /* [PN] Spacing inside code blocks */
+    border-radius: 3px; /* [PN] Rounded corners for a softer look */
+}
+
+.latest-release h3, .latest-release h3 .glyphicon, .latest-release h3 a {
+    color: rgba(86, 156, 214, 1);
+}
+
+.latest-release h3 .badge {
+    background-color: rgba(86, 156, 214, 1);
+}
+
+.latest-release .release-hr {
+    border-color: rgba(86, 156, 214, 0.4);
+}
+
+.pre-release {
+    background-color: rgba(128, 98, 56, 0.2);
+    border-color: rgba(128, 98, 56, 0.4);
+}
+
+.pre-release h3, .pre-release h3 .glyphicon, .pre-release h3 a {
+    color: rgba(240, 173, 78, 1);
+}
+
+.pre-release h3 .badge {
+    background-color: rgba(240, 173, 78, 1);
+}
+
+.pre-release .release-hr {
+    border-color: rgba(240, 173, 78, 0.4);
+}
+
+#loader-gif {
+    position: absolute;
+    bottom: 15%;
+    left: 47%;
+}
+
+#description {
+    text-align: center;
+}
+
+#title {
+    display: none;
+    margin: 20px 0 10px 0;
+    text-align: center;
+}
+
+#title > h1 {
+    display: inline;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+#title > span {
+    font-size: 24px;
+}
+
+#footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    background-color: #2d2d2d;
+    padding: 10px;
+    text-align: center;
+    border-top: 1px solid #3c3c3c;
+}
+
+#pagination {
+    display: flex;
+    justify-content: center;
+}
+
+#per-page {
+    padding: 5px;
+    display: flex;
+    align-items: center;
+}
+
+#per-page > * {
+    display: flex;
+}
+
+#per-page select {
+    width: 60px;
+    margin-left: 5px;
+    background-color: #2d2d2d;
+    border: 1px solid #3c3c3c;
+    color: #d4d4d4;
+}
+
+/* [PN] Styles for the 'Get the latest release stats!' button */
+#get-stats-button {
+    color: #d4d4d4; /* [PN] Button text color */
+    background-color: #2d2d2d; /* [PN] Button background */
+    border: 1px solid #3c3c3c; /* [PN] Button border */
+    padding: 8px 16px; /* [PN] Padding for spacing */
+    text-align: center; /* [PN] Center text inside the button */
+    border-radius: 4px; /* [PN] Rounded corners for the button */
+    transition: background-color 0.3s, color 0.3s; /* [PN] Smooth hover effect */
+}
+
+#get-stats-button:hover {
+    background-color: #569cd6; /* [PN] Hover background for the button */
+    color: #fff; /* [PN] Hover text color */
+    border-color: #569cd6; /* [PN] Hover border color */
+}
+
+#get-stats-button:active {
+    background-color: #4179a3; /* [PN] Active background for the button */
+    border-color: #4179a3; /* [PN] Active border color */
+}
+
+
+/* [PN] Styles for Newer and Older buttons */
+#pagination a {
+    color: #d4d4d4; /* [PN] Button text color */
+    background-color: #2d2d2d; /* [PN] Button background */
+    border: 1px solid #3c3c3c; /* [PN] Button border */
+    padding: 8px 16px; /* [PN] Padding for consistent spacing */
+    text-decoration: none; /* [PN] Remove underline from links */
+    border-radius: 4px; /* [PN] Rounded corners for buttons */
+    transition: background-color 0.3s, color 0.3s; /* [PN] Smooth hover effect */
+}
+
+#pagination a:hover {
+    background-color: #569cd6; /* [PN] Hover background for buttons */
+    color: #fff; /* [PN] Hover text color for buttons */
+    border-color: #569cd6; /* [PN] Hover border color */
+}
+
+#pagination a:active {
+    background-color: #4179a3; /* [PN] Active background for buttons */
+    border-color: #4179a3; /* [PN] Active border color */
+}

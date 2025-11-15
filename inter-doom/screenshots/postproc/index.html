@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Julia Nechaevskaya">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>Projects – Post-processing effects • International Doom</title>
+
+    <!-- Modern, minimal CSS -->
+    <link rel="stylesheet" href="../../../styles.css">
+
+    <link rel="shortcut icon" href="../../../img/favicon.ico">
+
+    <!-- Tiny helper for sliders (can stay inline) -->
+    <style>
+        /* Slider overrides to fit dark theme */
+        .slider-container {
+            position:relative;
+            width:100%;
+            max-width:640px;
+            margin:0 auto 2.5rem;
+            border-radius:var(--radius);
+            overflow:hidden;
+            box-shadow:var(--shadow);
+            aspect-ratio:16/9;
+            background:var(--bg-card);
+        }
+        .slider-img {
+            width:100%; height:100%;
+            object-fit:cover;
+            display:block;
+        }
+        .slider-img-clip {
+            position:absolute;
+            top:0; left:0;
+            width:50%; height:100%;
+            overflow:hidden;
+            border-right:4px solid #ffffff00;
+            transition:none;
+        }
+        .slider-handle {
+            position:absolute;
+            top:0; left:50%;
+            width:4px; height:100%;
+            background: rgba(255,255,255,0.25);
+            cursor:ew-resize;
+            transform:translateX(-50%);
+            z-index:3;
+        }
+        @media(max-width:700px){
+            .slider-container { aspect-ratio:16/9; }
+        }
+        .slider-img-clip img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: left top;   /* та же точка, что и у bottom-слоя */
+          display: block;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <nav>
+            <a href="../../../index.html">Projects</a>
+            <a href="../../index.html" class="active">International Doom</a>
+            <a href="../../../crl/index.html">CRL</a>
+            <a href="../../../cry/index.html">CRY</a>
+            <a href="../../../music.html">Music</a>
+            <a href="../../../author.html">Author</a>
+        </nav>
+
+        <!-- Comparison cards -->
+        <section>
+            <h3 style="text-align:center">Post-processing effects</h3>
+            <p style="text-align:center; color:var(--muted);">Slide the handle left or right to compare before / after.</p>
+
+            <!-- Supersampled Smoothing -->
+            <h4 style="text-align:center">Supersampled Smoothing</h4>
+            <div class="slider-container">
+                <img src="smooth_on.png" class="slider-img" alt="Smooth ON">
+                <div class="slider-img-clip"><img src="smooth_off.png" alt="Smooth OFF"></div>
+                <div class="slider-handle"></div>
+            </div>
+
+            <!-- Overbright Glow -->
+            <h4 style="text-align:center">Overbright Glow</h4>
+            <div class="slider-container">
+                <img src="ob_1_on.png" class="slider-img" alt="Overbright ON">
+                <div class="slider-img-clip"><img src="ob_1_off.png" alt="Overbright OFF"></div>
+                <div class="slider-handle"></div>
+            </div>
+
+            <div class="slider-container">
+                <img src="ob_2_on.png" class="slider-img" alt="Overbright ON 2">
+                <div class="slider-img-clip"><img src="ob_2_off.png" alt="Overbright OFF 2"></div>
+                <div class="slider-handle"></div>
+            </div>
+
+            <!-- Soft Bloom -->
+            <h4 style="text-align:center">Soft Bloom</h4>
+            <div class="slider-container">
+                <img src="bloom_1_on.png" class="slider-img" alt="Bloom ON">
+                <div class="slider-img-clip"><img src="bloom_1_off.png" alt="Bloom OFF"></div>
+                <div class="slider-handle"></div>
+            </div>
+
+            <div class="slider-container">
+                <img src="bloom_2_on.png" class="slider-img" alt="Bloom ON 2">
+                <div class="slider-img-clip"><img src="bloom_2_off.png" alt="Bloom OFF 2"></div>
+                <div class="slider-handle"></div>
+            </div>
+
+            <!-- Analog RGB Drift -->
+            <h4 style="text-align:center">Analog RGB Drift</h4>
+            <div class="slider-container">
+                <img src="an_drift_on.png" class="slider-img" alt="Analog ON">
+                <div class="slider-img-clip"><img src="an_drift_off.png" alt="Analog OFF"></div>
+                <div class="slider-handle"></div>
+            </div>
+
+            <!-- Depth of Field Blur -->
+            <h4 style="text-align:center">Depth of Field Blur</h4>
+            <div class="slider-container">
+                <img src="dofb_on.png" class="slider-img" alt="DOF ON">
+                <div class="slider-img-clip"><img src="dofb_off.png" alt="DOF OFF"></div>
+                <div class="slider-handle"></div>
+            </div>
+
+            <!-- Screen Vignette -->
+            <h4 style="text-align:center">Screen Vignette</h4>
+            <div class="slider-container">
+                <img src="vignette_on.png" class="slider-img" alt="Vignette ON">
+                <div class="slider-img-clip"><img src="vignette_off.png" alt="Vignette OFF"></div>
+                <div class="slider-handle"></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Slider script (unchanged) -->
+    <script>
+        document.querySelectorAll('.slider-container').forEach(container => {
+            const clip = container.querySelector('.slider-img-clip');
+            const handle = container.querySelector('.slider-handle');
+            let dragging = false;
+
+            handle.addEventListener('mousedown', () => {
+                dragging = true;
+                document.body.style.userSelect = 'none';
+            });
+            document.addEventListener('mouseup', () => {
+                dragging = false;
+                document.body.style.userSelect = '';
+            });
+            document.addEventListener('mousemove', e => {
+                if (!dragging) return;
+                const rect = container.getBoundingClientRect();
+                let x = e.clientX - rect.left;
+                x = Math.max(0, Math.min(x, rect.width));
+                const pct = (x / rect.width) * 100;
+                clip.style.width = pct + '%';
+                handle.style.left = pct + '%';
+            });
+        });
+    </script>
+</body>
+</html>

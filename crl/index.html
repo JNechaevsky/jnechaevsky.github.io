@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Julia Nechaevskaya">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>CRL</title>
+
+    <!-- SEO keywords and description -->
+    <meta name="description" content="CRL is a continuation of the Chocorenderlimits source port originally developed by RestlessRodent.">
+    <meta name="keywords" content="doom port, chocorenderlimits, chocolate doom, vanilla, open source, doom engine, retro gaming, classic fps, doom, sigil, freedoom, chex quest, heretic">
+
+    <!-- Modern, minimal CSS -->
+    <link rel="stylesheet" href="../assets/css/styles.css">
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="help" href="mailto:www-validator@w3.org">
+    <link rel="start" href="./" title="CRL">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <nav>
+            <a href="../index.html">Projects</a>
+            <a href="../inter-doom/index.html">International Doom</a>
+            <a href="index.html" class="active">CRL</a>
+            <a href="../cry/index.html">CRY</a>
+            <a href="../music.html">Music</a>
+            <a href="../author.html">Author</a>
+        </nav>
+
+        <!-- CRL submenu -->
+        <section id="about">
+            <nav class="subnav">
+                <a href="#about">About</a>
+                <a href="#download">Download</a>
+                <a href="#features">Features</a>
+                <a href="#screenshots">Screenshots</a>
+                <a href="#license">License</a>
+            </nav>
+
+            <p>
+                <strong>CRL</strong> is a continuation of the <a href="https://doomwiki.org/wiki/Chocorenderlimits">Chocorenderlimits</a> source port originally developed by <a href="https://doomwiki.org/wiki/RestlessRodent">RestlessRodent</a>.
+            </p>
+            <p>
+                Building upon the original, CRL introduces a range of new features, quality-of-life improvements, and technical refinements aimed at assisting mappers in creating vanilla-compatible maps. It also includes additional in-game modes for testing specific scenarios. The in-game menu, accessible via the grave/tilde key <kbd>~</kbd>, allows quick access to various settings and features.
+            </p>
+            <p>
+                The core concept remains unchanged: CRL is a crash-prone source port that warns you instead of crashing. Rather than removing engine limits, it highlights them through visual and runtime cues to mimic real vanilla behavior as closely as possible. To preserve the original DOS executable’s behavior and look, no modifications have been made to the rendering code. Known bugs like Tutti-Frutti and Medusa are still present by design. However, Medusa is no longer critical and does not crash Windows-based executables.
+            </p>
+            <p>
+                CRL is not a limit-removing port, and therefore cannot load overly complex or oversized maps. It is intended strictly for vanilla-compatibility testing.
+            </p>
+            <p>
+                Several important code fragments were ported from  <a href="https://github.com/jnechaevsky/inter-doom">International Doom</a>,
+                <a href="http://github.com/fabiangreffrath/crispy-doom">Crispy Doom</a> and
+                <a href="https://github.com/bradharding/doomretro">DOOM Retro</a>.
+            </p>
+            <p>
+                You can follow the official development thread on the <a href="https://www.doomworld.com/forum/topic/134756-chocorenderlimitscrl-16-september-7-2023/">Doom World</a> forum.
+            </p>
+        </section>
+
+        <!-- Download -->
+        <section id="download">
+            <h3 style="text-align:center">Download</h3>
+
+            <h4>CRL Doom, version 1.9 (September 21, 2024)</h4>
+            <ul class="download-list">
+                <li class="download"><a href="https://github.com/JNechaevsky/CRL/releases/download/crl-1.9/crl-1.9-win64.zip"><img src="../assets/img/icon_win64.png" width="16" height="16">&nbsp;&nbsp;Windows (64-bit)</a></li>
+                <li class="download"><a href="https://github.com/JNechaevsky/CRL/releases/download/crl-1.9/crl-1.9-win32.zip"><img src="../assets/img/icon_win32.png" width="16" height="16">&nbsp;&nbsp;Windows (32-bit)</a></li>
+            </ul>
+
+            <h4>CRL Heretic, version 1.0 (June 12, 2023)</h4>
+            <ul class="download-list">
+                <li class="download"><a href="https://github.com/JNechaevsky/CRL/releases/download/crl-hr-1.0/crl-heretic-1.0-win32.zip"><img src="../assets/img/icon_win64.png" width="16" height="16">&nbsp;&nbsp;Windows (32-bit)</a></li>
+                <li class="download"><a href="https://github.com/JNechaevsky/CRL/releases/download/crl-hr-1.0/crl-heretic-1.0-win64.zip"><img src="../assets/img/icon_win32.png" width="16" height="16">&nbsp;&nbsp;Windows (64-bit)</a></li>
+            </ul>
+
+            <p>
+                <img src="../assets/img/icon_nightly.png" width="16" height="16">&nbsp;&nbsp;You can also download regular <a href="https://github.com/JNechaevsky/CRL/releases/tag/nightly">Nightly Builds</a>.
+                <br>
+                <img src="../assets/img/icon_wiki.png" width="16" height="16">&nbsp;&nbsp;Additional info available on the <a href="https://github.com/JNechaevsky/CRL/wiki">Project's Wiki</a>.
+                <br>
+                <img src="../assets/img/icon_github.png" width="16" height="16">&nbsp;&nbsp;Source code is available on <a href="https://github.com/JNechaevsky/CRL">GitHub</a>.
+            </p>
+            <p>
+                Old versions of original Chocorenderlimits can be found on the
+                <a href="https://github.com/JNechaevsky/CRL/releases/tag/Historical">Historical</a> page.
+            </p>
+        </section>
+
+        <!-- Features -->
+        <section id="features">
+            <h3 style="text-align:center">Features</h3>
+
+                <h3>Render Counters</h3>
+                <p>
+                    These counters track rendering elements relevant to vanilla engine limits:
+                </p>
+                <ul>
+                    <li><strong>SPR.</strong> Number of sprites processed by the renderer. Not all of them may be visible on screen, but they are still drawn internally. This limit is overflow-safe.</li>
+                    <li><strong>SSG.</strong> Number of solid segments rendered. Exceeding the vanilla limit of <strong>32</strong> may cause a crash.</li>
+                    <li><strong>SEG.</strong> Number of wall segments rendered. Exceeding the vanilla limit of <strong>256</strong> will result in the Hall of Mirrors (HoM) effect.</li>
+                    <li><strong>PLN.</strong> Number of floor and ceiling visplanes rendered. Exceeding the vanilla limit of <strong>128</strong> may cause both HoM artifacts and engine crashes.</li>
+                    <li><strong>OPN.</strong> Number of openings rendered during BSP traversal and rendering.</li>
+                </ul>
+                <br>
+
+                <h3>Playstate Counters</h3>
+                <p>
+                    These counters reflect gameplay-related elements that can lead to instability or crashes in the vanilla engine:
+                </p>
+                <ul>
+                    <li><strong>BRN.</strong> Number of <i>Icon of Sin</i> monster spawn targets. The vanilla limit is <strong>32</strong>. Exceeding it significantly increases the risk of a crash, especially when multiple spawners are used. This counter is shown only if at least one spawn target exists on the map.</li>
+                    <li><strong>ANI.</strong> Number of lines with scrolling animations (line special <strong>48</strong>). Vanilla crashes with the message <code>"Too many scrolling wall linedefs"</code> if the map contains <strong>65</strong> or more such lines.</li>
+                    <li><strong>BTN.</strong> Number of buttons pressed simultaneously. Exceeding the limit of <strong>16</strong> within a single second causes a crash with the message <code>"P_StartButton: no button slots left!"</code>.</li>
+                    <li><strong>PLT.</strong> Number of active or in-stasis platforms. If more than <strong>30</strong> platforms are active at once, vanilla crashes with <code>"P_AddActivePlat: no more plats!"</code>.</li>
+                </ul>
+                <br>
+
+                <h3>Game Modes</h3>
+                <p>
+                    These optional modes are designed to assist with map testing and debugging:
+                </p>
+                <ul>
+                    <li><strong>Spectator mode.</strong> Detaches the camera from the player, allowing free movement throughout the level. Use movement keys for horizontal navigation and the mouse wheel to move vertically.</li>
+                    <li><strong>Freeze mode.</strong> Halts all in-game activity. Monsters, projectiles, and environmental hazards are paused. The player cannot take any damage while this mode is active.</li>
+                    <li><strong>Buddha mode.</strong> The player's health will never drop below <strong>1</strong>, regardless of incoming damage.</li>
+                    <li><strong>No target mode.</strong> Monsters completely ignore the player — they will not react to sight or sound.</li>
+                    <li><strong>No momentum mode.</strong> Disables player momentum. As noted in the Doom source code: <i>"Not really a cheat, just a debug aid."</i></li>
+                </ul>
+                <br>
+
+                <h3>New Cheat Codes</h3>
+                <p>
+                    Typing any cheat code that begins with <kbd>ID</kbd> will momentarily freeze player movement. No movement input is registered during this brief pause — this applies both to standard Doom codes and custom ones listed below.
+                </p>
+                <ul>
+                    <li><kbd>IDKA</kbd> gives all keys only.</li>
+                    <li><kbd>KILLEM</kbd> Instantly kills all monsters in the level (sets their health to <strong>0</strong>).</li>
+                    <li><kbd>TNTEM</kbd> explodes all monsters on level (puts them in an <code>xdeath</code> state).</li>
+                    <li><kbd>FREEZE</kbd> freezes the entire game world.</li>
+                    <li><kbd>NOTARGET</kbd> monsters will not react to the player, even after seeing or hearing them.</li>
+                    <li><kbd>BUDDHA</kbd> the player's health will never drop below <strong>1</strong>, no matter the damage.</li>
+                    <li><kbd>MDK</kbd> instantly kills the monster currently in the player's line of sight.</li>
+                </ul>
+                <br>
+
+                <h3>Changes to Standard Doom Codes</h3>
+                <ul>
+                    <li><kbd>IDDQD</kbd> now also resurrects the player if dead.</li>
+                    <li><kbd>IDFA</kbd> and <kbd>IDKFA</kbd> now include the backpack, which is not granted by these codes in vanilla.</li>
+                </ul>
+                <br>
+
+
+                <h3>New Command-Line Parameters</h3>
+                <p>
+                    CRL supports all standard Chocolate Doom parameters. The following additional options may be useful:
+                </p>
+                    <ul>
+                        <li><code>-console</code> opens the console output window, which also displays game warnings.</li>
+                        <li><code>-coop_spawns</code> adds multiplayer monsters and pickups to single-player games.</li>
+                        <li><code>-shorttics</code> lowers turning resolution, emulating demo recording behavior.</li>
+                        <li><code>-complevel N</code> emulates a specific version of Doom. You can use either a number or a name:</li>
+                    </ul>
+                    <table class="compat-table">
+                        <thead>
+                            <tr>
+                                <th>Number</th>
+                                <th>Name</th>
+                                <th>Emulated engine</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>0</td>
+                                <td>1.2</td>
+                                <td>Doom v1.2</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>1.666</td>
+                                <td>Doom v1.666</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>1.9</td>
+                                <td>Doom v1.9</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>doom2</td>
+                                <td>Doom v1.9</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>ultimate</td>
+                                <td>Ultimate Doom</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>final</td>
+                                <td>Final Doom</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>plutonia</td>
+                                <td>Final Doom</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>tnt</td>
+                                <td>Final Doom</td>
+                            </tr>
+                        </tbody>
+                    </table>
+        </section>
+
+        <!-- Screenshots -->
+        <section id="screenshots">
+            <h3 style="text-align:center">Screenshots</h3>
+            <div class="screenshots">
+                <a href="scrn_1.png"><img src="scrn_1.png"></a>
+                <a href="scrn_2.png"><img src="scrn_2.png"></a>
+                <a href="scrn_3.png"><img src="scrn_3.png"></a>
+                <a href="scrn_4.png"><img src="scrn_4.png"></a>
+            </div>
+        </section>
+
+        <!-- License -->
+        <section id="license">
+            <h3 style="text-align:center">License</h3>
+            <p>
+                CRL is <a href="https://opensource.org/osd">Open Source</a> software, licensed under the
+                <a href="https://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License v2</a>.
+            </p>
+        </section>
+    </div>
+
+    <!-- [PN] Scroll-to-top Button -->
+    <button id="scrollTopBtn" aria-label="↑" style="--btn-size:48px;">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <!-- Круговая обводка    --> <g transform="rotate(-90 50 50)"><circle r="45" cx="50" cy="50"/></g>
+        <!-- Стрелка: ножка      --> <line x1="50" y1="70" x2="50" y2="35" stroke="white" stroke-width="4" stroke-linecap="round"/>
+        <!-- Стрелка: наконечник --> <polyline points="35,50 50,35 65,50" stroke="white" stroke-width="4" stroke-linecap="round" fill="none"/>
+        </svg>
+    </button>
+    <script src="../assets/js/scroll-to-top.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,481 @@
+/* ----------  CSS-variables  ---------- */
+
+:root {
+    --bg:#011726;
+    --bg-card:#0a1d2b;
+    --accent:#4ea1ff;
+    --accent-hover:#98c9ff;
+    --text:#d4eaff;
+    --muted:#9bbcd6;
+    --border:#165b99;
+    --radius:10px;
+    --shadow:0 8px 24px rgba(0,0,0,.35);
+    --font: "Segoe UI",sans-serif;
+}
+
+/* ----------  Global types  ---------- */
+
+* {
+	margin:0;
+	padding:0;
+	box-sizing:border-box;
+	/* [PN] Scroll bars */
+	scrollbar-width: auto;            /* auto | thin | none */
+	scrollbar-color: #4ea1ff #0a1d2b; /* ползунок / трек */
+}
+
+html {
+	scroll-behavior:smooth
+}
+
+body {
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font);
+    line-height:1.6;
+    padding:2rem 1rem;
+}
+
+a {
+	color:var(--accent);
+	text-decoration:none;
+	border-bottom: 2px solid transparent;
+	transition:.2s;
+}
+
+a:hover {
+	color:var(--accent-hover);
+	/*
+	border-bottom: 1px solid transparent;
+	border-bottom-color: var(--accent-hover);
+	*/
+}
+
+b,strong{color:var(--text)}
+
+hr {
+    border: none;
+    border-top: 1px solid #35628a; /* 165b99 */
+    margin: 20px 0;
+}
+
+code {
+    font-size: 1.15em; /* Чуть больше базового размера */
+    font-family: monospace; /* Сохраняем моноширинный шрифт */
+    color: var(--accent-hover); /* Можно использовать акцентный цвет */
+    background: rgba(74, 161, 255, 0.1);  /* Легкий фон */
+    padding: 0.1em 0.3em; /* Небольшие отступы */
+    border-radius: 3px; /* Скругление углов */
+}
+
+pre {
+    white-space: pre;
+    overflow-x: auto;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 1.15em; /* Чуть больше базового размера */
+    font-family: monospace;
+    color: var(--text);
+}
+
+/* [PN] Dropdown list */
+select {
+    background-color: #011726;
+    color: #d4eaff;
+    border: 1px solid #165b99;
+    border-radius: 6px;
+    padding: 6px;
+    /*
+    padding: 6px 12px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('arrow.svg');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    */
+}
+
+/* ----------  Container  ---------- */
+
+.container {
+	width: 90%;
+    max-width:800px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    gap:1.0rem;
+}
+
+/* ----------  Navigation  ---------- */
+
+nav {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:clamp(.75rem,3vw,2rem);
+    font-weight:600;
+}
+
+nav a {
+    padding:.25rem 0;
+    border-bottom:2px solid transparent;
+    transition:.2s;
+	font-size:1.2em;
+	font-weight:700;
+}
+
+nav a:hover,
+nav a:focus {
+    border-bottom-color:var(--accent-hover);
+}
+
+nav a.active {
+    color:var(--text);
+    border-bottom-color:var(--text);
+}
+
+/* ----------  Sections  ---------- */
+
+section {
+    background:var(--bg-card);
+    border-radius:var(--radius);
+    padding:1rem 1.5rem;
+    box-shadow:var(--shadow);
+}
+p {
+    margin:.5rem 0 1.25rem;
+}
+
+.small-text{font-size:.8em;color:var(--muted)}
+
+/* ----------  Cards  ---------- */
+
+.card {
+    background:var(--bg-card);
+    border-radius:var(--radius);
+    padding:1.75rem 1.5rem;
+    box-shadow:var(--shadow);
+}
+
+h3 {
+	margin-bottom:.5rem;
+	color:var(--text);
+	font-size:1.2rem
+}
+
+h4 {
+	margin:.75rem 0 .25rem;
+	color:var(--text);
+	font-size:1.0rem;
+	font-weight:600
+}
+
+p {
+	margin:1rem 0 1rem;
+}
+
+li {
+	margin-left:1.5rem;
+	color: var(--text);
+}
+
+li::marker {
+	color: var(--muted); /* ← цвет точки */
+}
+
+li.download {
+	margin-left:1.0rem;
+	list-style: none;
+}
+
+/* ----------  [PN] Download lists  ---------- */
+
+ul ul {
+    margin-left: 1.5em; /* или 2em, если хочешь чуть сильнее */
+    list-style-type: circle; /* можешь также попробовать disc, square, dash и т.п. */
+}
+
+/* 
+<ul class="download-list">
+
+class="download-list">
+.download-list {
+    list-style:"⬇ ";
+    padding-left:1rem;
+
+}
+.download-list li {
+	margin:.35rem 0
+}
+*/ 
+
+/* ----------  Music tracks  ---------- */
+
+.music-list {
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:.5rem;
+}
+
+.music-list li {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:.5rem .75rem;
+	margin-left:0.0rem;
+    background:rgba(255,255,255,.05);
+    border-radius:calc(var(--radius) / 2);
+    transition:.2s;
+}
+
+.music-list li:hover{background:rgba(255,255,255,.08)}
+.music-list span{color:var(--muted);font-size:.875em}
+
+/* ----------  Screenshots grid  ---------- */
+
+.screenshots {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:.75rem;
+    margin-top:.5rem;
+    box-shadow:var(--shadow);
+}
+
+.screenshots a {
+    display:block;
+    border-radius:var(--radius);
+    overflow:hidden;
+    transition:transform .2s;
+}
+
+.screenshots a:hover{transform:scale(1.05)}
+.screenshots img{width:100%;height:auto;display:block}
+
+/* ---------- Profile card ---------- */
+
+.profile-card {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    background:var(--bg-card);
+    border-radius:var(--radius);
+    padding:1.5rem 2rem;
+    box-shadow:var(--shadow);
+    gap:1rem;
+}
+
+.profile-card img {
+    width:160px;
+    height:160px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid var(--accent);
+}
+
+.profile-card h1 {
+    font-size:1.75rem;
+    font-weight:600;
+}
+
+.profile-card p {
+    color:var(--muted);
+    max-width:75ch;
+}
+
+/* ---------- Contact grid ---------- */
+
+.contact-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:.75rem;
+    text-align:center;
+}
+
+.contact-grid a {
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    color:var(--accent);
+    padding:.75rem 1rem;
+    border-radius:var(--radius);
+    transition:.2s;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.contact-grid a:hover {
+    background:var(--accent);
+    color:var(--bg);
+    transform:translateY(-2px);
+}
+
+/* ---------- Quote ---------- */
+
+blockquote {
+    text-align:center;
+    font-style:italic;
+    font-size:1.125rem;
+    color:var(--muted);
+    position:relative;
+}
+
+blockquote::before,
+blockquote::after {
+    content:"";
+    display:block;
+    width:40px;
+    height:2px;
+    background:var(--accent);
+    margin:.75rem auto;
+}
+
+/* ---------- [PN] Keyboard key ---------- */
+
+kbd {
+    background: #165b99;
+    border: 1px solid #4ea1ff;
+    border-radius: 4px;
+    box-shadow: inset 0 0 3px #082234;
+    padding: 2px 6px;
+    font-family: monospace;
+    font-size: 0.95em;
+    color: #d4eaff;
+}
+
+/* ---------- Subnaviation ---------- */
+
+.subnav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Центрирование по умолчанию */
+    margin-top: 0.0rem; /*  Подвигаем ближе к основному меню */
+    margin-bottom: 0.0rem; 
+    font-size: 0.9em; /* Чуть меньше размер текста */
+    gap: clamp(0.5rem, 2vw, 1.2rem); /* Меньше отступы между ссылками */
+    
+}
+
+.subnav a {
+    font-weight: 500; /* Чуть менее жирный шрифт */
+    padding: 0.15rem 0; /* Меньше вертикальные отступы */
+    border-bottom-width: 1px; /* Тонкая линия подчеркивания */
+}
+
+.subnav a.active {
+    border-bottom-width: 1px; /* Тонкая линия для активной ссылки */
+}
+
+/* ---------- Compact table ---------- */
+
+.compat-table {
+    width: 50%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95em;
+}
+
+.compat-table th,
+.compat-table td {
+    padding: 0.15rem 1rem;
+    text-align: left;
+    border: 1px solid var(--border);
+}
+
+.compat-table th {
+    background-color: rgba(74, 161, 255, 0.15);
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.compat-table tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.compat-table tr:hover {
+    background-color: rgba(74, 161, 255, 0.1);
+}
+
+/* ---------- [PN] Scroll to top ---------- */
+
+#scrollTopBtn {
+    --btn-size: 48px;
+    --stroke-width: 4;
+    width: var(--btn-size);
+    height: var(--btn-size);
+    position: fixed;
+    right: 20px; bottom: 20px;
+    background: var(--bg);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity .3s;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+#scrollTopBtn.show {
+    opacity: 1; pointer-events: auto;
+}
+
+#scrollTopBtn svg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: visible; /* ← возможность рисовать тень за пределами "квадрата" */
+}
+
+#scrollTopBtn circle {
+    fill: var(--bg-card);
+    stroke: var(--accent);
+    stroke-width: 40;
+    stroke-dasharray: 282.6; /* ← считаем один раз в JS */
+    stroke-dashoffset: 282.6;
+    transition: stroke-dashoffset .01s; 
+    stroke-width: var(--stroke-width);
+    transition: fill 0.2s, stroke-dashoffset 0.2s;
+    /* filter: drop-shadow(0 0 4px rgba(78, 161, 255, 0.1)); тень */
+}
+
+#scrollTopBtn:hover circle {
+    fill: color-mix(in srgb, var(--bg-card) 90%, var(--accent));
+    filter: drop-shadow(0 0 2px rgba(78, 161, 255, 0.35)); /* тень */
+}
+
+#scrollTopBtn span {
+    position: relative;
+    font-size: calc(var(--btn-size) / 2.4);
+    color: var(--text);
+}
+
+#scrollTopBtn svg line,
+#scrollTopBtn svg polyline {
+  stroke: var(--text);
+}
+
+/* ----------  Adative  ---------- */
+
+@media(max-width:520px) {
+    .card {
+        padding:1.5rem 1rem
+    }
+    .subnav {
+        font-size: 0.85em;
+        gap: 0.7rem;
+    }
+    .compat-table {
+        font-size: 0.85em;
+    }
+    .compat-table th,
+    .compat-table td {
+        padding: 0.5rem;
+    }
+}

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Julia Nechaevskaya">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>CRY</title>
+
+    <!-- SEO keywords and description -->
+    <meta name="description" content="CRY is a non-conservative recreation of Jaguar Doom for PC.">
+    <meta name="keywords" content="doom port, jaguar doom, atari jaguar, jaguar console, vanilla, open source, doom engine, retro gaming, classic fps">
+
+    <!-- Modern, minimal CSS -->
+    <link rel="stylesheet" href="../assets/css/styles.css">
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="help" href="mailto:www-validator@w3.org">
+    <link rel="start" href="./" title="CRY">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <nav>
+            <a href="../index.html">Projects</a>
+            <a href="../inter-doom/index.html">International Doom</a>
+            <a href="../crl/index.html">CRL</a>
+            <a href="index.html" class="active">CRY</a>
+            <a href="../music.html">Music</a>
+            <a href="../author.html">Author</a>
+        </nav>
+
+        <!-- About -->
+        <section id="about">
+            <nav class="subnav">
+                <a href="#about">About</a>
+                <a href="#download">Download</a>
+                <a href="#features">Features</a>
+                <a href="#screenshots">Screenshots</a>
+                <a href="#license">License</a>
+            </nav>
+            
+            <p>
+                <strong>CRY</strong> is a reimagining of <strong>Jaguar Doom</strong> for PC, 
+                built on top of the <a href="../inter-doom/index.html">International Doom</a> engine. 
+                To ensure high emulation accuracy, substantial parts of the original <strong>Jaguar Doom</strong> 
+                code were integrated — including damage formulas, monster behavior, Nightmare difficulty mechanics, 
+                and sector/line specials.
+            </p>
+            <p>
+                The goal was never to create a 1:1 port of Jaguar Doom for modern systems. Instead, I aimed to 
+                strike a balance between authenticity, visual polish, and overall enjoyment — while paying close 
+                attention to detail wherever possible.
+            </p>
+        </section>
+
+        <!-- Download -->
+        <section id="download">
+            <h3 style="text-align:center">Download</h3>
+
+            <h4>CRY, version 2.2 (May 25, 2025)</h4>
+            <ul class="download-list">
+                <li class="download"><a href="https://github.com/JNechaevsky/CRY/releases/download/2.2/cry-2.2-win-64.zip"><img src="../assets/img/icon_win64.png" width="16" height="16">&nbsp;&nbsp;Windows (64-bit)</a></li>
+                <li class="download"><a href="https://github.com/JNechaevsky/CRY/releases/download/2.2/cry-2.2-win-32.zip"><img src="../assets/img/icon_win32.png" width="16" height="16">&nbsp;&nbsp;Windows (32-bit)</a></li>
+                <li class="download"><a href="https://github.com/JNechaevsky/CRY/releases/download/2.2/cry-2.2-linux-64-appimage.zip"><img src="../assets/img/icon_linux64.png" width="16" height="16">&nbsp;&nbsp;Linux AppImage (64-bit)</a></li>
+                <li class="download"><a href="https://drive.google.com/drive/folders/18H-U2EbzDsLFjfE3hVn3UiwjybsuGFIa?usp=sharing"><img src="../assets/img/icon_music.png" width="16" height="16">&nbsp;&nbsp;Jaguar and PSX music packs</a> (optional)</li>
+            </ul>
+            <p>
+                Source code is available on <a href="https://github.com/JNechaevsky/CRY">GitHub</a>.
+            </p>
+            <p class="small-text">
+                Note for XP users: <a href="https://www.catalog.update.microsoft.com/Search.aspx?q=XP%20service%20pack%203">Service Pack 3</a>, 
+                <a href="https://download.visualstudio.microsoft.com/download/pr/566435ac-4e1c-434b-b93f-aecc71e8cffc/0D59EC7FDBF05DE813736BF875CEA5C894FFF4769F60E32E87BD48406BBF0A3A/VC_redist.x86.exe">Microsoft Visual C++ 2015–2019 Redistributable</a> 
+                (x86) and an SSE2-compatible CPU are required.  
+            </p>
+        </section>
+
+        <!-- Features -->
+        <section id="features">
+            <h3 style="text-align:center">Features</h3>
+
+            <ul class="download-list">
+                <li>True Color rendering.</li>
+                <li>Rendering resolutions up to 6× (1200p).</li>
+                <li>Uncapped framerate.</li>
+                <li>Colored sector lighting.</li>
+                <li>Additional darker gamma-correction levels.</li>
+                <li>Post-processing effects.</li>
+                <li>In-game keyboard and mouse bindings.</li>
+                <li>Various optional visual and gameplay enhancements.</li>
+                <li>Preserved most original Jaguar Doom playstate quirks.</li>
+            </ul>
+        </section>
+
+        <!-- Screenshots -->
+        <section id="screenshots">
+            <h3 style="text-align:center">Screenshots</h3>
+            <p>Click to enlarge:</p>
+            <div class="screenshots">
+                <a href="scrn_1.png"><img src="scrn_1.png"></a>
+                <a href="scrn_2.png"><img src="scrn_2.png"></a>
+                <a href="scrn_3.png"><img src="scrn_3.png"></a>
+                <a href="scrn_4.png"><img src="scrn_4.png"></a>
+            </div>
+        </section>
+
+        <!-- License -->
+        <section id="license">
+            <h3 style="text-align:center">License</h3>
+            <p>
+                CRY is <a href="https://opensource.org/osd">Open Source</a> software, licensed under the
+                <a href="https://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License v2</a> and 
+                <a href="https://github.com/JNechaevsky/CRY/blob/main/COPYING-JAG.txt">Jaguar Doom Source 
+                Code license</a>. Information about the game's assets is provided in the 
+                <a href="https://github.com/JNechaevsky/CRY/blob/main/COPYING-RES.txt">COPYING-RES.txt</a> file.
+            </p>
+        </section>
+    </div>
+
+    <!-- [PN] Scroll-to-top Button -->
+    <button id="scrollTopBtn" aria-label="↑" style="--btn-size:48px;">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <!-- Круговая обводка    --> <g transform="rotate(-90 50 50)"><circle r="45" cx="50" cy="50"/></g>
+        <!-- Стрелка: ножка      --> <line x1="50" y1="70" x2="50" y2="35" stroke="white" stroke-width="4" stroke-linecap="round"/>
+        <!-- Стрелка: наконечник --> <polyline points="35,50 50,35 65,50" stroke="white" stroke-width="4" stroke-linecap="round" fill="none"/>
+        </svg>
+    </button>
+    <script src="../assets/js/scroll-to-top.js"></script>
+
+</body>
+</html>

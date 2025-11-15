@@ -1,0 +1,258 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>File to C style array converter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="Images/favicon.png">
+    <link rel="stylesheet" href="../../assets/css/styles.css" />
+
+	<!-- Inline CSS -->
+	<style>
+    .container {
+      max-width: 800px;
+      width: 100%;
+      background: #0a1d2b;
+      border-radius: 16px;
+      box-shadow: 0 0 20px #101019;
+      padding: 24px;
+    }
+	label {
+		width: 190px;
+		margin: 0px 4px;
+		display: inline-block;
+		vertical-align: top;
+        color:var(--text);
+		/* color: #b8dcff;  [PN] Light text for labels */
+	}
+	fieldset {
+        max-width:800px;
+		border: 1px solid #165b99; /* [PN] Dark border for fieldsets */
+		padding: 10px;
+		border-radius: 4px; /* [PN] Rounded corners for fieldsets */
+	}
+	legend {
+		color:var(--text);
+        padding: 0 8px;
+        margin: 0;
+        line-height: 1;
+	}
+	
+	/* ---------- "Select file" button ---------- */
+	input[type="file"] {
+        display: none; /* [PN] Hide the original file input */
+    }
+    .custom-file-label {
+        display: inline-block;
+        background: #165b99;
+        color: #fff;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 8px;
+	    min-width: 260px;
+        cursor: pointer;
+        text-align: center;
+		font-size: 16px;
+        transition: background 0.16s ease;
+    }
+    .custom-file-label-small {
+        display: inline-block;
+        background: #165b99;
+        color: #fff;
+        padding: 4px 16px;
+        margin: 4px;
+		border: none;
+        border-radius: 8px;
+	    min-width: 130px;
+        cursor: pointer;
+        text-align: center;
+		font-size: 14px;
+        transition: background 0.16s ease;
+    }
+    .custom-file-label:hover,
+	.custom-file-label-small:hover {
+        background-color: #569cd6; /* [PN] Hover background */
+        color: #fff; /* [PN] Hover text color */
+    }
+    .custom-file-label:active,
+    .custom-file-label-small:active	{
+        background-color: #4179a3; /* [PN] Active background */
+    }
+    .signaturePreview {
+        float: left;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 14px;
+        color:var(--accent-hover); /* [PN] Light blue for signature preview */
+		margin-top:.5rem;
+    }
+    textarea {
+          width: 100%;
+          height: 480px;
+          background: #01101a;
+          color: #d4eaff;
+          border: none;
+          border-radius: 8px;
+          padding: 12px;
+          font-size: 14px;
+          resize: none;
+          outline: none;
+    }
+	</style>
+
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="scripts/arrayUtils.js" defer></script>
+    <script src="scripts/imageConverter.js" defer></script>
+    <script src="scripts/stringConverter.js" defer></script>
+    <script src="scripts/main.js" defer></script>
+</head>
+<body>
+    <section class="container">
+        <h1 style="text-align:center">File to C style array converter</h1>
+        <label for="inFileInput" class="custom-file-label">Select a file to convert...</label>
+        <input type="file" id="inFileInput">
+
+        <fieldset>
+            <legend>File info</legend>
+            <div><label>Name</label> <span id="fiName"></span></div>
+            <div><label>Size</label> <span id="fiSize"></span></div>
+            <div><label>Type</label> <span id="fiType"></span></div>
+            <div><label>Last modified</label> <span id="fiLastModifiedDate"></span></div>
+
+            <div id="divPreview" class="fileIsImage">
+                <label for="imgPreview">Preview</label>
+                <div class="tooltip">
+                    <span class="tooltiptext">
+                        The grey border around the image is for visibility only.<br>
+                        If it is shorter than 32px, or taller than 100px, it will be resized. Again, for visibility reasons.
+                    </span>
+                </div>
+                <!-- preview image will be inserted here -->
+            </div>
+        </fieldset>
+
+        <fieldset id="fsConversionOptions">
+            <legend>Conversion settings</legend>
+
+            <div><label for="selFormat">Code format</label>
+                <select id="selFormat">
+                    <option value="HEX0">Hex (0x00)</option>
+                    <option value="HEX_SLASH">Hex (\x00)</option>
+                    <option value="DEC" selected>Decimal (000)</option>
+                    <option value="BIN">Binary (B00000000)</option>
+                </select>
+            </div>
+
+            <div class="fileIsImage">
+                <label for="cbForceBinary">Treat as binary</label>
+                <input type="checkbox" id="cbForceBinary">
+            </div>
+
+            <hr class="fileIsImage">
+
+            <div class="fileIsImage">
+                <label for="cbPaletteMod">Palette mod</label>
+                <select id="cbPaletteMod" class="imageConversionOption">
+                    <option value="32">32 bit RGBA (4bytes/pixel)</option>
+                    <option value="32r">32-bit BGRA (4bytes/pixel)</option>
+                    <option value="24" selected>24bit RGB (3bytes/pixel)</option>
+                    <option value="16">16bit RRRRRGGGGGGBBBBB (2byte/pixel)</option>
+                    <option value="16bgr">16bit BBBBBGGGGGGRRRRR (2byte/pixel)</option>
+                    <option value="15">15bit RRRRRGGGGGBBBBBA (2byte/pixel)</option>
+                    <option value="8">8bit RRRGGGBB (1byte/pixel)</option>
+                    <option value="8G">8bit grayscale (1byte/pixel)</option>
+                    <option value="1">1bit line art (1bit/pixel)</option>
+                </select>
+            </div>
+
+            <div class="fileIsImage">
+                <label for="txtResizeX">Resize</label>
+                <input type="text" id="txtResizeX" class="imageConversionOption shortInput">
+                ×
+                <input type="text" id="txtResizeY" class="imageConversionOption shortInput">
+                <small class="small-text">(Fill only one to maintain aspect ratio)</small>
+            </div>
+
+            <div class="fileIsImage">
+                <label for="cbMultiLine">Multi line</label>
+                <input type="checkbox" id="cbMultiLine" class="imageConversionOption" checked>
+            </div>
+
+            <div class="fileIsImage image1BitModeOnly">
+                <label for="cbForColumnRead">Optimize for column read</label>
+                <input type="checkbox" id="cbForColumnRead" class="imageConversionOption">
+            </div>
+
+            <div class="fileIsImage">
+                <label for="cbSeparateBytes">Separate bytes of pixels</label>
+                <input type="checkbox" id="cbSeparateBytes" class="imageConversionOption">
+            </div>
+
+            <div class="fileIsImage">
+                <label for="selEndianness">Endianness</label>
+                <select id="selEndianness" class="imageConversionOption">
+                    <option value="le">Little-endian</option>
+                    <option value="be">Big-endian</option>
+                </select>
+            </div>
+
+            <div><label for="cbStatic">static</label> <input type="checkbox" id="cbStatic" value="static" checked></div>
+            <div><label for="cbConst">const</label> <input type="checkbox" id="cbConst" value="const" checked></div>
+            <div><label for="cbUnsigned">unsigned</label> <input type="checkbox" id="cbUnsigned" value="unsigned"></div>
+
+            <div>
+                <label for="selDataType">Data type</label>
+                <select id="selDataType">
+                    <option value="byte">byte</option>
+                    <option value="char">char</option>
+                    <option value="int">int</option>
+                    <option value="word">word</option>
+                    <option value="short">short</option>
+                    <option value="long">long</option>
+                    <option value="int8_t">int8_t</option>
+                    <option value="int16_t">int16_t</option>
+                    <option value="int32_t">int32_t</option>
+                    <option value="int64_t">int64_t</option>
+                    <option value="uint8_t">uint8_t</option>
+                    <option value="uint16_t">uint16_t</option>
+                    <option value="uint32_t">uint32_t</option>
+                    <option value="uint64_t">uint64_t</option>
+                </select>
+            </div>
+
+			<!--
+            <div>
+                <label for="cbPROGMEM">PROGMEM</label>
+                <input type="checkbox" id="cbPROGMEM" value="PROGMEM">
+            </div>
+			-->
+
+            <div>
+                <span id="spnSignaturePreview" class="signaturePreview">...</span>
+            </div>
+        </fieldset>
+
+        
+            <input type="button" id="btnConvert" class="custom-file-label" value="Convert" style="width:160px;">
+			<!--
+            <span id="spnStatus"></span>
+			-->
+        
+
+        <fieldset id="fsResult">
+            <legend>
+                Result
+                <input type="button" id="btnCopyToClipboard" class="custom-file-label-small" value="Copy to clipboard">
+                <a id="aSaveFile" download="download" class="linkButtons">
+                    <input type="button" id="btnSaveFile" class="custom-file-label-small" value="Save as file">
+                </a>
+                <a id="aSaveImage" download="download" class="fileIsImage linkButtons">
+                    <input type="button" id="btnSaveImage" value="Save image">
+                </a>
+            </legend>
+
+            <textarea id="txtResult" wrap="off"></textarea>
+            <div id="divResult"></div>
+        </fieldset>
+    </section>
+</body>
+</html>

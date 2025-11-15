@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Проверка кириллического текста</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Modern, minimal CSS -->
+  <link rel="stylesheet" href="../../assets/css/styles.css">  
+
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+  <!-- Inline CSS -->
+  <style>
+    textarea {
+      width: 100%;
+      height: 200px;
+      background: #01101a;
+      color: #d4eaff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 16px;
+      resize: vertical;
+      outline: none;
+    }
+    .button-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .checkboxes {
+      display: flex;
+      gap: 24px;
+      margin-left: 10px;
+      align-items: center;
+    }
+    label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    button {
+      padding: 12px 20px;
+      background: #165b99;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.16s ease;
+      min-width: 160px;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    button:hover {
+      background: #4ea1ff;
+    }
+    .status {
+      color: #90ee90;
+    }
+    .status.error {
+      color: #ff6f6f;
+    }
+    .output {
+      margin-top: 20px;
+      white-space: pre-line;
+      font-size: 16px;
+      background: #01101a;
+      padding: 12px;
+      border-radius: 8px;
+    }
+    #fix-btn {
+      margin-top: 12px;
+    }
+    #copy-btn {
+      margin-top: 12px;
+      width: 160px;
+    }
+    .line-ok {
+      color: #d4d4d4;
+    }
+    .line-bad {
+      color: #ff4f4f;
+    }
+    .bad-char {
+      text-decoration: underline;
+      color: #ff4f4f;
+    }
+  </style>
+
+</head>
+<body>
+  <div class="container">
+  <section>
+    <h2 style="text-align:center">Проверка на некириллические символы</h2>
+    <p>
+    <textarea id="text-input" placeholder="Вставьте текст для проверки..."></textarea>
+    <div class="button-row">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button onclick="checkText()">Проверить</button>
+        <div class="checkboxes">
+          <label><input type="checkbox" id="allow-punctuation" checked>Разрешить пунктуацию</label>
+          <label><input type="checkbox" id="allow-digits" checked>Разрешить цифры</label>
+        </div>
+      </div>
+      <span class="status" id="status-msg"></span>
+    </div>
+    <div id="output" class="output"></div>
+    <button onclick="fixText()" id="fix-btn" style="display:none">Исправить</button>
+    <button onclick="copyText()" id="copy-btn" style="display:none">Скопировать</button>
+    </p>
+  </section>
+  </div>
+
+  <script>
+    const fixMap = {
+      'A': 'А', 'B': 'В', 'E': 'Е', 'K': 'К', 'M': 'М', 'H': 'Н', 'O': 'О', 'P': 'Р', 'C': 'С', 'T': 'Т', 'Y': 'У', 'X': 'Х',
+      'a': 'а', 'e': 'е', 'o': 'о', 'c': 'с', 'p': 'р', 'x': 'х'
+    };
+
+    function isCyrillicChar(char, allowPunctuation, allowDigits) {
+      const baseRegex = /[А-Яа-яЁё \t]/;
+      const punctRegex = /[.,;:!?()\-\—]/;
+      const digitRegex = /[0-9]/;
+
+      return baseRegex.test(char)
+        || (allowPunctuation && punctRegex.test(char))
+        || (allowDigits && digitRegex.test(char));
+    }
+
+    function checkText() {
+      const allowPunctuation = document.getElementById('allow-punctuation').checked;
+      const allowDigits = document.getElementById('allow-digits').checked;
+
+      const input = document.getElementById('text-input').value;
+      const lines = input.split(/\r?\n/);
+      const output = document.getElementById('output');
+      const status = document.getElementById('status-msg');
+      output.innerHTML = '';
+      status.textContent = '';
+      status.className = 'status';
+
+      let globalHasErrors = false;
+
+      lines.forEach((line) => {
+        const div = document.createElement('div');
+        let lineHTML = '';
+        let lineHasErrors = false;
+
+        for (const char of line) {
+          if (isCyrillicChar(char, allowPunctuation, allowDigits) || char === '') {
+            lineHTML += char;
+          } else {
+            lineHTML += `<span class="bad-char">${char}</span>`;
+            lineHasErrors = true;
+          }
+        }
+
+        if (lineHasErrors) globalHasErrors = true;
+        div.innerHTML = lineHTML;
+        div.className = lineHasErrors ? 'line-bad' : 'line-ok';
+        output.appendChild(div);
+      });
+
+      const fixBtn = document.getElementById('fix-btn');
+      const copyBtn = document.getElementById('copy-btn');
+      fixBtn.style.display = globalHasErrors ? 'inline-block' : 'none';
+      copyBtn.style.display = globalHasErrors ? 'none' : 'inline-block';
+
+      if (!globalHasErrors) {
+        status.textContent = 'Ошибок не найдено';
+      } else {
+        status.textContent = 'Обнаружены ошибки';
+        status.classList.add('error');
+      }
+    }
+
+    function fixText() {
+      let input = document.getElementById('text-input').value;
+      input = input.split('').map(char => fixMap[char] || char).join('');
+      document.getElementById('text-input').value = input;
+      document.getElementById('fix-btn').style.display = 'none';
+      document.getElementById('copy-btn').style.display = 'inline-block';
+      checkText();
+    }
+
+    function copyText() {
+      const input = document.getElementById('text-input').value;
+      const btn = document.getElementById('copy-btn');
+      const prev = btn.textContent;
+
+      btn.style.minWidth = `${btn.offsetWidth}px`;
+      navigator.clipboard.writeText(input).then(() => {
+        btn.textContent = 'Скопировано!';
+        btn.style.background = '#2e7d32';
+        setTimeout(() => {
+          btn.textContent = prev;
+          btn.style.background = '';
+        }, 1200);
+      });
+    }
+  </script>
+</body>
+</html>

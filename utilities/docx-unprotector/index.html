@@ -1,0 +1,157 @@
+<!--
+  MIT License
+  
+  Copyright (c) 2025 Polina "Aura" N.
+  Copyright (c) 2025 Julia Nechaevskaya
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>DOCX Unprotector</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Modern, minimal CSS -->
+  <link rel="stylesheet" href="../../assets/css/styles.css">  
+
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+  <!-- Inline CSS -->
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .upload-box {
+      width: 480px;
+      border: 2px dashed #165b99;
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      background-color: #0a1d2b;
+      transition: background-color 0.2s, border-color 0.2s;
+	  box-shadow:0 8px 24px rgba(0,0,0,.35);
+	  padding:1.5rem 1.5rem;
+    }
+    .upload-box.dragover {
+      background-color: rgba(255, 255, 255, 0.05);
+      border-color: #1b73c1;
+    }
+    .upload-box label {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #165b99;
+      color: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+      margin-top: 10px;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .upload-box.dragover label {
+      background-color: #3e99ff;
+    }
+    .upload-box label:hover {
+    background-color: #4ea1ff;
+    color: #fff;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .upload-box label:active {
+    background-color: #3e99ff;
+    }
+    input[type="file"] {
+      display: none;
+    }
+    p {
+      margin: 0;
+    }
+  </style>
+  
+</head>
+<body>
+  <div class="upload-box" id="drop-area">
+    <h3>Drop a file here to upload</h3>
+    <label for="fileInput">or click here</label>
+    <input type="file" id="fileInput" accept=".docx">
+  </div>
+
+  <script src="jszip.min.js"></script>
+  <script src="FileSaver.min.js"></script>
+  <script>
+    const dropArea = document.getElementById('drop-area');
+    const fileInput = document.getElementById('fileInput');
+
+    function highlight(e) {
+      e.preventDefault();
+      dropArea.classList.add('dragover');
+    }
+
+    function unhighlight(e) {
+      e.preventDefault();
+      dropArea.classList.remove('dragover');
+    }
+
+    async function handleFile(file) {
+      if (!file || !file.name.endsWith('.docx')) {
+        alert('Only .docx files are supported');
+        return;
+      }
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        const zip = await JSZip.loadAsync(arrayBuffer);
+        const settingsPath = 'word/settings.xml';
+        if (!zip.files[settingsPath]) {
+          alert('The document does not contain settings.xml');
+          return;
+        }
+        const settingsText = await zip.files[settingsPath].async('string');
+        const cleaned = settingsText.replace(/<w:documentProtection[^>]*\/>/, '');
+        zip.file(settingsPath, cleaned);
+        const blob = await zip.generateAsync({ type: 'blob' });
+        saveAs(blob, 'unprotected_' + file.name);
+      } catch (err) {
+        alert('File processing error');
+        console.error(err);
+      }
+    }
+
+    dropArea.addEventListener('dragover', highlight);
+    dropArea.addEventListener('dragleave', unhighlight);
+    dropArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      unhighlight(e);
+      const file = e.dataTransfer.files[0];
+      handleFile(file);
+    });
+
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      handleFile(file);
+    });
+  </script>
+</body>
+</html>
