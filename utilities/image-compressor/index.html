@@ -238,7 +238,7 @@
     const compressedResults = [];
     let loadedRows = [];
     let viewToken = 0;
-    const ZIP_DOWNLOAD_THRESHOLD = 2;
+    const ZIP_DOWNLOAD_MIN_RESULTS = 1;
 
     function formatBytes(bytes) {
       if (bytes < 1024) return `${bytes} B`;
@@ -253,7 +253,7 @@
     }
 
     function updateZipButton() {
-      const canDownloadZip = compressedResults.length > ZIP_DOWNLOAD_THRESHOLD;
+      const canDownloadZip = compressedResults.length >= ZIP_DOWNLOAD_MIN_RESULTS;
       zipButton.hidden = !canDownloadZip;
       zipButton.disabled = !canDownloadZip;
     }
@@ -517,7 +517,7 @@
     }
 
     async function downloadZip() {
-      if (compressedResults.length <= ZIP_DOWNLOAD_THRESHOLD) return;
+      if (compressedResults.length < ZIP_DOWNLOAD_MIN_RESULTS) return;
 
       if (!window.JSZip) {
         setStatus('ZIP engine is not available. Check local jszip.min.js.', 'error');
@@ -525,7 +525,8 @@
       }
 
       zipButton.disabled = true;
-      setStatus(`Building ZIP with ${compressedResults.length} files...`);
+      const resultWord = compressedResults.length === 1 ? 'file' : 'files';
+      setStatus(`Building ZIP with ${compressedResults.length} ${resultWord}...`);
 
       try {
         const zip = new JSZip();
@@ -536,7 +537,7 @@
 
         const zipBlob = await zip.generateAsync({ type: 'blob' });
         triggerDownload(zipBlob, 'compressed-images.zip');
-        setStatus(`ZIP archive with ${compressedResults.length} files is ready.`);
+        setStatus(`ZIP archive with ${compressedResults.length} ${resultWord} is ready.`);
       } catch (error) {
         console.error(error);
         setStatus('Could not build ZIP archive.', 'error');
