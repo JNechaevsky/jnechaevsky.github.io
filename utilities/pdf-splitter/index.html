@@ -156,13 +156,10 @@
     </section>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script type="module">
-    import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.5.136/pdf.min.mjs';
-
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.5.136/pdf.worker.min.mjs';
-
+  <script src="./pdf.min.js"></script>
+    <script src="./jszip.min.js"></script>
+    <script src="./jspdf.umd.min.js"></script>
+  <script>
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
     const splitButton = document.getElementById('split-button');
@@ -170,6 +167,11 @@
     const clearButton = document.getElementById('clear-button');
     const statusMessage = document.getElementById('status-message');
     const fileSummary = document.getElementById('file-summary');
+    const pdfjsLib = window.pdfjsLib || null;
+
+    if (pdfjsLib) {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = './pdf.worker.min.js';
+    }
 
     const MODE_NONE = 'none';
     const MODE_SPLIT = 'split';
@@ -188,6 +190,10 @@
       statusMessage.textContent = message;
       statusMessage.classList.toggle('warning', tone === 'warning');
       statusMessage.classList.toggle('error', tone === 'error');
+    }
+
+    if (!pdfjsLib) {
+      setStatus('PDF engine did not load. Check local pdf.min.js.', 'error');
     }
 
     function isPdf(file) {
@@ -299,6 +305,10 @@
     }
 
     async function splitPdfToZip(pdfFile) {
+      if (!pdfjsLib) {
+        throw new Error('PDF.js is not loaded.');
+      }
+
       const zip = new JSZip();
       const fileBuffer = await pdfFile.arrayBuffer();
       const pdf = await pdfjsLib.getDocument({ data: fileBuffer }).promise;
@@ -427,7 +437,11 @@
       normalizeFileSet(event.dataTransfer.files);
     });
 
-    dropZone.addEventListener('click', () => {
+    dropZone.addEventListener('click', (event) => {
+      if (event.target.closest('.pick-button') || event.target === fileInput) {
+        return;
+      }
+
       fileInput.click();
     });
 
