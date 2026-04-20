@@ -139,8 +139,8 @@
       <h3 style="text-align:center">PDF Splitter & Merger</h3>
 
       <div class="drop-zone" id="drop-zone" tabindex="0" role="button" aria-label="Choose PDF or image files">
-        <h4>Drop one PDF or multiple PNG/JPG files</h4>
-        <p>PDF → ZIP with JPG pages. Images → one merged PDF.</p>
+        <h4>Drop PDF or PNG/JPG files</h4>
+        <p>One PDF -> ZIP with JPG pages. Multiple PDFs or images -> one merged PDF.</p>
         <label class="pick-button" for="file-input">Choose files</label>
         <input class="file-input" id="file-input" type="file" accept="application/pdf,image/png,image/jpeg,.pdf,.png,.jpg,.jpeg" multiple>
       </div>
@@ -157,8 +157,9 @@
   </div>
 
   <script src="./pdf.min.js"></script>
-    <script src="./jszip.min.js"></script>
-    <script src="./jspdf.umd.min.js"></script>
+  <script src="./pdf-lib.min.js"></script>
+  <script src="./jszip.min.js"></script>
+  <script src="./jspdf.umd.min.js"></script>
   <script>
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
@@ -168,6 +169,7 @@
     const statusMessage = document.getElementById('status-message');
     const fileSummary = document.getElementById('file-summary');
     const pdfjsLib = window.pdfjsLib || null;
+    const pdfLib = window.PDFLib || null;
 
     if (pdfjsLib) {
       pdfjsLib.GlobalWorkerOptions.workerSrc = './pdf.worker.min.js';
@@ -175,7 +177,8 @@
 
     const MODE_NONE = 'none';
     const MODE_SPLIT = 'split';
-    const MODE_MERGE = 'merge';
+    const MODE_MERGE_IMAGES = 'merge-images';
+    const MODE_MERGE_PDFS = 'merge-pdfs';
 
     let selectedFiles = [];
     let currentMode = MODE_NONE;
@@ -217,13 +220,17 @@
       const imageFiles = files.filter(isImage);
 
       if (pdfFiles.length === 1 && files.length === 1) return MODE_SPLIT;
-      if (imageFiles.length === files.length) return MODE_MERGE;
+      if (pdfFiles.length > 1 && pdfFiles.length === files.length) return MODE_MERGE_PDFS;
+      if (imageFiles.length === files.length) return MODE_MERGE_IMAGES;
       return MODE_NONE;
     }
 
     function updateButtons() {
+      const canMerge = currentMode === MODE_MERGE_IMAGES
+        || (currentMode === MODE_MERGE_PDFS && pdfLib);
+
       splitButton.disabled = currentMode !== MODE_SPLIT;
-      mergeButton.disabled = currentMode !== MODE_MERGE;
+      mergeButton.disabled = !canMerge;
       clearButton.disabled = selectedFiles.length === 0;
     }
 
@@ -235,13 +242,19 @@
         return `<strong>${file.name}</strong><br>Size: ${formatBytes(file.size)}<br>Mode: Split PDF into JPG ZIP`;
       }
 
-      if (mode === MODE_MERGE) {
+      if (mode === MODE_MERGE_IMAGES) {
         const firstNames = files.slice(0, 3).map((file) => file.name).join(', ');
         const extra = files.length > 3 ? `, +${files.length - 3} more` : '';
         return `<strong>${files.length} image file(s)</strong><br>Size: ${formatBytes(bytesSum(files))}<br>First: ${firstNames}${extra}<br>Mode: Merge images into PDF`;
       }
 
-      return `<strong>${files.length} file(s)</strong><br>Unsupported combination. Use one PDF or only PNG/JPG files.`;
+      if (mode === MODE_MERGE_PDFS) {
+        const firstNames = files.slice(0, 3).map((file) => file.name).join(', ');
+        const extra = files.length > 3 ? `, +${files.length - 3} more` : '';
+        return `<strong>${files.length} PDF file(s)</strong><br>Size: ${formatBytes(bytesSum(files))}<br>First: ${firstNames}${extra}<br>Mode: Merge PDFs into one PDF`;
+      }
+
+      return `<strong>${files.length} file(s)</strong><br>Unsupported combination. Use one PDF, only PDFs, or only PNG/JPG files.`;
     }
 
     function normalizeFileSet(fileList) {
@@ -261,10 +274,16 @@
 
       if (currentMode === MODE_SPLIT) {
         setStatus('PDF is ready to split.');
-      } else if (currentMode === MODE_MERGE) {
+      } else if (currentMode === MODE_MERGE_IMAGES) {
         setStatus('Images are ready to merge into PDF.');
+      } else if (currentMode === MODE_MERGE_PDFS) {
+        if (pdfLib) {
+          setStatus('PDFs are ready to merge into one PDF.');
+        } else {
+          setStatus('PDF merge engine did not load. Check local pdf-lib.min.js.', 'error');
+        }
       } else {
-        setStatus('Unsupported selection. Drop one PDF or multiple PNG/JPG files only.', 'warning');
+        setStatus('Unsupported selection. Drop one PDF, only PDFs, or only PNG/JPG files.', 'warning');
       }
 
       updateButtons();
@@ -395,6 +414,33 @@
       return pdf.output('blob');
     }
 
+    async function mergePdfsToPdf(files) {
+      if (!pdfLib) {
+        throw new Error('PDFLib is not loaded.');
+      }
+
+      const mergedPdf = await pdfLib.PDFDocument.create();
+
+      for (let index = 0; index < files.length; index += 1) {
+        const file = files[index];
+        setStatus(`Merging PDF ${index + 1} of ${files.length}...`);
+
+        const fileBuffer = await file.arrayBuffer();
+        const sourcePdf = await pdfLib.PDFDocument.load(fileBuffer, {
+          ignoreEncryption: true
+        });
+        const pageIndices = sourcePdf.getPageIndices();
+        const copiedPages = await mergedPdf.copyPages(sourcePdf, pageIndices);
+
+        for (const page of copiedPages) {
+          mergedPdf.addPage(page);
+        }
+      }
+
+      const mergedBytes = await mergedPdf.save();
+      return new Blob([mergedBytes], { type: 'application/pdf' });
+    }
+
     function buildBaseName(name, fallback) {
       const withoutExtension = name.replace(/\.[^.]+$/u, '');
       return withoutExtension || fallback;
@@ -479,21 +525,25 @@
     });
 
     mergeButton.addEventListener('click', async () => {
-      if (currentMode !== MODE_MERGE) return;
+      if (currentMode !== MODE_MERGE_IMAGES && currentMode !== MODE_MERGE_PDFS) return;
 
       splitButton.disabled = true;
       mergeButton.disabled = true;
       clearButton.disabled = true;
 
       try {
-        const pdfBlob = await mergeImagesToPdf(selectedFiles);
-        const outputName = normalizeDownloadName(buildBaseName(selectedFiles[0]?.name || 'merged-images', 'merged-images'), '.pdf');
+        const isPdfMerge = currentMode === MODE_MERGE_PDFS;
+        const pdfBlob = isPdfMerge
+          ? await mergePdfsToPdf(selectedFiles)
+          : await mergeImagesToPdf(selectedFiles);
+        const fallbackName = isPdfMerge ? 'merged-pdfs' : 'merged-images';
+        const outputName = normalizeDownloadName(buildBaseName(selectedFiles[0]?.name || fallbackName, fallbackName), '.pdf');
         triggerDownload(pdfBlob, outputName);
         setStatus('Done! Your merged PDF is ready.');
       } catch (error) {
         // [PN] Runtime error details for debugging in developer console.
         console.error(error);
-        setStatus('Could not merge these images. Please try another set.', 'error');
+        setStatus('Could not merge these files. Please try another set.', 'error');
       } finally {
         updateButtons();
       }
