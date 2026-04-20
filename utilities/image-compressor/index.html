@@ -107,6 +107,10 @@
       gap: 0.75rem;
     }
 
+    #zip-button {
+      margin-left: auto;
+    }
+
     .status {
       color: #90ee90;
       min-height: 1.5em;
@@ -185,6 +189,11 @@
       .download-button {
         width: 100%;
       }
+
+      #zip-button {
+        margin-left: 0;
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -204,6 +213,7 @@
       <div class="button-row">
         <button class="action-button" id="compress-button" type="button" disabled>Compress selected</button>
         <button class="action-button" id="clear-button" type="button" disabled>Clear</button>
+        <button class="action-button" id="zip-button" type="button" disabled hidden>Download ZIP</button>
       </div>
 
       <div class="status" id="status-message" aria-live="polite"></div>
@@ -213,18 +223,22 @@
 
   <script src="pako.min.js"></script>
   <script src="UPNG.js"></script>
+  <script src="jszip.min.js"></script>
   <script>
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
     const compressButton = document.getElementById('compress-button');
+    const zipButton = document.getElementById('zip-button');
     const clearButton = document.getElementById('clear-button');
     const statusMessage = document.getElementById('status-message');
     const results = document.getElementById('results');
 
     let selectedFiles = [];
     const objectUrls = [];
+    const compressedResults = [];
     let loadedRows = [];
     let viewToken = 0;
+    const ZIP_DOWNLOAD_THRESHOLD = 2;
 
     function formatBytes(bytes) {
       if (bytes < 1024) return `${bytes} B`;
@@ -236,6 +250,12 @@
       statusMessage.textContent = message;
       statusMessage.classList.toggle('warning', tone === 'warning');
       statusMessage.classList.toggle('error', tone === 'error');
+    }
+
+    function updateZipButton() {
+      const canDownloadZip = compressedResults.length > ZIP_DOWNLOAD_THRESHOLD;
+      zipButton.hidden = !canDownloadZip;
+      zipButton.disabled = !canDownloadZip;
     }
 
     function getSourceType(file) {
@@ -430,6 +450,8 @@
       selectedFiles = nextFiles;
       results.innerHTML = '';
       loadedRows = [];
+      compressedResults.length = 0;
+      updateZipButton();
       objectUrls.splice(0).forEach((url) => URL.revokeObjectURL(url));
       const token = ++viewToken;
       renderSelection();
@@ -483,6 +505,46 @@
       return true;
     }
 
+    function triggerDownload(blob, fileName) {
+      const link = document.createElement('a');
+      const objectUrl = URL.createObjectURL(blob);
+      link.href = objectUrl;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(objectUrl);
+    }
+
+    async function downloadZip() {
+      if (compressedResults.length <= ZIP_DOWNLOAD_THRESHOLD) return;
+
+      if (!window.JSZip) {
+        setStatus('ZIP engine is not available. Check local jszip.min.js.', 'error');
+        return;
+      }
+
+      zipButton.disabled = true;
+      setStatus(`Building ZIP with ${compressedResults.length} files...`);
+
+      try {
+        const zip = new JSZip();
+
+        for (const result of compressedResults) {
+          zip.file(result.outputName, result.blob);
+        }
+
+        const zipBlob = await zip.generateAsync({ type: 'blob' });
+        triggerDownload(zipBlob, 'compressed-images.zip');
+        setStatus(`ZIP archive with ${compressedResults.length} files is ready.`);
+      } catch (error) {
+        console.error(error);
+        setStatus('Could not build ZIP archive.', 'error');
+      } finally {
+        updateZipButton();
+      }
+    }
+
     function renderError(file, error, row) {
       row.meta.textContent = error.message;
       const errorLabel = document.createElement('span');
@@ -496,6 +558,8 @@
 
       viewToken++;
       compressButton.disabled = true;
+      compressedResults.length = 0;
+      updateZipButton();
       objectUrls.splice(0).forEach((url) => URL.revokeObjectURL(url));
       let failures = 0;
       let skipped = 0;
@@ -511,6 +575,11 @@
           const compressed = await compressFile(file);
           if (!renderResult(file, compressed, row)) {
             skipped++;
+          } else {
+            compressedResults.push({
+              blob: compressed.blob,
+              outputName: compressed.outputName
+            });
           }
         } catch (error) {
           console.error(error);
@@ -527,6 +596,7 @@
         failures > 0 ? 'error' : (skipped > 0 ? 'warning' : '')
       );
       compressButton.disabled = selectedFiles.length === 0;
+      updateZipButton();
       clearButton.disabled = false;
     }
 
@@ -536,6 +606,8 @@
       fileInput.value = '';
       results.innerHTML = '';
       loadedRows = [];
+      compressedResults.length = 0;
+      updateZipButton();
       objectUrls.splice(0).forEach((url) => URL.revokeObjectURL(url));
       renderSelection();
     }
@@ -568,6 +640,7 @@
 
     fileInput.addEventListener('change', () => addFiles(fileInput.files));
     compressButton.addEventListener('click', compressSelected);
+    zipButton.addEventListener('click', downloadZip);
     clearButton.addEventListener('click', clearAll);
   </script>
 </body>
