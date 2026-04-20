@@ -30,7 +30,7 @@
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   <meta http-equiv="pragma" content="no-cache">
-  <title>PDF Splitter</title>
+  <title>PDF Splitter & Merger</title>
 
   <link rel="stylesheet" href="../../assets/css/styles.css">
 
@@ -136,17 +136,18 @@
 <body>
   <div class="container">
     <section class="tool-panel">
-      <h3 style="text-align:center">PDF Splitter</h3>
+      <h3 style="text-align:center">PDF Splitter & Merger</h3>
 
-      <div class="drop-zone" id="drop-zone" tabindex="0" role="button" aria-label="Choose PDF file">
-        <h4>Drop a PDF here</h4>
-        <p>Each page will become a JPG in one ZIP archive.</p>
-        <label class="pick-button" for="file-input">Choose file</label>
-        <input class="file-input" id="file-input" type="file" accept="application/pdf,.pdf">
+      <div class="drop-zone" id="drop-zone" tabindex="0" role="button" aria-label="Choose PDF or image files">
+        <h4>Drop one PDF or multiple PNG/JPG files</h4>
+        <p>PDF → ZIP with JPG pages. Images → one merged PDF.</p>
+        <label class="pick-button" for="file-input">Choose files</label>
+        <input class="file-input" id="file-input" type="file" accept="application/pdf,image/png,image/jpeg,.pdf,.png,.jpg,.jpeg" multiple>
       </div>
 
       <div class="button-row">
         <button class="action-button" id="split-button" type="button" disabled>Split</button>
+        <button class="action-button" id="merge-button" type="button" disabled>Merge</button>
         <button class="action-button" id="clear-button" type="button" disabled>Clear</button>
       </div>
 
@@ -155,8 +156,8 @@
     </section>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.5.136/pdf.min.mjs" type="module"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script type="module">
     import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.5.136/pdf.min.mjs';
 
@@ -165,11 +166,17 @@
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
     const splitButton = document.getElementById('split-button');
+    const mergeButton = document.getElementById('merge-button');
     const clearButton = document.getElementById('clear-button');
     const statusMessage = document.getElementById('status-message');
     const fileSummary = document.getElementById('file-summary');
 
-    let selectedPdf = null;
+    const MODE_NONE = 'none';
+    const MODE_SPLIT = 'split';
+    const MODE_MERGE = 'merge';
+
+    let selectedFiles = [];
+    let currentMode = MODE_NONE;
 
     function formatBytes(bytes) {
       if (bytes < 1024) return `${bytes} B`;
@@ -184,47 +191,87 @@
     }
 
     function isPdf(file) {
-      if (!file) return false;
       return file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
     }
 
+    function isImage(file) {
+      return file.type === 'image/jpeg'
+        || file.type === 'image/png'
+        || /\.(jpe?g|png)$/i.test(file.name);
+    }
+
+    function bytesSum(files) {
+      return files.reduce((sum, file) => sum + file.size, 0);
+    }
+
+    function getMode(files) {
+      if (!files.length) return MODE_NONE;
+
+      const pdfFiles = files.filter(isPdf);
+      const imageFiles = files.filter(isImage);
+
+      if (pdfFiles.length === 1 && files.length === 1) return MODE_SPLIT;
+      if (imageFiles.length === files.length) return MODE_MERGE;
+      return MODE_NONE;
+    }
+
     function updateButtons() {
-      const hasFile = Boolean(selectedPdf);
-      splitButton.disabled = !hasFile;
-      clearButton.disabled = !hasFile;
+      splitButton.disabled = currentMode !== MODE_SPLIT;
+      mergeButton.disabled = currentMode !== MODE_MERGE;
+      clearButton.disabled = selectedFiles.length === 0;
+    }
+
+    function buildSummary(files, mode) {
+      if (!files.length) return '';
+
+      if (mode === MODE_SPLIT) {
+        const file = files[0];
+        return `<strong>${file.name}</strong><br>Size: ${formatBytes(file.size)}<br>Mode: Split PDF into JPG ZIP`;
+      }
+
+      if (mode === MODE_MERGE) {
+        const firstNames = files.slice(0, 3).map((file) => file.name).join(', ');
+        const extra = files.length > 3 ? `, +${files.length - 3} more` : '';
+        return `<strong>${files.length} image file(s)</strong><br>Size: ${formatBytes(bytesSum(files))}<br>First: ${firstNames}${extra}<br>Mode: Merge images into PDF`;
+      }
+
+      return `<strong>${files.length} file(s)</strong><br>Unsupported combination. Use one PDF or only PNG/JPG files.`;
+    }
+
+    function normalizeFileSet(fileList) {
+      selectedFiles = Array.from(fileList || []);
+      currentMode = getMode(selectedFiles);
+
+      if (!selectedFiles.length) {
+        fileSummary.style.display = 'none';
+        fileSummary.innerHTML = '';
+        setStatus('');
+        updateButtons();
+        return;
+      }
+
+      fileSummary.innerHTML = buildSummary(selectedFiles, currentMode);
+      fileSummary.style.display = 'block';
+
+      if (currentMode === MODE_SPLIT) {
+        setStatus('PDF is ready to split.');
+      } else if (currentMode === MODE_MERGE) {
+        setStatus('Images are ready to merge into PDF.');
+      } else {
+        setStatus('Unsupported selection. Drop one PDF or multiple PNG/JPG files only.', 'warning');
+      }
+
+      updateButtons();
     }
 
     function resetState() {
-      selectedPdf = null;
+      selectedFiles = [];
+      currentMode = MODE_NONE;
       fileInput.value = '';
       fileSummary.style.display = 'none';
       fileSummary.innerHTML = '';
       setStatus('');
       updateButtons();
-    }
-
-    function showSelectedPdf(file) {
-      selectedPdf = file;
-      fileSummary.innerHTML = `
-        <strong>${file.name}</strong><br>
-        Size: ${formatBytes(file.size)}
-      `;
-      fileSummary.style.display = 'block';
-      setStatus('PDF is ready to split.');
-      updateButtons();
-    }
-
-    function handleIncomingFiles(files) {
-      if (!files.length) return;
-
-      const [file] = files;
-      if (!isPdf(file)) {
-        resetState();
-        setStatus('Please select a valid PDF file.', 'error');
-        return;
-      }
-
-      showSelectedPdf(file);
     }
 
     async function renderPageToJpeg(pdfPage, pageNumber) {
@@ -264,27 +311,101 @@
       }
 
       setStatus('Building ZIP archive...');
-      const archiveBlob = await zip.generateAsync({ type: 'blob' });
-      return archiveBlob;
+      return zip.generateAsync({ type: 'blob' });
     }
 
-    function buildZipName(pdfName) {
-      return pdfName.replace(/\.pdf$/i, '') || 'split-pages';
+    async function loadImageElement(file) {
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+
+        img.onload = () => {
+          URL.revokeObjectURL(url);
+          resolve(img);
+        };
+
+        img.onerror = () => {
+          URL.revokeObjectURL(url);
+          reject(new Error(`Unable to read image: ${file.name}`));
+        };
+
+        img.src = url;
+      });
     }
 
-    function triggerDownload(blob, baseName) {
-      // [PN] Keep Cyrillic and other Unicode letters/digits in output ZIP names.
+    function drawImageOnCanvas(image) {
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d', { alpha: false });
+      canvas.width = image.naturalWidth;
+      canvas.height = image.naturalHeight;
+      context.fillStyle = '#ffffff';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(image, 0, 0);
+      return canvas;
+    }
+
+    function canvasToJpegDataUrl(canvas) {
+      return canvas.toDataURL('image/jpeg', 0.92);
+    }
+
+    async function mergeImagesToPdf(files) {
+      const { jsPDF } = window.jspdf;
+      let pdf = null;
+
+      for (let index = 0; index < files.length; index += 1) {
+        const file = files[index];
+        setStatus(`Merging image ${index + 1} of ${files.length}...`);
+
+        const image = await loadImageElement(file);
+        const canvas = drawImageOnCanvas(image);
+        const dataUrl = canvasToJpegDataUrl(canvas);
+
+        const widthPt = Math.max(1, image.naturalWidth * 0.75);
+        const heightPt = Math.max(1, image.naturalHeight * 0.75);
+        const orientation = widthPt >= heightPt ? 'landscape' : 'portrait';
+
+        if (!pdf) {
+          pdf = new jsPDF({
+            orientation,
+            unit: 'pt',
+            format: [widthPt, heightPt],
+            compress: true
+          });
+        } else {
+          pdf.addPage([widthPt, heightPt], orientation);
+        }
+
+        pdf.addImage(dataUrl, 'JPEG', 0, 0, widthPt, heightPt, undefined, 'FAST');
+      }
+
+      if (!pdf) {
+        throw new Error('No images to merge.');
+      }
+
+      return pdf.output('blob');
+    }
+
+    function buildBaseName(name, fallback) {
+      const withoutExtension = name.replace(/\.[^.]+$/u, '');
+      return withoutExtension || fallback;
+    }
+
+    function normalizeDownloadName(baseName, extensionSuffix) {
+      // [PN] Keep Cyrillic and other Unicode letters/digits in output filenames.
       const normalizedBaseName = baseName.normalize('NFKC');
       const safeName = normalizedBaseName
         .replace(/[\s]+/g, ' ')
         .replace(/[^\p{L}\p{N}._ -]/gu, '_')
         .replace(/^[ ._-]+|[ ._-]+$/g, '')
-        || 'split-pages';
-      const zipName = `${safeName}-jpg.zip`;
+        || 'file';
+      return `${safeName}${extensionSuffix}`;
+    }
+
+    function triggerDownload(blob, fileName) {
       const link = document.createElement('a');
       const objectUrl = URL.createObjectURL(blob);
       link.href = objectUrl;
-      link.download = zipName;
+      link.download = fileName;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -303,7 +424,7 @@
     dropZone.addEventListener('drop', (event) => {
       event.preventDefault();
       dropZone.classList.remove('dragover');
-      handleIncomingFiles(event.dataTransfer.files);
+      normalizeFileSet(event.dataTransfer.files);
     });
 
     dropZone.addEventListener('click', () => {
@@ -318,23 +439,47 @@
     });
 
     fileInput.addEventListener('change', () => {
-      handleIncomingFiles(fileInput.files);
+      normalizeFileSet(fileInput.files);
     });
 
     splitButton.addEventListener('click', async () => {
-      if (!selectedPdf) return;
+      if (currentMode !== MODE_SPLIT) return;
 
       splitButton.disabled = true;
+      mergeButton.disabled = true;
       clearButton.disabled = true;
 
       try {
-        const zipBlob = await splitPdfToZip(selectedPdf);
-        triggerDownload(zipBlob, buildZipName(selectedPdf.name));
+        const pdfFile = selectedFiles[0];
+        const zipBlob = await splitPdfToZip(pdfFile);
+        const zipName = normalizeDownloadName(buildBaseName(pdfFile.name, 'split-pages'), '-jpg.zip');
+        triggerDownload(zipBlob, zipName);
         setStatus('Done! Your ZIP with JPG pages is ready.');
       } catch (error) {
         // [PN] Runtime error details for debugging in developer console.
         console.error(error);
         setStatus('Could not split this PDF. Please try another file.', 'error');
+      } finally {
+        updateButtons();
+      }
+    });
+
+    mergeButton.addEventListener('click', async () => {
+      if (currentMode !== MODE_MERGE) return;
+
+      splitButton.disabled = true;
+      mergeButton.disabled = true;
+      clearButton.disabled = true;
+
+      try {
+        const pdfBlob = await mergeImagesToPdf(selectedFiles);
+        const outputName = normalizeDownloadName(buildBaseName(selectedFiles[0]?.name || 'merged-images', 'merged-images'), '.pdf');
+        triggerDownload(pdfBlob, outputName);
+        setStatus('Done! Your merged PDF is ready.');
+      } catch (error) {
+        // [PN] Runtime error details for debugging in developer console.
+        console.error(error);
+        setStatus('Could not merge these images. Please try another set.', 'error');
       } finally {
         updateButtons();
       }
