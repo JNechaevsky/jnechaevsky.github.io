@@ -1,0 +1,342 @@
+<!--
+  MIT License
+
+  Copyright (c) 2026 Polina "Aura" N.
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Julia Nechaevskaya">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  <meta http-equiv="pragma" content="no-cache">
+  <title>PDF Splitter</title>
+
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+
+  <link rel="shortcut icon" href="../../assets/img/favicon.ico" type="image/x-icon">
+  <link rel="help" href="mailto:www-validator@w3.org">
+  <link rel="start" href="../../" title="Projects">
+
+  <style>
+    .tool-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .drop-zone {
+      background: #01101a;
+      border: 2px dashed #165b99;
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 1.5rem;
+      text-align: center;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+
+    .drop-zone.dragover {
+      background-color: rgba(255, 255, 255, 0.05);
+      border-color: #4ea1ff;
+    }
+
+    .drop-zone p {
+      color: var(--muted);
+      margin: 0.35rem 0 0;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .pick-button,
+    .action-button {
+      background: #165b99;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      display: inline-block;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.2;
+      margin-top: 0.75rem;
+      padding: 12px 20px;
+      text-align: center;
+      transition: background 0.16s ease, color 0.16s ease;
+    }
+
+    .pick-button:hover,
+    .action-button:hover {
+      background: #4ea1ff;
+      color: #fff;
+    }
+
+    .action-button:disabled {
+      background: #35628a;
+      color: #9bbcd6;
+      cursor: not-allowed;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .status {
+      color: #90ee90;
+      min-height: 1.5em;
+    }
+
+    .status.warning {
+      color: #e6d37a;
+    }
+
+    .status.error {
+      color: #ff6f6f;
+    }
+
+    .file-summary {
+      background: #01101a;
+      border: 1px solid #165b99;
+      border-radius: 8px;
+      color: var(--text);
+      display: none;
+      line-height: 1.45;
+      padding: 0.8rem;
+    }
+
+    .file-summary strong {
+      overflow-wrap: anywhere;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <section class="tool-panel">
+      <h3 style="text-align:center">PDF Splitter</h3>
+
+      <div class="drop-zone" id="drop-zone" tabindex="0" role="button" aria-label="Choose PDF file">
+        <h4>Drop a PDF here</h4>
+        <p>Each page will become a JPG in one ZIP archive.</p>
+        <label class="pick-button" for="file-input">Choose file</label>
+        <input class="file-input" id="file-input" type="file" accept="application/pdf,.pdf">
+      </div>
+
+      <div class="button-row">
+        <button class="action-button" id="split-button" type="button" disabled>Split</button>
+        <button class="action-button" id="clear-button" type="button" disabled>Clear</button>
+      </div>
+
+      <div class="file-summary" id="file-summary" aria-live="polite"></div>
+      <div class="status" id="status-message" aria-live="polite"></div>
+    </section>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.5.136/pdf.min.mjs" type="module"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script type="module">
+    import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.5.136/pdf.min.mjs';
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.5.136/pdf.worker.min.mjs';
+
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const splitButton = document.getElementById('split-button');
+    const clearButton = document.getElementById('clear-button');
+    const statusMessage = document.getElementById('status-message');
+    const fileSummary = document.getElementById('file-summary');
+
+    let selectedPdf = null;
+
+    function formatBytes(bytes) {
+      if (bytes < 1024) return `${bytes} B`;
+      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+      return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
+    }
+
+    function setStatus(message, tone = '') {
+      statusMessage.textContent = message;
+      statusMessage.classList.toggle('warning', tone === 'warning');
+      statusMessage.classList.toggle('error', tone === 'error');
+    }
+
+    function isPdf(file) {
+      if (!file) return false;
+      return file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+    }
+
+    function updateButtons() {
+      const hasFile = Boolean(selectedPdf);
+      splitButton.disabled = !hasFile;
+      clearButton.disabled = !hasFile;
+    }
+
+    function resetState() {
+      selectedPdf = null;
+      fileInput.value = '';
+      fileSummary.style.display = 'none';
+      fileSummary.innerHTML = '';
+      setStatus('');
+      updateButtons();
+    }
+
+    function showSelectedPdf(file) {
+      selectedPdf = file;
+      fileSummary.innerHTML = `
+        <strong>${file.name}</strong><br>
+        Size: ${formatBytes(file.size)}
+      `;
+      fileSummary.style.display = 'block';
+      setStatus('PDF is ready to split.');
+      updateButtons();
+    }
+
+    function handleIncomingFiles(files) {
+      if (!files.length) return;
+
+      const [file] = files;
+      if (!isPdf(file)) {
+        resetState();
+        setStatus('Please select a valid PDF file.', 'error');
+        return;
+      }
+
+      showSelectedPdf(file);
+    }
+
+    async function renderPageToJpeg(pdfPage, pageNumber) {
+      const viewport = pdfPage.getViewport({ scale: 2.0 });
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d', { alpha: false });
+
+      canvas.width = Math.floor(viewport.width);
+      canvas.height = Math.floor(viewport.height);
+
+      await pdfPage.render({ canvasContext: context, viewport }).promise;
+
+      const blob = await new Promise((resolve, reject) => {
+        canvas.toBlob((result) => {
+          if (!result) {
+            reject(new Error('Failed to export JPG blob.'));
+            return;
+          }
+          resolve(result);
+        }, 'image/jpeg', 0.92);
+      });
+
+      const filename = `page-${String(pageNumber).padStart(3, '0')}.jpg`;
+      return { filename, blob };
+    }
+
+    async function splitPdfToZip(pdfFile) {
+      const zip = new JSZip();
+      const fileBuffer = await pdfFile.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: fileBuffer }).promise;
+
+      for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+        setStatus(`Processing page ${pageNumber} of ${pdf.numPages}...`);
+        const page = await pdf.getPage(pageNumber);
+        const { filename, blob } = await renderPageToJpeg(page, pageNumber);
+        zip.file(filename, blob);
+      }
+
+      setStatus('Building ZIP archive...');
+      const archiveBlob = await zip.generateAsync({ type: 'blob' });
+      return archiveBlob;
+    }
+
+    function buildZipName(pdfName) {
+      return pdfName.replace(/\.pdf$/i, '') || 'split-pages';
+    }
+
+    function triggerDownload(blob, baseName) {
+      const safeName = baseName.replace(/[^a-z0-9._-]/gi, '_');
+      const zipName = `${safeName}-jpg.zip`;
+      const link = document.createElement('a');
+      const objectUrl = URL.createObjectURL(blob);
+      link.href = objectUrl;
+      link.download = zipName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(objectUrl);
+    }
+
+    dropZone.addEventListener('dragover', (event) => {
+      event.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', (event) => {
+      event.preventDefault();
+      dropZone.classList.remove('dragover');
+      handleIncomingFiles(event.dataTransfer.files);
+    });
+
+    dropZone.addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    dropZone.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        fileInput.click();
+      }
+    });
+
+    fileInput.addEventListener('change', () => {
+      handleIncomingFiles(fileInput.files);
+    });
+
+    splitButton.addEventListener('click', async () => {
+      if (!selectedPdf) return;
+
+      splitButton.disabled = true;
+      clearButton.disabled = true;
+
+      try {
+        const zipBlob = await splitPdfToZip(selectedPdf);
+        triggerDownload(zipBlob, buildZipName(selectedPdf.name));
+        setStatus('Done! Your ZIP with JPG pages is ready.');
+      } catch (error) {
+        // [PN] Runtime error details for debugging in developer console.
+        console.error(error);
+        setStatus('Could not split this PDF. Please try another file.', 'error');
+      } finally {
+        updateButtons();
+      }
+    });
+
+    clearButton.addEventListener('click', () => {
+      resetState();
+    });
+  </script>
+</body>
+</html>
