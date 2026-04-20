@@ -273,7 +273,13 @@
     }
 
     function triggerDownload(blob, baseName) {
-      const safeName = baseName.replace(/[^a-z0-9._-]/gi, '_');
+      // [PN] Keep Cyrillic and other Unicode letters/digits in output ZIP names.
+      const normalizedBaseName = baseName.normalize('NFKC');
+      const safeName = normalizedBaseName
+        .replace(/[\s]+/g, ' ')
+        .replace(/[^\p{L}\p{N}._ -]/gu, '_')
+        .replace(/^[ ._-]+|[ ._-]+$/g, '')
+        || 'split-pages';
       const zipName = `${safeName}-jpg.zip`;
       const link = document.createElement('a');
       const objectUrl = URL.createObjectURL(blob);
