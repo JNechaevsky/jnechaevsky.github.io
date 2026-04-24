@@ -147,6 +147,80 @@ section {
     padding:1rem 1.5rem;
     box-shadow:var(--shadow);
 }
+
+.tool-panel {
+    display:flex;
+    flex-direction:column;
+    gap:1rem;
+}
+
+.tool-header {
+    align-items:center;
+    display:grid;
+    gap:1rem;
+    grid-template-columns:48px minmax(0, 1fr) 48px;
+}
+
+.tool-header h2,
+.tool-header h3 {
+    margin:0;
+    text-align:center;
+}
+
+.back-button {
+    align-items:center;
+    background:#1b325a;
+    border-bottom:0;
+    border-radius:8px;
+    color:#fff;
+    display:flex;
+    height:48px;
+    justify-content:center;
+    width:48px;
+}
+
+.back-button::before {
+    border-bottom:4px solid var(--text);
+    border-left:4px solid var(--text);
+    content:"";
+    display:block;
+    height:8px;
+    margin-left:4px;
+    transform:rotate(45deg);
+    width:8px;
+}
+
+.back-button:hover {
+    background:#2b4f86;
+    border-bottom:0;
+    color:#fff;
+}
+
+.back-button:focus {
+    background:#2b4f86;
+    color:#fff;
+}
+
+@media (max-width:560px) {
+    .tool-header {
+        gap:.75rem;
+        grid-template-columns:42px minmax(0, 1fr) 42px;
+    }
+
+    .back-button {
+        height:42px;
+        width:42px;
+    }
+
+    .back-button::before {
+        border-bottom-width:3px;
+        border-left-width:3px;
+        height:11px;
+        margin-left:3px;
+        width:11px;
+    }
+}
+
 p {
     margin:.5rem 0 1.25rem;
 }

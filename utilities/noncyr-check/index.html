@@ -95,8 +95,11 @@
 </head>
 <body>
   <div class="container">
-  <section>
-    <h2 style="text-align:center">Проверка на некириллические символы</h2>
+  <section class="tool-panel">
+    <div class="tool-header">
+      <a class="back-button" href="../../index.html#utilities" aria-label="Back" title="Back" onclick="if (history.length > 1) { history.back(); } else { location.href = this.href; } return false;"></a>
+      <h2>Проверка на некириллические символы</h2>
+    </div>
     <p>
     <textarea id="text-input" placeholder="Вставьте текст для проверки..."></textarea>
     <div class="button-row">

@@ -201,7 +201,10 @@
 <body>
   <div class="container">
     <section class="tool-panel">
-      <h3 style="text-align:center">Image Compressor</h3>
+      <div class="tool-header">
+        <a class="back-button" href="../../index.html#utilities" aria-label="Back" title="Back" onclick="if (history.length > 1) { history.back(); } else { location.href = this.href; } return false;"></a>
+        <h3>Image Compressor</h3>
+      </div>
 
       <div class="drop-zone" id="drop-zone" tabindex="0" role="button" aria-label="Choose PNG or JPG files">
         <h4>Drop PNG or JPG here</h4>
