@@ -235,6 +235,7 @@ $(function() {
         $("#repository").val(repository);
         $("#title .repository").text(repository);
         $("#per-page select").val(perPage);
+        $("#pagination").addClass("is-visible");
         validateInput();
         getUserRepos();
         $(".output").hide();
