@@ -101,10 +101,42 @@
       cursor: not-allowed;
     }
 
+    .action-button[hidden] {
+      display: none;
+    }
+
     .button-row {
+      align-items: center;
       display: flex;
       flex-wrap: wrap;
       gap: 0.75rem;
+    }
+
+    .button-row .action-button {
+      margin-top: 0;
+    }
+
+    .jpeg-options {
+      align-items: center;
+      color: var(--text);
+      display: flex;
+      gap: 0.5rem;
+      min-height: 44px;
+    }
+
+    .quality-select {
+      background: #01101a;
+      border: 1px solid #165b99;
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 16px;
+      height: 44px;
+      padding: 10px 12px;
+    }
+
+    .quality-select:disabled {
+      color: var(--muted);
+      opacity: 0.65;
     }
 
     #zip-button {
@@ -194,6 +226,15 @@
         margin-left: 0;
         width: 100%;
       }
+
+      .jpeg-options {
+        justify-content: flex-start;
+        width: 100%;
+      }
+
+      .quality-select {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -216,6 +257,20 @@
       <div class="button-row">
         <button class="action-button" id="compress-button" type="button" disabled>Compress selected</button>
         <button class="action-button" id="clear-button" type="button" disabled>Clear</button>
+        <label class="jpeg-options" for="jpeg-quality-select">
+          JPEG quality
+          <select class="quality-select" id="jpeg-quality-select" disabled>
+            <option value="0.1">10%</option>
+            <option value="0.2">20%</option>
+            <option value="0.3">30%</option>
+            <option value="0.4">40%</option>
+            <option value="0.5">50%</option>
+            <option value="0.6">60%</option>
+            <option value="0.7">70%</option>
+            <option value="0.8">80%</option>
+            <option value="0.9" selected>90%</option>
+          </select>
+        </label>
         <button class="action-button" id="zip-button" type="button" disabled hidden>Download ZIP</button>
       </div>
 
@@ -233,6 +288,7 @@
     const compressButton = document.getElementById('compress-button');
     const zipButton = document.getElementById('zip-button');
     const clearButton = document.getElementById('clear-button');
+    const jpegQualitySelect = document.getElementById('jpeg-quality-select');
     const statusMessage = document.getElementById('status-message');
     const results = document.getElementById('results');
 
@@ -271,6 +327,10 @@
       return Boolean(getSourceType(file));
     }
 
+    function hasSelectedJpeg() {
+      return selectedFiles.some((file) => getSourceType(file) === 'image/jpeg');
+    }
+
     function getOutputType(file) {
       return getSourceType(file);
     }
@@ -284,6 +344,11 @@
     function getOutputName(file, type) {
       const baseName = file.name.replace(/\.[^.]+$/, '');
       return `${baseName}-compressed.${getExtension(type)}`;
+    }
+
+    function getJpegQuality() {
+      const quality = Number(jpegQualitySelect.value);
+      return Number.isFinite(quality) ? quality : 0.9;
     }
 
     function canvasToBlob(canvas, type, quality) {
@@ -348,7 +413,7 @@
 
     async function compressFile(file) {
       const outputType = getOutputType(file);
-      const quality = 0.9;
+      const quality = outputType === 'image/jpeg' ? getJpegQuality() : undefined;
       const image = await loadImage(file);
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d', { alpha: outputType !== 'image/jpeg' });
@@ -384,6 +449,7 @@
         blob,
         outputType,
         outputName: getOutputName(file, outputType),
+        qualityPercent: outputType === 'image/jpeg' ? Math.round(quality * 100) : null,
         width,
         height
       };
@@ -392,6 +458,7 @@
     function renderSelection() {
       compressButton.disabled = selectedFiles.length === 0;
       clearButton.disabled = selectedFiles.length === 0 && results.children.length === 0;
+      jpegQualitySelect.disabled = !hasSelectedJpeg();
 
       if (selectedFiles.length === 0) {
         setStatus('');
@@ -485,7 +552,11 @@
         ? `${formatBytes(file.size)} -> ${formatBytes(compressed.blob.size)}, saved ${savedPercent.toFixed(1)}%`
         : `No smaller result. Original: ${formatBytes(file.size)}, browser output: ${formatBytes(compressed.blob.size)}`;
 
-      row.meta.textContent = `${sizeText}. ${compressed.width} x ${compressed.height}px.`;
+      const qualityText = compressed.qualityPercent === null
+        ? ''
+        : ` JPEG quality: ${compressed.qualityPercent}%.`;
+
+      row.meta.textContent = `${sizeText}. ${compressed.width} x ${compressed.height}px.${qualityText}`;
 
       if (!isSmaller) {
         const skippedLabel = document.createElement('span');
