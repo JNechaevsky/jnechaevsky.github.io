@@ -1,0 +1,285 @@
+<!--
+  MIT License
+
+  Copyright (c) 2026 Polina "Aura" N.
+  Copyright (c) 2026 Julia Nechaevskaya
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Julia Nechaevskaya">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  <meta http-equiv="pragma" content="no-cache">
+
+  <title>Калькулятор дохода от вклада</title>
+
+  <!-- Modern, minimal CSS -->
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="help" href="mailto:www-validator@w3.org">
+  <link rel="start" href="../../" title="Projects">
+
+  <!-- Inline CSS -->
+  <style>
+    .calculator-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .form-group input[type="number"] {
+      background: #01101a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 16px;
+      color: var(--text);
+      transition: border-color 0.2s;
+      -moz-appearance: textfield;
+    }
+
+    .form-group input[type="number"]::-webkit-outer-spin-button,
+    .form-group input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .form-group input[type="number"]:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .form-group input[type="number"]::placeholder {
+      color: var(--input_tip);
+    }
+
+    .calculate-button {
+      background: #165b99;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 12px 20px;
+      text-align: center;
+      transition: background 0.2s;
+    }
+
+    .calculate-button:hover {
+      background: var(--accent);
+    }
+
+    .result-box {
+      background: #01101a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      display: none;
+    }
+
+    .result-box.show {
+      display: block;
+    }
+
+    .result-item {
+      margin-bottom: 1rem;
+    }
+
+    .result-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .result-label {
+      color: var(--muted);
+      font-size: 0.95em;
+    }
+
+    .result-value {
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 1.25em;
+    }
+
+    .result-value.total {
+      font-size: 1.5em;
+      color: #90ee90;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <section class="tool-panel">
+      <div class="tool-header">
+        <a
+          class="back-button"
+          href="../../index.html#utilities"
+          aria-label="Back"
+          title="Back"
+          onclick="if (history.length > 1) { history.back(); } else { location.href = this.href; } return false;">
+        </a>
+        <h3>Калькулятор вклада</h3>
+      </div>
+
+      <div class="calculator-form">
+        <div class="form-group">
+          <label for="amount">Сумма вклада (₽):</label>
+
+          <input
+            type="number"
+            id="amount"
+            placeholder="Например: 100000"
+            min="0"
+            step="any">
+        </div>
+
+        <div class="form-group">
+          <label for="rate">Процентная ставка (% годовых):</label>
+
+          <input
+            type="number"
+            id="rate"
+            placeholder="Например: 12"
+            min="0"
+            step="any">
+        </div>
+
+        <div class="form-group">
+          <label for="days">Количество дней:</label>
+
+          <input
+            type="number"
+            id="days"
+            placeholder="Например: 30"
+            min="1"
+            step="1">
+        </div>
+
+        <button class="calculate-button" onclick="calculate()">
+          Рассчитать
+        </button>
+
+        <div class="result-box" id="result">
+          <div class="result-item">
+            <span class="result-label">Доход за день: </span>
+            <span class="result-value" id="dailyIncome">0 ₽</span>
+          </div>
+
+          <div class="result-item">
+            <span class="result-label">
+              Общий доход за <span id="daysDisplay">0</span> дн.:
+            </span>
+
+            <span class="result-value total" id="totalIncome">
+              0 ₽
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    function calculate()
+    {
+      const amount = Number(document.getElementById('amount').value);
+      const rate = Number(document.getElementById('rate').value);
+      const days = Number(document.getElementById('days').value);
+
+      if (
+        isNaN(amount) ||
+        isNaN(rate) ||
+        isNaN(days) ||
+        amount <= 0 ||
+        rate <= 0 ||
+        days <= 0
+      )
+      {
+        alert('Пожалуйста, заполните все поля корректными значениями');
+        return;
+      }
+
+      // [PN] Simple interest calculation without capitalization.
+      const dailyIncome = (amount * rate / 100) / 365;
+      const totalIncome = dailyIncome * days;
+
+      document.getElementById('dailyIncome').textContent =
+        dailyIncome.toLocaleString(
+          'ru-RU',
+          {
+            style: 'currency',
+            currency: 'RUB',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          }
+        );
+
+      document.getElementById('totalIncome').textContent =
+        totalIncome.toLocaleString(
+          'ru-RU',
+          {
+            style: 'currency',
+            currency: 'RUB',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          }
+        );
+
+      document.getElementById('daysDisplay').textContent = days;
+      document.getElementById('result').classList.add('show');
+    }
+
+    // [PN] Trigger calculation by pressing Enter.
+    document.querySelectorAll('input').forEach(
+      input =>
+      {
+        input.addEventListener(
+          'keydown',
+          function(e)
+          {
+            if (e.key === 'Enter')
+            {
+              calculate();
+            }
+          }
+        );
+      }
+    );
+  </script>
+</body>
+</html>
