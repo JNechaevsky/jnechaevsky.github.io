@@ -1,10 +1,36 @@
-﻿<!DOCTYPE html>
+﻿<!--
+  MIT License
+
+  Copyright (c) 2018 notisrac
+  Copyright (c) 2025-2026 Polina "Aura" N.
+  Copyright (c) 2025-2026 Julia Nechaevskaya
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <title>File to C style array converter</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="Images/favicon.png">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../../assets/css/styles.css" />
 
 	<!-- Inline CSS -->
@@ -99,17 +125,27 @@
     }
 	</style>
 
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="scripts/jquery-2.1.4.min.js"></script>
     <script src="scripts/arrayUtils.js" defer></script>
     <script src="scripts/imageConverter.js" defer></script>
     <script src="scripts/stringConverter.js" defer></script>
     <script src="scripts/main.js" defer></script>
 </head>
 <body>
+
     <section class="container">
+    <div class="tool-header">
+        <a class="back-button" href="../../index.html#various" aria-label="Back" title="Back"></a>
+        <h3 style="text-align:center">File to C style array converter</h1>
+        </div>
+        <label for="inFileInput" class="custom-file-label">Select a file to convert...</label>
+        <input type="file" id="inFileInput">
+
+    <!--
         <h1 style="text-align:center">File to C style array converter</h1>
         <label for="inFileInput" class="custom-file-label">Select a file to convert...</label>
         <input type="file" id="inFileInput">
+    -->
 
         <fieldset>
             <legend>File info</legend>
