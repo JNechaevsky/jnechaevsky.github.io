@@ -1,0 +1,369 @@
+<!--
+  MIT License
+
+  Copyright (c) 2026 Polina "Aura" N.
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Julia Nechaevskaya">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  <meta http-equiv="pragma" content="no-cache">
+  <title>Hex / Dec Converter</title>
+
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="help" href="mailto:www-validator@w3.org">
+  <link rel="start" href="../../" title="Projects">
+
+  <style>
+    .converter-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .converter-card {
+      background: #01101a;
+      border: 1px solid #165b99;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 1rem;
+    }
+
+    .converter-card h4 {
+      margin: 0;
+    }
+
+    .converter-card p {
+      color: var(--muted);
+      margin: 0;
+      min-height: 3.2em;
+    }
+
+    .converter-input,
+    .converter-output {
+      background: #01101a;
+      border: 1px solid #165b99;
+      border-radius: 8px;
+      color: var(--text);
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 16px;
+      line-height: 1.45;
+      min-height: 170px;
+      outline: none;
+      padding: 12px;
+      resize: vertical;
+      width: 100%;
+    }
+
+    .converter-input:focus,
+    .converter-output:focus {
+      border-color: #4ea1ff;
+      box-shadow: 0 0 0 2px rgba(78, 161, 255, 0.2);
+    }
+
+    .converter-output {
+      color: #d4eaff;
+    }
+
+    .converter-input::placeholder,
+    .converter-output::placeholder {
+      color: var(--input_tip);
+      opacity: 1;
+    }
+
+    .button-row,
+    .options-row {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .action-button {
+      background: #165b99;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.2;
+      min-height: 44px;
+      min-width: 130px;
+      padding: 12px 20px;
+      text-align: center;
+      transition: background 0.16s ease, color 0.16s ease;
+    }
+
+    .action-button:hover,
+    .action-button:focus {
+      background: #4ea1ff;
+      color: #fff;
+    }
+
+    .action-button.secondary {
+      background: #1b325a;
+    }
+
+    .action-button.secondary:hover,
+    .action-button.secondary:focus {
+      background: #2b4f86;
+    }
+
+    .option-label {
+      align-items: center;
+      color: var(--text);
+      display: flex;
+      gap: 0.45rem;
+      min-height: 32px;
+    }
+
+    .option-label input {
+      accent-color: #4ea1ff;
+      height: 18px;
+      width: 18px;
+    }
+
+    .status {
+      color: #90ee90;
+      min-height: 1.5em;
+    }
+
+    .status.error {
+      color: #ff6f6f;
+    }
+
+    .status.warning {
+      color: #e6d37a;
+    }
+
+    @media (max-width: 720px) {
+      .converter-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .action-button {
+        width: 100%;
+      }
+
+      .options-row {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <section class="tool-panel">
+      <div class="tool-header">
+        <a class="back-button" href="../../index.html#utilities" aria-label="Back" title="Back" onclick="if (history.length > 1) { history.back(); } else { location.href = this.href; } return false;"></a>
+        <h3>Hex / Dec Converter</h3>
+      </div>
+
+      <div class="converter-grid">
+        <article class="converter-card">
+          <h4>Input</h4>
+          <p>Use spaces, commas, semicolons, or new lines for several values.</p>
+          <textarea class="converter-input" id="source-input" spellcheck="false" placeholder="Example:
+FF
+0x10
+#2A
+255"></textarea>
+        </article>
+
+        <article class="converter-card">
+          <h4>Result</h4>
+          <p>Converted values keep the same order after conversion.</p>
+          <textarea class="converter-output" id="result-output" readonly spellcheck="false" placeholder="Result will appear here." aria-live="polite"></textarea>
+        </article>
+      </div>
+
+      <div class="button-row">
+        <button class="action-button" id="hex-to-dec-button" type="button">Hex to Dec</button>
+        <button class="action-button" id="dec-to-hex-button" type="button">Dec to Hex</button>
+        <button class="action-button secondary" id="copy-button" type="button">Copy result</button>
+        <button class="action-button secondary" id="clear-button" type="button">Clear</button>
+      </div>
+
+      <div class="options-row">
+        <label class="option-label">
+          <input id="uppercase-option" type="checkbox" checked>
+          Uppercase HEX
+        </label>
+        <label class="option-label">
+          <input id="prefix-option" type="checkbox">
+          Add 0x prefix
+        </label>
+      </div>
+
+      <div class="status" id="status-message" aria-live="polite"></div>
+    </section>
+  </div>
+
+  <script>
+    const sourceInput = document.getElementById('source-input');
+    const resultOutput = document.getElementById('result-output');
+    const hexToDecButton = document.getElementById('hex-to-dec-button');
+    const decToHexButton = document.getElementById('dec-to-hex-button');
+    const copyButton = document.getElementById('copy-button');
+    const clearButton = document.getElementById('clear-button');
+    const uppercaseOption = document.getElementById('uppercase-option');
+    const prefixOption = document.getElementById('prefix-option');
+    const statusMessage = document.getElementById('status-message');
+
+    let lastMode = 'hex-to-dec';
+
+    function setStatus(message, tone = '') {
+      statusMessage.textContent = message;
+      statusMessage.classList.toggle('error', tone === 'error');
+      statusMessage.classList.toggle('warning', tone === 'warning');
+    }
+
+    function getTokens() {
+      return sourceInput.value
+        .split(/[\s,;]+/)
+        .map((token) => token.trim())
+        .filter(Boolean);
+    }
+
+    function normalizeHex(token) {
+      const value = token.replace(/^0x/i, '').replace(/^#/, '').replace(/^\$/, '');
+
+      if (!value || !/^[0-9a-f]+$/i.test(value)) {
+        throw new Error(`Invalid HEX value: ${token}`);
+      }
+
+      return value;
+    }
+
+    function normalizeDec(token) {
+      if (!/^[+-]?\d+$/.test(token)) {
+        throw new Error(`Invalid decimal value: ${token}`);
+      }
+
+      return token;
+    }
+
+    function formatHex(value) {
+      const isNegative = value < 0n;
+      const absValue = isNegative ? -value : value;
+      let hex = absValue.toString(16);
+
+      if (uppercaseOption.checked) {
+        hex = hex.toUpperCase();
+      }
+
+      if (prefixOption.checked) {
+        hex = `0x${hex}`;
+      }
+
+      return isNegative ? `-${hex}` : hex;
+    }
+
+    function convertHexToDec() {
+      const tokens = getTokens();
+
+      if (tokens.length === 0) {
+        resultOutput.value = '';
+        setStatus('Enter at least one HEX value.', 'warning');
+        return;
+      }
+
+      try {
+        resultOutput.value = tokens
+          .map((token) => BigInt(`0x${normalizeHex(token)}`).toString(10))
+          .join('\n');
+        setStatus(`Converted ${tokens.length} value(s).`);
+        lastMode = 'hex-to-dec';
+      } catch (error) {
+        setStatus(error.message, 'error');
+      }
+    }
+
+    function convertDecToHex() {
+      const tokens = getTokens();
+
+      if (tokens.length === 0) {
+        resultOutput.value = '';
+        setStatus('Enter at least one decimal value.', 'warning');
+        return;
+      }
+
+      try {
+        resultOutput.value = tokens
+          .map((token) => formatHex(BigInt(normalizeDec(token))))
+          .join('\n');
+        setStatus(`Converted ${tokens.length} value(s).`);
+        lastMode = 'dec-to-hex';
+      } catch (error) {
+        setStatus(error.message, 'error');
+      }
+    }
+
+    function refreshHexFormatting() {
+      if (lastMode === 'dec-to-hex') {
+        convertDecToHex();
+      }
+    }
+
+    async function copyResult() {
+      if (!resultOutput.value) {
+        setStatus('Nothing to copy yet.', 'warning');
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(resultOutput.value);
+        setStatus('Result copied.');
+      } catch (error) {
+        resultOutput.select();
+        setStatus('Select the result and copy it manually.', 'warning');
+      }
+    }
+
+    function clearAll() {
+      sourceInput.value = '';
+      resultOutput.value = '';
+      setStatus('');
+      sourceInput.focus();
+    }
+
+    hexToDecButton.addEventListener('click', convertHexToDec);
+    decToHexButton.addEventListener('click', convertDecToHex);
+    copyButton.addEventListener('click', copyResult);
+    clearButton.addEventListener('click', clearAll);
+    uppercaseOption.addEventListener('change', refreshHexFormatting);
+    prefixOption.addEventListener('change', refreshHexFormatting);
+  </script>
+</body>
+</html>
