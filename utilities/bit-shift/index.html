@@ -1,0 +1,454 @@
+<!--
+  MIT License
+
+  Copyright (c) 2026 Polina "Aura" N.
+  Copyright (c) 2026 Julia Nechaevskaya
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Julia Nechaevskaya">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  <meta http-equiv="pragma" content="no-cache">
+  <title>Bit Shift Calculator</title>
+
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="help" href="mailto:www-validator@w3.org">
+  <link rel="start" href="../../" title="Projects">
+
+  <style>
+    .shift-form {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .input-grid,
+    .output-grid {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .field-row {
+      align-items: center;
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: minmax(160px, 0.72fr) minmax(0, 1fr);
+    }
+
+    .field-row label {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .field-row input,
+    .field-row select {
+      background: #01101a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 16px;
+      min-height: 44px;
+      outline: none;
+      padding: 10px 12px;
+      width: 100%;
+    }
+
+    .field-row input {
+      font-family: Consolas, "Courier New", monospace;
+    }
+
+    .field-row input:focus,
+    .field-row select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(78, 161, 255, 0.2);
+    }
+
+    .field-row input::placeholder {
+      color: var(--input_tip);
+      opacity: 1;
+    }
+
+    .field-row input[type="number"] {
+      -moz-appearance: textfield;
+    }
+
+    .field-row input[type="number"]::-webkit-outer-spin-button,
+    .field-row input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .button-row {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .action-button {
+      background: #165b99;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.2;
+      min-height: 48px;
+      padding: 12px 18px;
+      text-align: center;
+      transition: background 0.16s ease, color 0.16s ease;
+    }
+
+    .action-button:hover,
+    .action-button:focus {
+      background: #4ea1ff;
+      color: #fff;
+    }
+
+    .action-button.secondary {
+      background: #1b325a;
+    }
+
+    .action-button.secondary:hover,
+    .action-button.secondary:focus {
+      background: #2b4f86;
+    }
+
+    .output-panel {
+      background: #01101a;
+      border: 1px solid #165b99;
+      border-radius: 8px;
+      display: grid;
+      gap: 0.75rem;
+      padding: 1rem;
+    }
+
+    .output-panel h4 {
+      margin: 0;
+    }
+
+    .result-value {
+      background: #01101a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: #d4eaff;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 16px;
+      min-height: 44px;
+      overflow-wrap: anywhere;
+      padding: 10px 12px;
+    }
+
+    .result-value.placeholder {
+      color: var(--input_tip);
+    }
+
+    .status {
+      color: #90ee90;
+      min-height: 1.5em;
+    }
+
+    .status.error {
+      color: #ff6f6f;
+    }
+
+    .status.warning {
+      color: #e6d37a;
+    }
+
+    @media (max-width: 640px) {
+      .field-row {
+        align-items: stretch;
+        grid-template-columns: 1fr;
+      }
+
+      .button-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <section class="tool-panel">
+      <div class="tool-header">
+        <a class="back-button" href="../../index.html#utilities" aria-label="Back" title="Back" onclick="if (history.length > 1) { history.back(); } else { location.href = this.href; } return false;"></a>
+        <h3>Bit Shift Calculator</h3>
+      </div>
+
+      <div class="shift-form">
+        <div class="input-grid">
+          <div class="field-row">
+            <label for="number-format">Select datatype</label>
+            <select id="number-format">
+              <option value="decimal">Decimal</option>
+              <option value="hexadecimal">Hexadecimal</option>
+              <option value="binary">Binary</option>
+            </select>
+          </div>
+
+          <div class="field-row">
+            <label for="number-input">Enter number</label>
+            <input id="number-input" type="text" inputmode="text" spellcheck="false" placeholder="Example: 45">
+          </div>
+
+          <div class="field-row">
+            <label for="shift-input">Number of bits to shift</label>
+            <input id="shift-input" type="number" min="0" step="1" placeholder="Example: 2">
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button class="action-button" id="shift-left-button" type="button">Shift Left</button>
+          <button class="action-button secondary" id="reset-button" type="button">Reset</button>
+          <button class="action-button" id="shift-right-button" type="button">Shift Right</button>
+        </div>
+
+        <div class="output-panel">
+          <h4>Output</h4>
+
+          <div class="output-grid">
+            <div class="field-row">
+              <label for="decimal-result">Decimal result</label>
+              <output class="result-value placeholder" id="decimal-result">Result will appear here.</output>
+            </div>
+
+            <div class="field-row">
+              <label for="hex-result">Hexadecimal result</label>
+              <output class="result-value placeholder" id="hex-result">Result will appear here.</output>
+            </div>
+
+            <div class="field-row">
+              <label for="binary-result">Binary result</label>
+              <output class="result-value placeholder" id="binary-result">Result will appear here.</output>
+            </div>
+          </div>
+        </div>
+
+        <div class="status" id="status-message" aria-live="polite"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const numberFormat = document.getElementById('number-format');
+    const numberInput = document.getElementById('number-input');
+    const shiftInput = document.getElementById('shift-input');
+    const shiftLeftButton = document.getElementById('shift-left-button');
+    const shiftRightButton = document.getElementById('shift-right-button');
+    const resetButton = document.getElementById('reset-button');
+    const decimalResult = document.getElementById('decimal-result');
+    const binaryResult = document.getElementById('binary-result');
+    const hexResult = document.getElementById('hex-result');
+    const statusMessage = document.getElementById('status-message');
+
+    const examples = {
+      binary: 'Example: 101101',
+      decimal: 'Example: 45',
+      hexadecimal: 'Example: 2D'
+    };
+
+    function setStatus(message, tone = '') {
+      statusMessage.textContent = message;
+      statusMessage.classList.toggle('error', tone === 'error');
+      statusMessage.classList.toggle('warning', tone === 'warning');
+    }
+
+    function setResult(element, value) {
+      element.textContent = value;
+      element.classList.toggle('placeholder', value === '');
+    }
+
+    function clearResults() {
+      [decimalResult, binaryResult, hexResult].forEach((element) => {
+        element.textContent = 'Result will appear here.';
+        element.classList.add('placeholder');
+      });
+    }
+
+    function parseInput() {
+      const rawValue = numberInput.value.trim();
+      const rawShift = shiftInput.value.trim();
+
+      if (!rawValue) {
+        throw new Error('Enter a number to shift.');
+      }
+
+      if (!rawShift) {
+        throw new Error('Enter how many bits to shift.');
+      }
+
+      if (!/^\d+$/.test(rawShift)) {
+        throw new Error('The shift amount must be a whole number.');
+      }
+
+      const shift = BigInt(rawShift);
+      const value = parseNumberValue(rawValue);
+
+      return { value, shift };
+    }
+
+    function parseNumberValue(rawValue) {
+      let value;
+
+      if (numberFormat.value === 'binary') {
+        const normalized = rawValue.replace(/^0b/i, '');
+
+        if (!/^[01]+$/.test(normalized)) {
+          throw new Error('Binary input can contain only 0 and 1.');
+        }
+
+        value = BigInt(`0b${normalized}`);
+      } else if (numberFormat.value === 'hexadecimal') {
+        const normalized = rawValue.replace(/^0x/i, '').replace(/^#/, '').replace(/^\$/, '');
+
+        if (!/^[0-9a-f]+$/i.test(normalized)) {
+          throw new Error('Hexadecimal input can contain only 0-9 and A-F.');
+        }
+
+        value = BigInt(`0x${normalized}`);
+      } else {
+        if (!/^[+-]?\d+$/.test(rawValue)) {
+          throw new Error('Decimal input must be a whole number.');
+        }
+
+        value = BigInt(rawValue);
+      }
+
+      return value;
+    }
+
+    function formatSigned(value, radix) {
+      if (value < 0n) {
+        return `-${(-value).toString(radix)}`;
+      }
+
+      return value.toString(radix);
+    }
+
+    function formatInputValue(value) {
+      if (numberFormat.value === 'binary') {
+        return formatSigned(value, 2);
+      }
+
+      if (numberFormat.value === 'hexadecimal') {
+        return formatSigned(value, 16).toUpperCase();
+      }
+
+      return value.toString(10);
+    }
+
+    function spinNumberInput(direction) {
+      const rawValue = numberInput.value.trim();
+      let value = rawValue ? parseNumberValue(rawValue) : 0n;
+      value += direction === 'up' ? 1n : -1n;
+
+      if (numberFormat.value !== 'decimal' && value < 0n) {
+        value = 0n;
+      }
+
+      numberInput.value = formatInputValue(value);
+      clearResults();
+      setStatus('');
+    }
+
+    function renderResults(value) {
+      setResult(decimalResult, value.toString(10));
+      setResult(binaryResult, formatSigned(value, 2));
+      setResult(hexResult, formatSigned(value, 16).toUpperCase());
+    }
+
+    function shift(direction) {
+      try {
+        const { value, shift } = parseInput();
+        const result = direction === 'left'
+          ? value << shift
+          : value >> shift;
+
+        renderResults(result);
+        setStatus(direction === 'left' ? 'Shifted left.' : 'Shifted right.');
+      } catch (error) {
+        clearResults();
+        setStatus(error.message, 'error');
+      }
+    }
+
+    function resetForm() {
+      numberFormat.value = 'decimal';
+      numberInput.value = '';
+      shiftInput.value = '';
+      numberInput.placeholder = examples.decimal;
+      clearResults();
+      setStatus('');
+      numberInput.focus();
+    }
+
+    numberFormat.addEventListener('change', () => {
+      numberInput.placeholder = examples[numberFormat.value];
+      clearResults();
+      setStatus('');
+    });
+
+    shiftLeftButton.addEventListener('click', () => shift('left'));
+    shiftRightButton.addEventListener('click', () => shift('right'));
+    resetButton.addEventListener('click', resetForm);
+
+    [numberInput, shiftInput].forEach((input) => {
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          shift('left');
+        }
+      });
+    });
+
+    shiftInput.addEventListener('wheel', (event) => {
+      if (document.activeElement !== shiftInput) return;
+
+      event.preventDefault();
+
+      if (event.deltaY < 0) {
+        shiftInput.stepUp();
+      } else if (Number(shiftInput.value) > 0) {
+        shiftInput.stepDown();
+      }
+    });
+
+    numberInput.addEventListener('wheel', (event) => {
+      if (document.activeElement !== numberInput) return;
+
+      event.preventDefault();
+
+      try {
+        spinNumberInput(event.deltaY < 0 ? 'up' : 'down');
+      } catch (error) {
+        setStatus(error.message, 'error');
+      }
+    });
+  </script>
+</body>
+</html>
