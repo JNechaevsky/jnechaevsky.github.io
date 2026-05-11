@@ -1,0 +1,484 @@
+
+<!--
+  MIT License
+
+  Copyright (c) 2026 Polina "Aura" N.
+  Copyright (c) 2026 Julia Nechaevskaya
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Julia Nechaevskaya">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  <meta http-equiv="pragma" content="no-cache">
+
+  <title>Allman Formatter</title>
+
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="help" href="mailto:www-validator@w3.org">
+  <link rel="start" href="../../" title="Projects">
+
+  <style>
+    .formatter-layout {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .editor-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .editor-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .editor-panel label {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .code-area {
+      background: #01101a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: #d4eaff;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 15px;
+      line-height: 1.5;
+      min-height: 420px;
+      outline: none;
+      padding: 14px;
+      resize: vertical;
+      tab-size: 4;
+      white-space: pre;
+      width: 100%;
+    }
+
+    .code-area:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(78, 161, 255, 0.2);
+    }
+
+    .button-row {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .action-button {
+      background: #165b99;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      min-height: 48px;
+      padding: 12px 18px;
+      transition: background 0.16s ease;
+    }
+
+    .action-button:hover,
+    .action-button:focus {
+      background: #4ea1ff;
+    }
+
+    .action-button.secondary {
+      background: #1b325a;
+    }
+
+    .action-button.secondary:hover,
+    .action-button.secondary:focus {
+      background: #2b4f86;
+    }
+
+    .status {
+      color: #90ee90;
+      min-height: 1.5em;
+    }
+
+    .status.error {
+      color: #ff6f6f;
+    }
+
+    @media (max-width: 900px) {
+      .editor-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .button-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <section class="tool-panel">
+      <div class="tool-header">
+        <a
+          class="back-button"
+          href="../../index.html#utilities"
+          aria-label="Back"
+          title="Back"
+          onclick="if (history.length > 1) { history.back(); } else { location.href = this.href; } return false;">
+        </a>
+
+        <h3>Allman Formatter</h3>
+      </div>
+
+      <div class="formatter-layout">
+        <div class="editor-grid">
+          <div class="editor-panel">
+            <label for="input-code">Input code</label>
+
+            <textarea
+              id="input-code"
+              class="code-area"
+              spellcheck="false"
+              placeholder="Paste your code here..."></textarea>
+          </div>
+
+          <div class="editor-panel">
+            <label for="output-code">Formatted result</label>
+
+            <textarea
+              id="output-code"
+              class="code-area"
+              spellcheck="false"
+              readonly
+              placeholder="Formatted code will appear here..."></textarea>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button
+            class="action-button"
+            id="format-button"
+            type="button">
+            Format Code
+          </button>
+
+          <button
+            class="action-button secondary"
+            id="copy-button"
+            type="button">
+            Copy Result
+          </button>
+
+          <button
+            class="action-button secondary"
+            id="clear-button"
+            type="button">
+            Clear
+          </button>
+        </div>
+
+        <div class="status" id="status-message"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const inputCode =
+      document.getElementById('input-code');
+
+    const outputCode =
+      document.getElementById('output-code');
+
+    const formatButton =
+      document.getElementById('format-button');
+
+    const copyButton =
+      document.getElementById('copy-button');
+
+    const clearButton =
+      document.getElementById('clear-button');
+
+    const statusMessage =
+      document.getElementById('status-message');
+
+    function setStatus(message, isError = false)
+    {
+      statusMessage.textContent = message;
+      statusMessage.classList.toggle('error', isError);
+    }
+
+    function normalizeLine(line)
+    {
+      return line.replace(/\s+$/g, '');
+    }
+
+    function convertToAllman(code)
+    {
+      let text = code.replace(/\r\n/g, '\n');
+
+      // [PN] Move opening braces to new lines.
+      text = text.replace(
+        /([^\s])\s*\{/g,
+        '$1\n{'
+      );
+
+      // [PN] Normalize tabs to spaces.
+      text = text.replace(/\t/g, '    ');
+
+      // [PN] Normalize pointer style.
+      text = text.replace(
+        /([a-zA-Z_][a-zA-Z0-9_]*)\s*\*\s*([a-zA-Z_][a-zA-Z0-9_]*)/g,
+        '$1 *$2'
+      );
+
+      // [PN] Normalize multiple spaces, but keep line-leading indentation.
+      text = text.replace(/^( *)(.*)$/gm, (match, indent, rest) =>
+        indent + rest.replace(/ {2,}/g, ' ')
+      );
+
+      // [PN] Normalize spacing after commas.
+      text = text.replace(/,([^\s])/g, ', $1');
+
+      // [PN] Normalize spaces around operators.
+      text = text.replace(/\s*<=\s*/g, ' <= ');
+      text = text.replace(/\s*>=\s*/g, ' >= ');
+      text = text.replace(/\s*==\s*/g, ' == ');
+      text = text.replace(/\s*!=\s*/g, ' != ');
+      text = text.replace(/(?<![\+\-\*\/\%&\|\^~<>!=])\s*=\s*(?![=<>])/g, ' = ');
+      text = text.replace(/(?<!<)\s*<\s*(?![<=])/g, ' < ');
+      text = text.replace(/(?<!>)\s*>\s*(?![>=])/g, ' > ');
+
+      // [PN] Restore compound operators.
+      text = text.replace(/-\s*>\s*/g, '->');
+      text = text.replace(/<\s*<\s*/g, '<<');
+      text = text.replace(/>\s*>\s*/g, '>>');
+      text = text.replace(/\+\s*\+\s*/g, '++');
+      text = text.replace(/-\s*-\s*/g, '--');
+      text = text.replace(/&\s*&\s*/g, '&&');
+      text = text.replace(/\|\s*\|\s*/g, '||');
+
+      // [PN] Normalize keyword spacing.
+      text = text.replace(/\bif\s*\(/g, 'if (');
+      text = text.replace(/\bfor\s*\(/g, 'for (');
+      text = text.replace(/\bwhile\s*\(/g, 'while (');
+      text = text.replace(/\bswitch\s*\(/g, 'switch (');
+      text = text.replace(/\bcatch\s*\(/g, 'catch (');
+
+      // [PN] Normalize "for" formatting.
+      text = text.replace(
+        /for\s*\(([^;]+);([^;]+);([^)]+)\)/g,
+        function(match, init, cond, step)
+        {
+          return (
+            'for (' +
+            init.trim() +
+            ' ;' +
+            cond.trim() +
+            '; ' +
+            step.trim() +
+            ')'
+          );
+        }
+      );
+
+      const lines = text.split('\n');
+
+      let baseIndent = 0;
+
+      for (let i = 0; i < lines.length; i++)
+      {
+        const trimmed = lines[i].trim();
+
+        if (trimmed !== '')
+        {
+          const match = lines[i].match(/^[ ]*/);
+          baseIndent = match ? match[0].length : 0;
+          break;
+        }
+      }
+
+      let indentLevel = 0;
+      const result = [];
+
+      for (let i = 0; i < lines.length; i++)
+      {
+        const rawLine = normalizeLine(lines[i]);
+        let line = rawLine.trim();
+
+        if (line === '')
+        {
+          result.push('');
+          continue;
+        }
+
+        if (
+          line.startsWith('}') ||
+          line.startsWith('};')
+        )
+        {
+          indentLevel--;
+        }
+
+        if (indentLevel < 0)
+        {
+          indentLevel = 0;
+        }
+
+        const indent = ' '.repeat(baseIndent + indentLevel * 4);
+
+        result.push(indent + line);
+
+        const openCount =
+          (line.match(/\{/g) || []).length;
+
+        const closeCount =
+          (line.match(/\}/g) || []).length;
+
+        indentLevel += openCount;
+        indentLevel -= closeCount;
+
+        if (line.startsWith('}'))
+        {
+          indentLevel++;
+        }
+
+        if (indentLevel < 0)
+        {
+          indentLevel = 0;
+        }
+      }
+
+      return result.join('\n');
+    }
+
+    function formatCode()
+    {
+      const source = inputCode.value;
+
+      if (!source.trim())
+      {
+        setStatus('Paste some code first.', true);
+        return;
+      }
+
+      try
+      {
+        const formatted =
+          convertToAllman(source);
+
+        outputCode.value = formatted;
+
+        setStatus('Code formatted successfully.');
+      }
+      catch (error)
+      {
+        setStatus(
+          'Formatting failed.',
+          true
+        );
+      }
+    }
+
+    async function copyResult()
+    {
+      if (!outputCode.value.trim())
+      {
+        setStatus('Nothing to copy.', true);
+        return;
+      }
+
+      try
+      {
+        await navigator.clipboard.writeText(
+          outputCode.value
+        );
+
+        setStatus('Formatted code copied.');
+      }
+      catch (error)
+      {
+        setStatus(
+          'Clipboard access failed.',
+          true
+        );
+      }
+    }
+
+    function clearAll()
+    {
+      inputCode.value = '';
+      outputCode.value = '';
+
+      setStatus('');
+
+      inputCode.focus();
+    }
+
+    formatButton.addEventListener(
+      'click',
+      formatCode
+    );
+
+    copyButton.addEventListener(
+      'click',
+      copyResult
+    );
+
+    clearButton.addEventListener(
+      'click',
+      clearAll
+    );
+
+    inputCode.addEventListener(
+      'keydown',
+      function(event)
+      {
+        if (
+          event.ctrlKey &&
+          event.key === 'Enter'
+        )
+        {
+          formatCode();
+        }
+      }
+    );
+
+    // [PN] Auto-format pasted code after short delay.
+    inputCode.addEventListener(
+      'paste',
+      function()
+      {
+        setTimeout(formatCode, 50);
+      }
+    );
+  </script>
+</body>
+</html>
