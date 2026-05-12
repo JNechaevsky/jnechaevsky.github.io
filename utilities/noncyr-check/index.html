@@ -16,13 +16,22 @@
       width: 100%;
       height: 200px;
       background: #01101a;
-      color: #d4eaff;
-      border: none;
+      color: var(--text);
+      border: 1px solid var(--border);
       border-radius: 8px;
       padding: 12px;
       font-size: 16px;
       resize: vertical;
       outline: none;
+      transition: border-color 0.2s;
+    }
+    
+    textarea:focus {
+      border-color: var(--accent);
+    }
+    
+    textarea::placeholder {
+      color: var(--input_tip);
     }
     .button-row {
       display: flex;
@@ -71,6 +80,7 @@
       font-size: 16px;
       background: #01101a;
       padding: 12px;
+      border: 1px solid var(--border);
       border-radius: 8px;
     }
     #fix-btn {
