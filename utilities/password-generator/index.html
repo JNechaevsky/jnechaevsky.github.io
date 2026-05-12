@@ -1,0 +1,483 @@
+<!--
+  MIT License
+
+  Copyright (c) 2026 Polina "Aura" N.
+  Copyright (c) 2026 Julia Nechaevskaya
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Julia Nechaevskaya">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  <meta http-equiv="pragma" content="no-cache">
+
+  <title>Password Generator</title>
+
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+  <style>
+    .generator-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .settings-card,
+    .result-box {
+      background: #01101a;
+      border: 1px solid #165b99;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .settings-row {
+      align-items: end;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .settings-row .form-group {
+      width: 150px;
+    }
+
+    .form-group label,
+    .result-title {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .form-group input[type="number"] {
+      background: #01101a;
+      border: 1px solid #165b99;
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 16px;
+      min-height: 44px;
+      outline: none;
+      padding: 12px;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease;
+      width: 100%;
+      -moz-appearance: textfield;
+    }
+
+    .form-group input[type="number"]::-webkit-outer-spin-button,
+    .form-group input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .form-group input[type="number"]:focus {
+      border-color: #4ea1ff;
+      box-shadow: 0 0 0 2px rgba(78, 161, 255, 0.2);
+    }
+
+    .checkbox-row {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.5rem;
+      justify-content: flex-start;
+    }
+
+    .option-label {
+      align-items: center;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      gap: 0.45rem;
+      min-height: 32px;
+      white-space: nowrap;
+    }
+
+    .option-label input {
+      accent-color: #4ea1ff;
+      height: 18px;
+      width: 18px;
+    }
+
+    .button-row {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-left: auto;
+    }
+
+    .action-button {
+      background: #165b99;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.2;
+      min-height: 44px;
+      min-width: 150px;
+      padding: 12px 20px;
+      text-align: center;
+      transition: background 0.16s ease, color 0.16s ease;
+    }
+
+    .action-button:hover,
+    .action-button:focus {
+      background: #4ea1ff;
+      color: #fff;
+    }
+
+    .action-button.secondary {
+      background: #1b325a;
+    }
+
+    .action-button.secondary:hover,
+    .action-button.secondary:focus {
+      background: #2b4f86;
+    }
+
+    .result-box {
+      display: none;
+    }
+
+    .result-box.show {
+      display: flex;
+    }
+
+    .result-header {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: space-between;
+    }
+
+    .password-list {
+      color: #d4eaff;
+      display: block;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 16px;
+      line-height: 1.55;
+      list-style: disc;
+      margin: 0;
+      padding-left: 1.35rem;
+    }
+
+    .password-item {
+      margin: 0.15rem 0;
+      overflow-wrap: anywhere;
+    }
+
+    .status {
+      color: #90ee90;
+      min-height: 1.5em;
+    }
+
+    .status.warning {
+      color: #e6d37a;
+    }
+
+    @media (max-width: 520px) {
+      .action-button {
+        width: 100%;
+      }
+
+      .settings-row {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .settings-row .form-group {
+        width: 100%;
+      }
+
+      .button-row {
+        margin-left: 0;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <section class="tool-panel">
+      <div class="tool-header">
+        <a
+          class="back-button"
+          href="../../utilities.html"
+          aria-label="Back"
+          title="Back"
+          onclick="if (history.length > 1) { history.back(); } else { location.href = this.href; } return false;">
+        </a>
+
+        <h3>Password Generator</h3>
+      </div>
+
+      <div class="generator-form">
+
+        <div class="settings-card">
+          <div class="settings-row">
+              <div class="form-group">
+                <label for="length">Password length:</label>
+                <input
+                  type="number"
+                  id="length"
+                  min="4"
+                  max="64"
+                  value="16">
+              </div>
+
+              <div class="form-group">
+                <label for="count">Count:</label>
+                <input
+                  type="number"
+                  id="count"
+                  min="1"
+                  max="20"
+                  value="5">
+              </div>
+
+              <div class="button-row">
+                <button class="action-button" id="generateButton" type="button">
+                  Generate
+                </button>
+
+                <button class="action-button secondary" id="copyAllButton" type="button">
+                  Copy all
+                </button>
+              </div>
+          </div>
+
+          <div class="form-group">
+            <label>Characters:</label>
+
+            <div class="checkbox-row">
+              <label class="option-label"><input type="checkbox" id="lower" checked> a–z</label>
+              <label class="option-label"><input type="checkbox" id="upper" checked> A–Z</label>
+              <label class="option-label"><input type="checkbox" id="digits" checked> 0–9</label>
+              <label class="option-label"><input type="checkbox" id="symbols"> !@#$%^&*…</label>
+              <label class="option-label"><input type="checkbox" id="uniqueChars"> No repeated characters</label>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="result-box" id="resultBox">
+          <div class="result-header">
+            <div class="result-title">Password variants</div>
+          </div>
+
+          <ul class="password-list" id="passwordList"></ul>
+        </div>
+
+        <div class="status" id="statusMessage" aria-live="polite"></div>
+
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const lengthInput = document.getElementById("length");
+    const countInput = document.getElementById("count");
+    const generateButton = document.getElementById("generateButton");
+    const copyAllButton = document.getElementById("copyAllButton");
+    const passwordList = document.getElementById("passwordList");
+    const resultBox = document.getElementById("resultBox");
+    const statusMessage = document.getElementById("statusMessage");
+
+    let currentPasswords = [];
+
+    function setStatus(message, tone = "")
+    {
+        statusMessage.textContent = message;
+        statusMessage.classList.toggle("warning", tone === "warning");
+    }
+
+    function buildCharset()
+    {
+        let charset = "";
+
+        if (document.getElementById("lower").checked)
+        {
+            charset += "abcdefghijklmnopqrstuvwxyz";
+        }
+
+        if (document.getElementById("upper").checked)
+        {
+            charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        }
+
+        if (document.getElementById("digits").checked)
+        {
+            charset += "0123456789";
+        }
+
+        if (document.getElementById("symbols").checked)
+        {
+            charset += "!@#$%^&*()-_=+[]{};:,.<>/?";
+        }
+
+        return charset;
+    }
+
+    function getRandomIndex(max)
+    {
+        const randomValues = new Uint32Array(1);
+        const limit = Math.floor(0x100000000 / max) * max;
+
+        do
+        {
+            crypto.getRandomValues(randomValues);
+        }
+        while (randomValues[0] >= limit);
+
+        return randomValues[0] % max;
+    }
+
+    function generateSinglePassword(length, charset, uniqueChars)
+    {
+        let result = "";
+        let availableChars = charset;
+
+        for (let i = 0; i < length; i++)
+        {
+            const randomIndex = getRandomIndex(availableChars.length);
+            result += availableChars.charAt(randomIndex);
+
+            if (uniqueChars)
+            {
+                availableChars = availableChars.slice(0, randomIndex) + availableChars.slice(randomIndex + 1);
+            }
+        }
+
+        return result;
+    }
+
+    function renderPasswords(passwords)
+    {
+        passwordList.textContent = "";
+
+        passwords.forEach((password) =>
+        {
+            const item = document.createElement("li");
+
+            item.className = "password-item";
+            item.textContent = password;
+
+
+            passwordList.append(item);
+        });
+
+        resultBox.classList.add("show");
+    }
+
+    function generatePasswords()
+    {
+        const length = Math.max(4, Math.min(64, Number(lengthInput.value) || 16));
+        const passwordCount = Math.max(1, Math.min(20, Number(countInput.value) || 5));
+
+        const charset = buildCharset();
+        const uniqueChars = document.getElementById("uniqueChars").checked;
+
+        if (!charset)
+        {
+            setStatus("Select at least one character set.", "warning");
+            return;
+        }
+
+        if (uniqueChars && length > charset.length)
+        {
+            setStatus(`Only ${charset.length} unique characters are available. Reduce the length or enable more character sets.`, "warning");
+            return;
+        }
+
+        lengthInput.value = length;
+        countInput.value = passwordCount;
+        currentPasswords = Array.from(
+            { length: passwordCount },
+            () => generateSinglePassword(length, charset, uniqueChars));
+
+        renderPasswords(currentPasswords);
+        setStatus(`Generated ${passwordCount} ${passwordCount === 1 ? "password" : "passwords"}.`);
+    }
+
+    async function copyText(text, successMessage)
+    {
+        if (!text)
+        {
+            setStatus("There is nothing to copy yet.", "warning");
+            return;
+        }
+
+        try
+        {
+            await navigator.clipboard.writeText(text);
+            setStatus(successMessage);
+        }
+        catch (error)
+        {
+            setStatus("Could not copy automatically.", "warning");
+        }
+    }
+
+    function copyAllPasswords()
+    {
+        copyText(currentPasswords.join("\n"), "All passwords copied.");
+    }
+
+    function handleNumberInputWheel(event)
+    {
+        event.preventDefault();
+
+        const input = event.currentTarget;
+        const min = Number(input.min);
+        const max = Number(input.max);
+        const step = Number(input.step) || 1;
+        const currentValue = Number(input.value) || min || 0;
+        const direction = event.deltaY < 0 ? 1 : -1;
+        const nextValue = Math.max(min, Math.min(max, currentValue + direction * step));
+
+        input.focus();
+        input.value = nextValue;
+    }
+
+    lengthInput.addEventListener("wheel", handleNumberInputWheel, { passive: false });
+    countInput.addEventListener("wheel", handleNumberInputWheel, { passive: false });
+    generateButton.addEventListener("click", generatePasswords);
+    copyAllButton.addEventListener("click", copyAllPasswords);
+    generatePasswords();
+  </script>
+</body>
+</html>
