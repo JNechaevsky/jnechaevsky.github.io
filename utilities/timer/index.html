@@ -57,14 +57,100 @@
         color: white;
     }
 
+    .timer-back-link {
+        align-items: center;
+        background: #17324f;
+        border-bottom: 0;
+        border-radius: 8px;
+        color: #9bbcd6;
+        display: inline-flex;
+        height: 36px;
+        justify-content: center;
+        width: 36px;
+    }
+
+    .timer-title-row {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+        position: relative;
+    }
+
+    .timer-title-row .timer-back-link {
+        left: 1.5rem;
+        position: absolute;
+    }
+
+    .timer-fullscreen-btn {
+        align-items: center;
+        background: #17324f;
+        border: 0;
+        border-radius: 8px;
+        color: #9bbcd6;
+        cursor: pointer;
+        display: inline-flex;
+        height: 36px;
+        justify-content: center;
+        outline: none;
+        padding: 0;
+        position: absolute;
+        right: 1.5rem;
+        top: 0;
+        transition: background 0.2s ease, color 0.2s ease;
+        width: 36px;
+    }
+
+    .timer-back-link::before {
+        border-bottom: 3px solid currentColor;
+        border-left: 3px solid currentColor;
+        content: "";
+        display: block;
+        height: 9px;
+        margin-left: 2px;
+        transform: rotate(45deg);
+        width: 9px;
+    }
+
+    .timer-back-link:hover,
+    .timer-back-link:focus {
+        background: #22486f;
+        color: #d4eaff;
+    }
+
+    .timer-fullscreen-btn:hover,
+    .timer-fullscreen-btn:focus {
+        background: #22486f;
+        color: #d4eaff;
+    }
+
+    .timer-fullscreen-btn svg {
+        height: 16px;
+        width: 16px;
+    }
+
     .time-inputs input[type="number"] {
-        background-color: var(--bg);
+        background: #01101a;
         color: var(--text);
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        padding: 4px 6px;
-        font-size: 1rem;
-        text-align: center;
+        border: 1px solid #165b99;
+        border-radius: var(--radius);
+        font-size: 16px;
+        outline: none;
+        padding: 0.6rem 1.2rem;
+        transition: border-color 0.16s ease, box-shadow 0.16s ease;
+        -moz-appearance: textfield;
+        width: 4rem;
+    }
+
+    .time-inputs input[type="number"]::-webkit-outer-spin-button,
+    .time-inputs input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .time-inputs input[type="number"]:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px rgba(78, 161, 255, 0.2);
     }
 
     .time-inputs label {
@@ -103,6 +189,7 @@
             const secondsInput = document.getElementById('seconds');
             const countdownDisplay = document.getElementById('countdown');
             const startBtn = document.getElementById('startBtn');
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
             let countdownInterval;
             let totalSecondsStart = 0;
             let totalSeconds = 0;
@@ -172,6 +259,22 @@
                 countdownDisplay.textContent = getFormattedTime(totalSeconds);
             }
 
+            function handleNumberInputWheel(event)
+            {
+                event.preventDefault();
+
+                const input = event.currentTarget;
+                const min = Number(input.min);
+                const max = Number(input.max);
+                const step = Number(input.step) || 1;
+                const currentValue = Number(input.value) || min || 0;
+                const direction = event.deltaY < 0 ? 1 : -1;
+                const nextValue = Math.max(min, Math.min(max, currentValue + direction * step));
+
+                input.focus();
+                input.value = nextValue;
+            }
+
             function tick()
             {
                 if (totalSeconds <= 0)
@@ -218,6 +321,33 @@
                 paused = false;
             }
 
+            function updateFullscreenButton()
+            {
+                const isFullscreen = Boolean(document.fullscreenElement);
+                fullscreenBtn.title = isFullscreen ? 'Exit Fullscreen' : 'Fullscreen';
+                fullscreenBtn.setAttribute('aria-label', isFullscreen ? 'Exit Fullscreen' : 'Fullscreen');
+                fullscreenBtn.setAttribute('aria-pressed', String(isFullscreen));
+            }
+
+            async function toggleFullscreen()
+            {
+                try
+                {
+                    if (document.fullscreenElement)
+                    {
+                        await document.exitFullscreen();
+                    }
+                    else
+                    {
+                        await document.documentElement.requestFullscreen();
+                    }
+                }
+                catch (error)
+                {
+                    console.error('Fullscreen request failed:', error);
+                }
+            }
+
             startBtn.addEventListener('click', () =>
             {
                 countdownDisplay.style.color = '';
@@ -256,11 +386,31 @@
             });
 
             document.getElementById('resetBtn').addEventListener('click', resetTimer);
+            fullscreenBtn.addEventListener('click', toggleFullscreen);
+            document.addEventListener('fullscreenchange', updateFullscreenButton);
+
+            [hoursInput, minutesInput, secondsInput].forEach((input) =>
+            {
+                input.addEventListener('wheel', handleNumberInputWheel, { passive: false });
+            });
+
+            updateFullscreenButton();
         });
 </script>
 
     <section>
-        <h3 style="text-align:center">Countdown Timer</h3>
+        <div class="timer-title-row">
+            <a class="timer-back-link" href="../../index.html#utilities" aria-label="Back" title="Back" onclick="if (history.length > 1) { history.back(); } else { location.href = this.href; } return false;"></a>
+            <h3>Countdown Timer</h3>
+            <button class="timer-fullscreen-btn" id="fullscreenBtn" type="button" aria-pressed="false" title="Fullscreen" aria-label="Fullscreen">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M7 3H3v4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                    <path d="M17 3h4v4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                    <path d="M21 17v4h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                    <path d="M7 21H3v-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                </svg>
+            </button>
+        </div>
             <div class="card" style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-start; justify-content: space-between;">
                 <!-- Left: Settings -->
                 <div style="flex: 1 1 60%; min-width: 280px;">
