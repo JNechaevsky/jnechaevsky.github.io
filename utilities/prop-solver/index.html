@@ -1,0 +1,332 @@
+<!--
+  MIT License
+
+  Copyright (c) 2026 Polina "Aura" N.
+  Copyright (c) 2026 Julia Nechaevskaya
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Julia Nechaevskaya">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  <meta http-equiv="pragma" content="no-cache">
+  <title>Proportion Solver</title>
+
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="help" href="mailto:www-validator@w3.org">
+  <link rel="start" href="../../" title="Projects">
+
+    <style>
+        /* Специфичные стили для решателя */
+        .proportion-grid {
+            display: grid;
+            /* Три колонки: поле, знак, поле */
+            grid-template-columns: 1fr auto 1fr;
+            gap: 1.5rem 1rem; /* Вертикальный 1.5rem, Горизонтальный 1rem */
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .prop-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
+        .prop-input-group label {
+            font-size: 0.9rem;
+            color: var(--muted);
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .prop-input-group input {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.8rem;
+            color: var(--text);
+            font-size: 1.1rem;
+            text-align: center;
+            width: 100%;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        .prop-input-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(78, 161, 255, 0.2);
+        }
+
+        .prop-input-group input::placeholder {
+        color: var(--input_tip);
+        opacity: 1;
+        }
+
+        .prop-row {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 100px;
+        }
+        
+        .prop-symbol {
+            font-size: 1.5rem;
+            color: var(--accent);
+            text-align: center;
+            font-weight: bold;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1.4rem; /* примерная высота label + gap */
+        }
+
+        .result-box {
+            background: rgba(78, 161, 255, 0.1);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            text-align: center;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: all .3s ease;
+        }
+
+        .result-label {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-hover);
+            word-break: break-all;
+        }
+
+        .btn-action {
+            display: block;
+            width: 100%;
+            margin-top: 1.5rem;
+            padding: 0.8rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: .2s;
+            font-size: 1rem;
+            font-family: var(--font);
+        }
+
+        .btn-action:hover {
+            border-color: var(--accent);
+            color: var(--text);
+            background: rgba(78, 161, 255, 0.1);
+        }
+
+        /* Адаптив для мобильных: превращаем в вертикальный стек */
+        @media (max-width: 520px) {
+            .proportion-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .prop-symbol {
+                transform: rotate(90deg);
+                margin: -0.5rem 0;
+                height: 20px;
+            }
+        }
+
+        /* Скрыть стрелки инпут-полей в Chrome, Safari, Edge, Opera */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Скрыть стрелки в Firefox */
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <section class="card">
+            <div class="tool-header">
+                <a class="back-button" href="../../utilities.html#utilities" aria-label="Back" title="Back" onclick="if (history.length > 1) { history.back(); } else { location.href = this.href; } return false;"></a>
+                <h2>Proportion Solver</h2>
+                <div></div>
+            </div>
+            
+            <p class="small-text" style="text-align: center; margin-top: 1rem;">
+                Formula: A / B = C / D. Enter three values.
+            </p>
+
+            <div class="proportion-grid">
+                <!-- Ряд 1: A = C -->
+                <div class="prop-input-group">
+                    <label for="valA">A</label>
+                    <input type="number" id="valA" placeholder="?" oninput="solveProportion()">
+                </div>
+                
+                <div class="prop-symbol">=</div>
+
+                <div class="prop-input-group">
+                    <label for="valC">C</label>
+                    <input type="number" id="valC" placeholder="?" oninput="solveProportion()">
+                </div>
+
+                <!-- Ряд 2: B = D -->
+                <div class="prop-input-group">
+                    <label for="valB">B</label>
+                    <input type="number" id="valB" placeholder="?" oninput="solveProportion()">
+                </div>
+
+                <div class="prop-symbol">=</div>
+
+                <div class="prop-input-group">
+                    <label for="valD">D</label>
+                    <input type="number" id="valD" placeholder="?" oninput="solveProportion()">
+                </div>
+            </div>
+
+            <div class="result-box">
+                <div class="result-label">Found value</div>
+                <div class="result-value" id="resultDisplay">—</div>
+            </div>
+
+            <button class="btn-action" onclick="resetFields()">Reset</button>
+        </section>
+    </div>
+
+    <script>
+        const inputs = {
+            a: document.getElementById('valA'),
+            b: document.getElementById('valB'),
+            c: document.getElementById('valC'),
+            d: document.getElementById('valD')
+        };
+        const resultDisplay = document.getElementById('resultDisplay');
+
+        function solveProportion()
+        {
+            const vals = {};
+            let emptyKey = null;
+            let filledCount = 0;
+
+            // Считываем значения
+            for (const key in inputs)
+            {
+                const raw = inputs[key].value.trim();
+                if (raw === '')
+                {
+                    emptyKey = key;
+                }
+                else
+                {
+                    const num = parseFloat(raw);
+                    if (!isNaN(num))
+                    {
+                        vals[key] = num;
+                        filledCount++;
+                    }
+                }
+            }
+
+            // Нужно ровно 3 заполненных поля и 1 пустое
+            if (filledCount !== 3 || !emptyKey)
+            {
+                resultDisplay.textContent = '—';
+                return;
+            }
+
+            let result = null;
+
+            // A / B = C / D  =>  A * D = B * C
+            switch (emptyKey)
+            {
+                case 'a': // A = (B * C) / D
+                    if (vals.d !== 0) result = (vals.b * vals.c) / vals.d;
+                    break;
+                case 'b': // B = (A * D) / C
+                    if (vals.c !== 0) result = (vals.a * vals.d) / vals.c;
+                    break;
+                case 'c': // C = (A * D) / B
+                    if (vals.b !== 0) result = (vals.a * vals.d) / vals.b;
+                    break;
+                case 'd': // D = (B * C) / A
+                    if (vals.a !== 0) result = (vals.b * vals.c) / vals.a;
+                    break;
+            }
+
+            if (result !== null)
+            {
+                // Убираем лишние нули после запятой, но оставляем точность до 6 знаков
+                const formatted = parseFloat(result.toFixed(6));
+                resultDisplay.textContent = formatted;
+            }
+            else
+            {
+                resultDisplay.textContent = 'Division by zero';
+            }
+        }
+
+        function resetFields()
+        {
+            for (const key in inputs)
+            {
+                inputs[key].value = '';
+            }
+            resultDisplay.textContent = '—';
+        }
+
+        // Обработка колёсика мыши для полей ввода
+        document.querySelectorAll('input[type="number"]').forEach(function(input) {
+            input.addEventListener('wheel', function(e) {
+                e.preventDefault(); // Предотвратить прокрутку страницы
+
+                var step = e.deltaY < 0 ? 1 : -1; // Вверх = +1, вниз = -1
+                var currentValue = parseFloat(this.value) || 0;
+                this.value = currentValue + step;
+
+                // Если есть associated output, обновить его
+                this.dispatchEvent(new Event('input'));
+            });
+        });
+
+    </script>
+</body>
+</html>
