@@ -30,14 +30,16 @@
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   <meta http-equiv="pragma" content="no-cache">
-  <title>Image Compressor</title>
+  <title>Image Compressor – PNG/JPG/PDF Compression Tool</title>
+
+  <meta name="description" content="Free online image compressor for PNG and JPG files. Supports PDF conversion to images. Batch compression with quality control.">
 
   <!-- Modern, minimal CSS -->
   <link rel="stylesheet" href="../../assets/css/styles.css">
 
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="help" href="mailto:www-validator@w3.org">
-  <link rel="start" href="../../" title="Projects">
+  <link rel="start" href="../../" title="Utilities">
 
   <style>
     .tool-panel {
@@ -244,14 +246,14 @@
     <section class="tool-panel">
       <div class="tool-header">
         <a class="back-button" href="../../utilities.html#utilities" aria-label="Back" title="Back" onclick="if (history.length > 1) { history.back(); } else { location.href = this.href; } return false;"></a>
-        <h3>Image Compressor</h3>
+        <h3>Image and PDF Compressor</h3>
       </div>
 
-      <div class="drop-zone" id="drop-zone" tabindex="0" role="button" aria-label="Choose PNG or JPG files">
-        <h4>Drop PNG or JPG here</h4>
+      <div class="drop-zone" id="drop-zone" tabindex="0" role="button" aria-label="Choose PNG, JPG, or PDF files">
+        <h4>Drop PNG, JPG, or PDF here</h4>
         <p>Files stay in this browser tab.</p>
         <label class="pick-button" for="file-input">Choose files</label>
-        <input class="file-input" id="file-input" type="file" accept="image/png,image/jpeg,.png,.jpg,.jpeg" multiple>
+        <input class="file-input" id="file-input" type="file" accept="image/png,image/jpeg,application/pdf,.png,.jpg,.jpeg,.pdf" multiple>
       </div>
 
       <div class="button-row">
@@ -279,6 +281,15 @@
     </section>
   </div>
 
+  <script src="pdf.min.js"></script>
+  <script src="jspdf.umd.min.js"></script>
+  <script>
+    // Use noWorker mode to avoid CORS issues with file:// protocol
+    if (typeof pdfjsLib !== 'undefined') {
+      pdfjsLib.GlobalWorkerOptions.noWorker = true;
+      pdfjsLib.GlobalWorkerOptions.workerSrc = '';
+    }
+  </script>
   <script src="pako.min.js"></script>
   <script src="UPNG.js"></script>
   <script src="jszip.min.js"></script>
@@ -298,6 +309,7 @@
     let loadedRows = [];
     let viewToken = 0;
     const ZIP_DOWNLOAD_MIN_RESULTS = 1;
+    const pdfjsLib = window.pdfjsLib || null;
 
     function formatBytes(bytes) {
       if (bytes < 1024) return `${bytes} B`;
@@ -320,15 +332,20 @@
     function getSourceType(file) {
       if (file.type === 'image/jpeg' || /\.(jpe?g)$/i.test(file.name)) return 'image/jpeg';
       if (file.type === 'image/png' || /\.png$/i.test(file.name)) return 'image/png';
+      if (file.type === 'application/pdf' || /\.pdf$/i.test(file.name)) return 'application/pdf';
       return '';
     }
 
     function isSupported(file) {
-      return Boolean(getSourceType(file));
+      const type = getSourceType(file);
+      return type === 'image/jpeg' || type === 'image/png' || type === 'application/pdf';
     }
 
-    function hasSelectedJpeg() {
-      return selectedFiles.some((file) => getSourceType(file) === 'image/jpeg');
+    function hasCompressibleFiles() {
+      return selectedFiles.some((file) => {
+        const type = getSourceType(file);
+        return type === 'image/jpeg' || type === 'application/pdf';
+      });
     }
 
     function getOutputType(file) {
@@ -338,6 +355,7 @@
     function getExtension(type) {
       if (type === 'image/jpeg') return 'jpg';
       if (type === 'image/png') return 'png';
+      if (type === 'application/pdf') return 'pdf';
       return 'img';
     }
 
@@ -412,8 +430,78 @@
     }
 
     async function compressFile(file) {
+      const sourceType = getSourceType(file);
       const outputType = getOutputType(file);
       const quality = outputType === 'image/jpeg' ? getJpegQuality() : undefined;
+
+      if (sourceType === 'application/pdf') {
+        if (!pdfjsLib) {
+          throw new Error('PDF.js is not loaded');
+        }
+        if (!window.jspdf) {
+          throw new Error('jsPDF is not loaded. Please check your internet connection or include jspdf.umd.min.js');
+        }
+
+        const buffer = await file.arrayBuffer();
+        const loadingTask = pdfjsLib.getDocument({
+          data: buffer,
+          useWorkerFetch: false,
+          useRangeRequests: false
+        });
+        const pdf = await loadingTask.promise;
+        const numPages = pdf.numPages;
+
+        const { jsPDF } = window.jspdf;
+        const newPdf = new jsPDF();
+        const quality = getJpegQuality();
+
+        for (let i = 1; i <= numPages; i++) {
+          const page = await pdf.getPage(i);
+          const viewport = page.getViewport({ scale: 1.5 }); // Баланс между качеством и размером
+
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d', { alpha: false });
+          canvas.width = Math.floor(viewport.width);
+          canvas.height = Math.floor(viewport.height);
+
+          await page.render({ canvasContext: ctx, viewport }).promise;
+
+          // Сжимаем страницу в JPEG с выбранным качеством
+          const imgData = canvas.toDataURL('image/jpeg', quality);
+          
+          const pageWidth = newPdf.internal.pageSize.getWidth();
+          const pageHeight = newPdf.internal.pageSize.getHeight();
+          
+          // Масштабируем изображение под страницу PDF, сохраняя пропорции
+          const imgProps = newPdf.getImageProperties(imgData);
+          const pdfWidth = pageWidth;
+          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+          if (i > 1) {
+            newPdf.addPage();
+          }
+          newPdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+          
+          // Очищаем canvas для экономии памяти
+          canvas.width = 0;
+          canvas.height = 0;
+        }
+
+        pdf.destroy();
+
+        const pdfBlob = newPdf.output('blob');
+
+        return {
+          blob: pdfBlob,
+          outputType: 'application/pdf',
+          outputName: getOutputName(file, 'application/pdf'),
+          qualityPercent: Math.round(quality * 100),
+          width: 0,
+          height: 0,
+          isLarger: pdfBlob.size >= file.size
+        };
+      }
+
       const image = await loadImage(file);
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d', { alpha: outputType !== 'image/jpeg' });
@@ -458,7 +546,7 @@
     function renderSelection() {
       compressButton.disabled = selectedFiles.length === 0;
       clearButton.disabled = selectedFiles.length === 0 && results.children.length === 0;
-      jpegQualitySelect.disabled = !hasSelectedJpeg();
+      jpegQualitySelect.disabled = !hasCompressibleFiles();
 
       if (selectedFiles.length === 0) {
         setStatus('');
@@ -466,7 +554,9 @@
       }
 
       const word = selectedFiles.length === 1 ? 'file' : 'files';
-      setStatus(`${selectedFiles.length} ${word} selected.`);
+      const pdfCount = selectedFiles.filter((file) => getSourceType(file) === 'application/pdf').length;
+      const statusText = `${selectedFiles.length} ${word} selected${pdfCount > 0 ? ` (${pdfCount} PDF)` : ''}.`;
+      setStatus(statusText);
     }
 
     async function renderLoadedFiles(token) {
@@ -483,7 +573,7 @@
         name.className = 'result-name';
         name.textContent = file.name;
         meta.className = 'result-meta';
-        meta.textContent = `${formatBytes(file.size)}. Reading image size...`;
+        meta.textContent = `${formatBytes(file.size)}. Reading file...`;
         loadedLabel.className = 'loaded-label';
         loadedLabel.textContent = 'Loaded';
 
@@ -498,16 +588,35 @@
         if (token !== viewToken) return;
 
         try {
-          const image = await loadImage(row.file);
-          const dimensions = `${image.width} x ${image.height}px`;
-          image.close();
+          const type = getSourceType(row.file);
+          if (type === 'application/pdf') {
+            if (!pdfjsLib) {
+              if (token === viewToken) {
+                row.meta.textContent = `${formatBytes(row.file.size)}. PDF.js not loaded.`;
+              }
+              continue;
+            }
 
-          if (token === viewToken) {
-            row.meta.textContent = `${formatBytes(row.file.size)}. ${dimensions}.`;
+            const buffer = await row.file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: buffer, useWorkerFetch: false, useRangeRequests: false }).promise;
+            const numPages = pdf.numPages;
+            pdf.destroy();
+
+            if (token === viewToken) {
+              row.meta.textContent = `${formatBytes(row.file.size)}. ${numPages} page(s) (PDF)`;
+            }
+          } else {
+            const image = await loadImage(row.file);
+            const dimensions = `${image.width} x ${image.height}px`;
+            image.close();
+
+            if (token === viewToken) {
+              row.meta.textContent = `${formatBytes(row.file.size)}. ${dimensions}.`;
+            }
           }
         } catch (error) {
           if (token === viewToken) {
-            row.meta.textContent = `${formatBytes(row.file.size)}. Could not read image size.`;
+            row.meta.textContent = `${formatBytes(row.file.size)}. Could not read file.`;
           }
         }
       }
@@ -540,11 +649,20 @@
     function renderProcessing(row) {
       const processingLabel = document.createElement('span');
       processingLabel.className = 'processing-label';
-      processingLabel.textContent = 'Processing';
+      processingLabel.textContent = 'Processing...';
       setRowAction(row, processingLabel);
     }
 
     function renderResult(file, compressed, row) {
+      if (compressed.isLarger) {
+        row.meta.innerHTML = `Original: ${formatBytes(file.size)}, Output: ${formatBytes(compressed.blob.size)}. <br>Compression would increase file size, try to reduce JPEG quality.`;
+        const skippedLabel = document.createElement('span');
+        skippedLabel.className = 'skipped-label';
+        skippedLabel.textContent = 'Skipped';
+        setRowAction(row, skippedLabel);
+        return false;
+      }
+
       const savedBytes = file.size - compressed.blob.size;
       const savedPercent = file.size > 0 ? (savedBytes / file.size) * 100 : 0;
       const isSmaller = savedBytes > 0;
@@ -556,7 +674,9 @@
         ? ''
         : ` JPEG quality: ${compressed.qualityPercent}%.`;
 
-      row.meta.textContent = `${sizeText}. ${compressed.width} x ${compressed.height}px.${qualityText}`;
+      const isPdf = getSourceType(file) === 'application/pdf';
+      const dimensionText = isPdf ? '' : ` ${compressed.width} x ${compressed.height}px.`;
+      row.meta.textContent = `${sizeText}.${dimensionText}${qualityText}`;
 
       if (!isSmaller) {
         const skippedLabel = document.createElement('span');
@@ -664,10 +784,11 @@
       }
 
       const word = selectedFiles.length === 1 ? 'file' : 'files';
+      const pdfCount = selectedFiles.filter((file) => getSourceType(file) === 'application/pdf').length;
       const skippedText = skipped > 0 ? `, ${skipped} already compact` : '';
       const failureText = failures > 0 ? `, ${failures} failed` : '';
       setStatus(
-        `Finished ${selectedFiles.length} ${word}${skippedText}${failureText}.`,
+        `Finished ${selectedFiles.length} ${word}${skippedText}${failureText}${pdfCount > 0 ? ` (${pdfCount} PDF converted)` : ''}.`,
         failures > 0 ? 'error' : (skipped > 0 ? 'warning' : '')
       );
       compressButton.disabled = selectedFiles.length === 0;
