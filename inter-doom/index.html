@@ -20,64 +20,6 @@
     <link rel="help" href="mailto:www-validator@w3.org">
     <link rel="start" href="./" title="International Doom">
 
-    <!-- Tiny helper for sliders (can stay inline) -->
-    <style>
-        /* Slider overrides to fit dark theme */
-        .slider-container {
-            position:relative;
-            width:100%;
-            max-width:640px;
-            margin:0 auto 2.5rem;
-            border-radius:var(--radius);
-            overflow:hidden;
-            box-shadow:var(--shadow);
-            aspect-ratio:16/9;
-            background:var(--bg-card);
-        }
-        .slider-img {
-            width:100%; height:100%;
-            object-fit:cover;
-            display:block;
-        }
-        .slider-img-clip {
-            position:absolute;
-            top:0; left:0;
-            width:50%; height:100%;
-            overflow:hidden;
-            border-right:4px solid #ffffff00;
-            transition:none;
-        }
-        /* [PN] область захвата слайдера */
-        .slider-handle {
-            position: absolute;
-            top: 0; left: 50%;
-            width: 22px; height: 100%;
-            background: transparent; /* Прозрачный фон, чтобы не мешал */
-            cursor: ew-resize;
-            transform: translateX(-75%);
-            z-index: 3;
-        }
-        /* [PN] отображаемая полоска */
-        .slider-handle::after {
-            content: "";
-            position: absolute;
-            top: 0; left: 50%;
-            width: 2px; height: 100%;
-            background: rgba(152, 201, 255, 0.35);
-            transform: translateX(-50%);
-            pointer-events: none; /* чтобы не мешал кликам */
-        }
-        @media(max-width:700px){
-            .slider-container { aspect-ratio:16/9; }
-        }
-        .slider-img-clip img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          object-position: left top;   /* та же точка, что и у bottom-слоя */
-          display: block;
-        }
-    </style>
 
 </head>
 
@@ -130,7 +72,7 @@
 
         <!-- Download -->
         <section id="download">
-            <h3 style="text-align:center">Download</h3>
+            <h3 class="text-center">Download</h3>
 
             <h4>International Doom / Heretic / Hexen 9.0 (released: March 31, 2026)</h4>
             <ul>
@@ -153,7 +95,7 @@
 
         <!-- Features -->
         <section id="features">
-            <h3 style="text-align:center">Features</h3>
+            <h3 class="text-center">Features</h3>
 
             <ul>
                 <li>Optional True Color rendering.</li>
@@ -173,7 +115,7 @@
 
         <!-- Compatibility -->
         <section id="compatibility">
-            <h3 style="text-align:center">Compatibility</h3>
+            <h3 class="text-center">Compatibility</h3>
 
             <p>
                 The port follows a <strong>limit-removing</strong> standard. BOOM, MBF, MBF21, ID24 specifications are <strong>not supported</strong>.
@@ -189,7 +131,7 @@
 
         <!-- Supported games -->
         <section id="supported">
-            <h3 style="text-align:center">Supported games</h3>
+            <h3 class="text-center">Supported games</h3>
             <p>
                 The following games are supported:
             </p>
@@ -206,7 +148,7 @@
 
         <!-- Screenshots -->
         <section id="screenshots">
-            <h3 style="text-align:center">Screenshots</h3>
+            <h3 class="text-center">Screenshots</h3>
 
             <!-- Common screenshots -->
             <div class="screenshots">
@@ -226,12 +168,12 @@
 
             <br>
 
-            <h3 style="text-align:center">Post-processing effects</h3>
+            <h3 class="text-center">Post-processing effects</h3>
 
-            <p style="text-align:center; color:var(--muted);" >Slide the handle left or right to compare before / after.</p>
+            <p class="slider-hint">Slide the handle left or right to compare before / after.</p>
 
             <!-- Supersampled Smoothing -->
-            <h4 style="text-align:center">Supersampled Smoothing</h4>
+            <h4 class="text-center">Supersampled Smoothing</h4>
             <div class="slider-container">
                 <img src="screenshots/postproc/smooth_on.png" class="slider-img" alt="Smooth ON">
                 <div class="slider-img-clip"><img src="screenshots/postproc/smooth_off.png" alt="Smooth OFF"></div>
@@ -239,7 +181,7 @@
             </div>
 
             <!-- Overbright Glow -->
-            <h4 style="text-align:center">Overbright Glow</h4>
+            <h4 class="text-center">Overbright Glow</h4>
             <div class="slider-container">
                 <img src="screenshots/postproc/ob_1_on.png" class="slider-img" alt="Overbright ON">
                 <div class="slider-img-clip"><img src="screenshots/postproc/ob_1_off.png" alt="Overbright OFF"></div>
@@ -253,7 +195,7 @@
             </div>
 
             <!-- Soft Bloom -->
-            <h4 style="text-align:center">Soft Bloom</h4>
+            <h4 class="text-center">Soft Bloom</h4>
             <div class="slider-container">
                 <img src="screenshots/postproc/bloom_1_on.png" class="slider-img" alt="Bloom ON">
                 <div class="slider-img-clip"><img src="screenshots/postproc/bloom_1_off.png" alt="Bloom OFF"></div>
@@ -267,7 +209,7 @@
             </div>
 
             <!-- Analog RGB Drift -->
-            <h4 style="text-align:center">Analog RGB Drift</h4>
+            <h4 class="text-center">Analog RGB Drift</h4>
             <div class="slider-container">
                 <img src="screenshots/postproc/an_drift_on.png" class="slider-img" alt="Analog ON">
                 <div class="slider-img-clip"><img src="screenshots/postproc/an_drift_off.png" alt="Analog OFF"></div>
@@ -275,7 +217,7 @@
             </div>
 
             <!-- Depth of Field Blur -->
-            <h4 style="text-align:center">Depth of Field Blur</h4>
+            <h4 class="text-center">Depth of Field Blur</h4>
             <div class="slider-container">
                 <img src="screenshots/postproc/dofb_on.png" class="slider-img" alt="DOF ON">
                 <div class="slider-img-clip"><img src="screenshots/postproc/dofb_off.png" alt="DOF OFF"></div>
@@ -283,7 +225,7 @@
             </div>
 
             <!-- Screen Vignette -->
-            <h4 style="text-align:center">Screen Vignette</h4>
+            <h4 class="text-center">Screen Vignette</h4>
             <div class="slider-container">
                 <img src="screenshots/postproc/vignette_on.png" class="slider-img" alt="Vignette ON">
                 <div class="slider-img-clip"><img src="screenshots/postproc/vignette_off.png" alt="Vignette OFF"></div>
@@ -293,7 +235,7 @@
 
         <!-- License -->
         <section id="license">
-            <h3 style="text-align:center">License</h3>
+            <h3 class="text-center">License</h3>
 
             <p>
                 International Doom is <a href="https://opensource.org/osd">Open Source</a> and licensed under the

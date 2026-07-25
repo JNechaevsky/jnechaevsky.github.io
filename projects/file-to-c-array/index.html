@@ -33,97 +33,6 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../../assets/css/styles.css" />
 
-	<!-- Inline CSS -->
-	<style>
-    .container {
-      max-width: 800px;
-      width: 100%;
-      background: #0a1d2b;
-      border-radius: 16px;
-      box-shadow: 0 0 20px #101019;
-      padding: 24px;
-    }
-	label {
-		width: 190px;
-		margin: 0px 4px;
-		display: inline-block;
-		vertical-align: top;
-        color:var(--text);
-		/* color: #b8dcff;  [PN] Light text for labels */
-	}
-	fieldset {
-        max-width:800px;
-		border: 1px solid #165b99; /* [PN] Dark border for fieldsets */
-		padding: 10px;
-		border-radius: 4px; /* [PN] Rounded corners for fieldsets */
-	}
-	legend {
-		color:var(--text);
-        padding: 0 8px;
-        margin: 0;
-        line-height: 1;
-	}
-	
-	/* ---------- "Select file" button ---------- */
-	input[type="file"] {
-        display: none; /* [PN] Hide the original file input */
-    }
-    .custom-file-label {
-        display: inline-block;
-        background: #165b99;
-        color: #fff;
-        padding: 8px 16px;
-        border: none;
-        border-radius: 8px;
-	    min-width: 260px;
-        cursor: pointer;
-        text-align: center;
-		font-size: 16px;
-        transition: background 0.16s ease;
-    }
-    .custom-file-label-small {
-        display: inline-block;
-        background: #165b99;
-        color: #fff;
-        padding: 4px 16px;
-        margin: 4px;
-		border: none;
-        border-radius: 8px;
-	    min-width: 130px;
-        cursor: pointer;
-        text-align: center;
-		font-size: 14px;
-        transition: background 0.16s ease;
-    }
-    .custom-file-label:hover,
-	.custom-file-label-small:hover {
-        background-color: #569cd6; /* [PN] Hover background */
-        color: #fff; /* [PN] Hover text color */
-    }
-    .custom-file-label:active,
-    .custom-file-label-small:active	{
-        background-color: #4179a3; /* [PN] Active background */
-    }
-    .signaturePreview {
-        float: left;
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 14px;
-        color:var(--accent-hover); /* [PN] Light blue for signature preview */
-		margin-top:.5rem;
-    }
-    textarea {
-          width: 100%;
-          height: 480px;
-          background: #01101a;
-          color: #d4eaff;
-          border: none;
-          border-radius: 8px;
-          padding: 12px;
-          font-size: 14px;
-          resize: none;
-          outline: none;
-    }
-	</style>
 
     <script src="scripts/jquery-2.1.4.min.js"></script>
     <script src="scripts/arrayUtils.js" defer></script>
@@ -136,7 +45,7 @@
     <section class="container">
     <div class="tool-header">
         <a class="back-button" href="../../index.html#various" aria-label="Back" title="Back"></a>
-        <h3 style="text-align:center">File to C style array converter</h1>
+        <h3 class="text-center">File to C style array converter</h1>
         </div>
         <label for="inFileInput" class="custom-file-label">Select a file to convert...</label>
         <input type="file" id="inFileInput">
@@ -268,7 +177,7 @@
         </fieldset>
 
         
-            <input type="button" id="btnConvert" class="custom-file-label" value="Convert" style="width:160px;">
+            <input type="button" id="btnConvert" class="custom-file-label" value="Convert">
 			<!--
             <span id="spnStatus"></span>
 			-->

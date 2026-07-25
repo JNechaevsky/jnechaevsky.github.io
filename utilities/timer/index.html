@@ -20,165 +20,7 @@
 <body>
     <div class="container">
 
-    <!-- Countdown Timer (v2 layout) -->
-    <style>
-        body {
-        margin: 0;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
 
-        .preset-options label {
-        background-color: #124c80;
-        padding: 0.4rem 0.8rem;
-        border-radius: var(--radius);
-        cursor: pointer;
-        color: #fff;
-        border: 1px solid transparent;
-        transition: 0.2s;
-        user-select: none;
-        font-weight: bold;
-    }
-
-    .preset-options label:hover {
-        background-color: var(--accent);
-        color: #fff;
-        transition: background-color 0.2s ease, color 0.2s ease;
-    }
-
-    .preset-options input[type="radio"] {
-        display: none;
-    }
-
-    .preset-options label:has(input[type="radio"]:checked) {
-        background-color: #3f81cc;
-        color: white;
-    }
-
-    .timer-back-link {
-        align-items: center;
-        background: #17324f;
-        border-bottom: 0;
-        border-radius: 8px;
-        color: #9bbcd6;
-        display: inline-flex;
-        height: 36px;
-        justify-content: center;
-        width: 36px;
-    }
-
-    .timer-title-row {
-        align-items: center;
-        display: flex;
-        justify-content: center;
-        margin-bottom: 1rem;
-        position: relative;
-    }
-
-    .timer-title-row .timer-back-link {
-        left: 1.5rem;
-        position: absolute;
-    }
-
-    .timer-fullscreen-btn {
-        align-items: center;
-        background: #17324f;
-        border: 0;
-        border-radius: 8px;
-        color: #9bbcd6;
-        cursor: pointer;
-        display: inline-flex;
-        height: 36px;
-        justify-content: center;
-        outline: none;
-        padding: 0;
-        position: absolute;
-        right: 1.5rem;
-        top: 0;
-        transition: background 0.2s ease, color 0.2s ease;
-        width: 36px;
-    }
-
-    .timer-back-link::before {
-        border-bottom: 3px solid currentColor;
-        border-left: 3px solid currentColor;
-        content: "";
-        display: block;
-        height: 9px;
-        margin-left: 2px;
-        transform: rotate(45deg);
-        width: 9px;
-    }
-
-    .timer-back-link:hover,
-    .timer-back-link:focus {
-        background: #22486f;
-        color: #d4eaff;
-    }
-
-    .timer-fullscreen-btn:hover,
-    .timer-fullscreen-btn:focus {
-        background: #22486f;
-        color: #d4eaff;
-    }
-
-    .timer-fullscreen-btn svg {
-        height: 16px;
-        width: 16px;
-    }
-
-    .time-inputs input[type="number"] {
-        background: #01101a;
-        color: var(--text);
-        border: 1px solid #165b99;
-        border-radius: var(--radius);
-        font-size: 16px;
-        outline: none;
-        padding: 0.6rem 1.2rem;
-        transition: border-color 0.16s ease, box-shadow 0.16s ease;
-        -moz-appearance: textfield;
-        width: 4rem;
-    }
-
-    .time-inputs input[type="number"]::-webkit-outer-spin-button,
-    .time-inputs input[type="number"]::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    .time-inputs input[type="number"]:focus {
-        border-color: var(--accent);
-        box-shadow: 0 0 0 2px rgba(78, 161, 255, 0.2);
-    }
-
-    .time-inputs label {
-        color: var(--muted);
-        font-size: 0.9rem;
-    }
-
-    #startBtn,
-    #resetBtn {
-        min-width: 7rem;
-        background: var(--accent);
-        border: none;
-        border-radius: var(--radius);
-        padding: 0.6rem 1.2rem;
-        font-weight: bold;
-        color: var(--bg);
-        cursor: pointer;
-        transition: 0.2s;
-        font-size: 16px;
-        
-    }
-
-    #startBtn:hover,
-    #resetBtn:hover {
-        background: var(--accent-hover);
-        font-size: 16px;
-    }
-    </style>
 
     <script>
         document.addEventListener('DOMContentLoaded', () =>
@@ -411,11 +253,11 @@
                 </svg>
             </button>
         </div>
-            <div class="card" style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-start; justify-content: space-between;">
+            <div class="card timer-card">
                 <!-- Left: Settings -->
-                <div style="flex: 1 1 60%; min-width: 280px;">
+                <div class="timer-settings">
                     <!-- Presets -->
-                    <div class="preset-options" style="margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: 1rem;">
+                    <div class="preset-options">
                         <label><input name="preset" type="radio" value="3"/><span>3 min</span></label>
                         <label><input checked="" name="preset" type="radio" value="5"/><span>5 min</span></label>
                         <label><input name="preset" type="radio" value="10"/><span>10 min</span></label>
@@ -424,46 +266,34 @@
                         <label><input name="preset" type="radio" value="60"/><span>1 hour</span></label>
                     </div>
                     <!-- Input fields -->
-                    <div class="time-inputs" style="display: flex; gap: 1rem; align-items: center;">
+                    <div class="time-inputs">
                         <div>
                             <label for="hours">Hours</label><br/>
-                            <input id="hours" min="0" style="width: 4rem;" type="number" value="0"/>
+                            <input id="hours" min="0" type="number" value="0"/>
                         </div>
                         <div>
                             <label for="minutes">Minutes</label><br/>
-                            <input id="minutes" max="59" min="0" style="width: 4rem;" type="number" value="5"/>
+                            <input id="minutes" max="59" min="0" type="number" value="5"/>
                         </div>
                         <div>
                             <label for="seconds">Seconds</label><br/>
-                            <input id="seconds" max="59" min="0" style="width: 4rem;" type="number" value="0"/>
+                            <input id="seconds" max="59" min="0" type="number" value="0"/>
                         </div>
                     </div>
                 </div>
                 <!-- Right: Controls -->
-                <div style="flex: 0 1 auto; display: flex; flex-direction: column; gap: 1rem;">
+                <div class="timer-controls">
                     <button id="startBtn">Start</button>
                     <button id="resetBtn">Reset</button>
                 </div>
             </div>
 
             <!-- Timer Output -->
-            <p style="font-size: 3rem; text-align: center; margin-top: 2rem;">
+            <p class="timer-display">
                 <span id="countdown">00:05:00</span>
             </p>
-            <div id="progressBarContainer" style="
-            width: 100%;
-            height: 8px;
-            background: rgba(255,255,255,0.08);
-            border-radius: 6px;
-            overflow: hidden;
-            margin-top: 1rem;">
-                <div id="progressBar" style="
-                height: 100%;
-                width: 100%;
-                background: var(--accent);
-                transform-origin: left;  /* вот оно! */
-                transform: scaleX(1);
-                transition: transform 0.5s ease-out;">
+            <div id="progressBarContainer" class="progress-bar-container">
+                <div id="progressBar" class="progress-bar">
                 </div>
 
             </div>
