@@ -739,15 +739,18 @@ input[type="number"] {
     position: absolute;
     top: 0;
     left: 50%;
-    width: 22px;
+    width: 4px;
     height: 100%;
     background: transparent;
     cursor: ew-resize;
-    transform: translateX(-75%);
+    transform: translateX(-50%);
     z-index: 3;
+    padding: 0 18px;
+    background-clip: content-box;
+    box-sizing: content-box;
 }
 
-.slider-handle::after {
+.slider-handle::before {
     content: "";
     position: absolute;
     top: 0;
@@ -757,6 +760,44 @@ input[type="number"] {
     background: rgba(152, 201, 255, 0.35);
     transform: translateX(-50%);
     pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.slider-handle::after {
+    content: "◀ ▶";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    font-size: 16px;
+    color: rgba(152, 201, 255, 0.35);
+    letter-spacing: 0px;
+    white-space: nowrap;
+    text-shadow: 0 0 8px rgba(152, 201, 255, 0.2);
+    transition: opacity 0.3s ease, color 0.3s ease;
+}
+
+/* Hover-эффект: делаем ярче и увеличиваем прозрачность */
+.slider-handle:hover::before {
+    background: rgba(152, 201, 255, 0.35);
+    opacity: 1;
+}
+
+.slider-handle:hover::after {
+    color: rgba(152, 201, 255, 0.45);
+    text-shadow: 0 0 12px rgba(152, 201, 255, 0.70);
+}
+
+/* Active-эффект (при перетаскивании) */
+.slider-handle:active::before {
+    background: rgba(152, 201, 255, 0.55);
+    opacity: 1;
+}
+
+.slider-handle:active::after {
+    color: rgba(152, 201, 255, 0.75);
+    text-shadow: 0 0 16px rgba(152, 201, 255, 0.95);
 }
 
 .slider-hint {
