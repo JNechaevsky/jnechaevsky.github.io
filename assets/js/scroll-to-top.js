@@ -1,79 +1,46 @@
-(() => 
-{
-    /* [PN] Защита от дублирования, если скрипт случайно подключен дважды */
-    if (document.getElementById('scrollTopBtn'))
-    {
-        return;
-    }
+/**
+ * Скроллер на верх страницы
+ * Author: Polina "Aura" N.
+ */
 
-    /* [PN] Создаём кнопку */
+(() => {
+    // Защита от дублирования
+    if (document.getElementById('scrollTopBtn')) return;
+
     const btn = document.createElement('button');
     btn.id = 'scrollTopBtn';
     btn.setAttribute('aria-label', '↑');
     btn.style.setProperty('--btn-size', '48px');
 
-    /* [PN] Собираем SVG */
-    const svgNS = 'http://www.w3.org/2000/svg';
-    const svg = document.createElementNS(svgNS, 'svg');
-    svg.setAttribute('viewBox', '0 0 100 100');
-    svg.setAttribute('xmlns', svgNS);
+    // Сборка SVG через строку
+    btn.innerHTML = `
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <g transform="rotate(-90 50 50)">
+                <circle r="45" cx="50" cy="50" stroke-dasharray="0" style="--radius: 45"/>
+            </g>
+            <line x1="50" y1="70" x2="50" y2="35" stroke="white" stroke-width="4" stroke-linecap="round"/>
+            <polyline points="35,50 50,35 65,50" stroke="white" stroke-width="4" stroke-linecap="round" fill="none"/>
+        </svg>
+    `;
 
-    /* [PN] Круговая обводка */
-    const g = document.createElementNS(svgNS, 'g');
-    g.setAttribute('transform', 'rotate(-90 50 50)');
-    const circle = document.createElementNS(svgNS, 'circle');
-    circle.setAttribute('r', '45');
-    circle.setAttribute('cx', '50');
-    circle.setAttribute('cy', '50');
-    g.appendChild(circle);
-    svg.appendChild(g);
-
-    /* [PN] Стрелка: ножка */
-    const line = document.createElementNS(svgNS, 'line');
-    line.setAttribute('x1', '50');
-    line.setAttribute('y1', '70');
-    line.setAttribute('x2', '50');
-    line.setAttribute('y2', '35');
-    line.setAttribute('stroke', 'white');
-    line.setAttribute('stroke-width', '4');
-    line.setAttribute('stroke-linecap', 'round');
-    svg.appendChild(line);
-
-    /* [PN] Стрелка: наконечник */
-    const polyline = document.createElementNS(svgNS, 'polyline');
-    polyline.setAttribute('points', '35,50 50,35 65,50');
-    polyline.setAttribute('stroke', 'white');
-    polyline.setAttribute('stroke-width', '4');
-    polyline.setAttribute('stroke-linecap', 'round');
-    polyline.setAttribute('fill', 'none');
-    svg.appendChild(polyline);
-
-    btn.appendChild(svg);
-
-    /* [PN] Вставляем в DOM */
     document.body.appendChild(btn);
 
-    /* [PN] Вычисляем радиус по stroke-width */
-    const strokeWidth = parseFloat(
-        getComputedStyle(document.documentElement)
-            .getPropertyValue('--stroke-width')
-    ) || 4;
-    const radius = 50 - strokeWidth / 2;
-    circle.setAttribute('r', radius);
-
-    /* [PN] Только после этого — длина окружности */
+    // Находим круг
+    const circle = btn.querySelector('circle');
+    const radius = 45; // фиксированный радиус, совпадает с r="45"
     const len = 2 * Math.PI * radius;
     circle.style.strokeDasharray = len;
 
-    const update = () =>
-    {
-        const p = window.scrollY / (document.body.scrollHeight - innerHeight);
-        circle.style.strokeDashoffset = len * (1 - p);
+    const update = () => {
+        const maxScroll = document.body.scrollHeight - innerHeight;
+        const progress = maxScroll ? window.scrollY / maxScroll : 0;
+        circle.style.strokeDashoffset = len * (1 - progress);
         btn.classList.toggle('show', window.scrollY > 100);
     };
 
-    addEventListener('scroll', update);
-    addEventListener('resize', update);
-    btn.onclick = () => scrollTo({ top: 0, behavior: 'smooth' });
+    // Объединяем scroll и resize в один обработчик
+    const events = ['scroll', 'resize'];
+    events.forEach(e => addEventListener(e, update));
+    btn.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
     update();
 })();

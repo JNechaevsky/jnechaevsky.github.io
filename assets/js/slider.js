@@ -1,42 +1,56 @@
+/**
+ * Слайдер для сравнения скриншотов
+ * Author: Polina "Aura" N.
+ */
+
 document.querySelectorAll('.slider-container').forEach(container => {
     const clip = container.querySelector('.slider-img-clip');
     const handle = container.querySelector('.slider-handle');
+    const img = container.querySelector('.slider-img'); // или любая обёртка картинки
     let dragging = false;
 
-    function setSliderPosition(clientX) {
+    const setSliderPosition = (clientX) => {
         const rect = container.getBoundingClientRect();
-        let x = clientX - rect.left;
-        x = Math.max(0, Math.min(x, rect.width));
+        const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
         const pct = (x / rect.width) * 100;
         clip.style.width = pct + '%';
         handle.style.left = pct + '%';
-    }
+    };
 
-    function startDrag(e) {
+    const getX = (e) => e.touches ? e.touches[0].clientX : e.clientX;
+
+    const startDrag = (e) => {
         dragging = true;
         document.body.style.userSelect = 'none';
-        if (e.type.startsWith('touch')) {
-            setSliderPosition(e.touches[0].clientX);
-        }
-    }
+        setSliderPosition(getX(e));
+    };
 
-    function stopDrag() {
+    const stopDrag = () => {
         dragging = false;
         document.body.style.userSelect = '';
-    }
+    };
 
-    function onDrag(e) {
-        if (!dragging) return;
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        setSliderPosition(clientX);
-    }
+    const onDrag = (e) => {
+        if (dragging) {
+            e.preventDefault();
+            setSliderPosition(getX(e));
+        }
+    };
 
+    // Клик по контейнеру (кроме хендла)
+    container.addEventListener('click', (e) => {
+        // Игнорируем клик по хендлу, чтобы не было конфликтов
+        if (e.target.closest('.slider-handle')) return;
+        setSliderPosition(getX(e));
+    });
+
+    // События хендла
     handle.addEventListener('mousedown', startDrag);
     handle.addEventListener('touchstart', startDrag, { passive: true });
 
+    // Глобальные события
     document.addEventListener('mouseup', stopDrag);
     document.addEventListener('touchend', stopDrag);
-
     document.addEventListener('mousemove', onDrag);
     document.addEventListener('touchmove', onDrag, { passive: false });
 });
