@@ -6,8 +6,9 @@
 document.querySelectorAll('.slider-container').forEach(container => {
     const clip = container.querySelector('.slider-img-clip');
     const handle = container.querySelector('.slider-handle');
-    const img = container.querySelector('.slider-img'); // или любая обёртка картинки
+    const img = container.querySelector('.slider-img');
     let dragging = false;
+    let isClick = false;
 
     const setSliderPosition = (clientX) => {
         const rect = container.getBoundingClientRect();
@@ -21,6 +22,7 @@ document.querySelectorAll('.slider-container').forEach(container => {
 
     const startDrag = (e) => {
         dragging = true;
+        isClick = true;
         document.body.style.userSelect = 'none';
         setSliderPosition(getX(e));
     };
@@ -28,6 +30,8 @@ document.querySelectorAll('.slider-container').forEach(container => {
     const stopDrag = () => {
         dragging = false;
         document.body.style.userSelect = '';
+        // Сбрасываем флаг клика через небольшой таймаут
+        setTimeout(() => { isClick = false; }, 10);
     };
 
     const onDrag = (e) => {
@@ -37,14 +41,23 @@ document.querySelectorAll('.slider-container').forEach(container => {
         }
     };
 
-    // Клик по контейнеру (кроме хендла)
-    container.addEventListener('click', (e) => {
-        // Игнорируем клик по хендлу, чтобы не было конфликтов
-        if (e.target.closest('.slider-handle')) return;
-        setSliderPosition(getX(e));
+    // Перетаскивание с зажатой кнопкой на контейнере
+    container.addEventListener('mousedown', (e) => {
+        if (!e.target.closest('.slider-handle')) {
+            startDrag(e);
+        }
     });
 
-    // События хендла
+    // Клик по контейнеру (если не было перетаскивания)
+    container.addEventListener('click', (e) => {
+        if (e.target.closest('.slider-handle')) return;
+        if (isClick) {
+            // Если это был клик без перетаскивания — перемещаем позицию
+            setSliderPosition(getX(e));
+        }
+    });
+
+    // События хендла (для обратной совместимости)
     handle.addEventListener('mousedown', startDrag);
     handle.addEventListener('touchstart', startDrag, { passive: true });
 
