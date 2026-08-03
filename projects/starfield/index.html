@@ -329,7 +329,7 @@
 <body>
     <canvas id="stars"></canvas>
 
-    <a id="backBtn" href="../../index.html" aria-label="Back" title="Back" onclick="if (history.length > 1) { history.back(); } else { location.href = this.href; } return false;"></a>
+    <a id="backBtn" href="../../index.html#various" aria-label="Back" title="Back""></a>
 
     <div id="controlPanel">
         <div class="control-group">
@@ -442,7 +442,7 @@
             canvas.style.width = width + "px";
             canvas.style.height = height + "px";
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-            ctx.imageSmoothingEnabled = false;
+            ctx.imageSmoothingEnabled = true;
         }
 
         function createStar(out)
@@ -550,8 +550,8 @@
 
                     ctx.fillStyle = "rgba(255, 255, 255, " + alpha.toFixed(3) + ")";
                     ctx.fillRect(
-                        Math.floor(sx - size * 0.5),
-                        Math.floor(sy - size * 0.5),
+                        sx - size * 0.5,
+                        sy - size * 0.5,
                         size,
                         size
                     );
