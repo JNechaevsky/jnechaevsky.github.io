@@ -1012,6 +1012,17 @@ input[type="file"] {
     width: 100%;
 }
 
+.field-row select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%239bbcd6' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 12px 8px;
+    padding-right: 40px;
+}
+
 .field-row input {
     font-family: Consolas, "Courier New", monospace;
 }
