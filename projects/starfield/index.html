@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Polina 'Aura' N.">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>Projects - Through the Universe</title>
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="help" href="mailto:www-validator@w3.org">
+    <link rel="start" href="./" title="Through the Universe">
+
+    <style>
+        *,
+        *::before,
+        *::after
+        {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body
+        {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            color: #fff;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        }
+
+        canvas
+        {
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: block;
+        }
+
+        #backBtn
+        {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(20, 22, 30, 0.55);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 18px;
+            line-height: 1;
+            z-index: 10;
+            transition: opacity 0.4s ease, transform 0.4s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        #backBtn:hover
+        {
+            background: rgba(30, 34, 46, 0.75);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+
+        #backBtn::before
+        {
+            content: "";
+            display: block;
+            width: 9px;
+            height: 9px;
+            border-left: 3px solid currentColor;
+            border-bottom: 3px solid currentColor;
+            transform: rotate(45deg);
+            margin-left: 2px;
+        }
+
+        #backBtn.hidden
+        {
+            opacity: 0;
+            transform: translateX(-10px);
+            pointer-events: none;
+        }
+
+        #controlPanel
+        {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            align-items: center;
+            padding: 10px 18px;
+            background: rgba(20, 22, 30, 0.5);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        #controlPanel.hidden
+        {
+            opacity: 0;
+            transform: translate(-50%, 10px);
+            pointer-events: none;
+        }
+
+        .control-group
+        {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .control-group label
+        {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .dropdown
+        {
+            position: relative;
+        }
+
+        .dropdown-toggle
+        {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 6px 10px;
+            background: rgba(24, 27, 36, 0.9);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            font-size: 13px;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .dropdown-toggle:hover
+        {
+            background-color: rgba(38, 42, 54, 0.95);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 2px 12px rgba(100, 180, 255, 0.25);
+        }
+
+        .dropdown:focus-within .dropdown-toggle
+        {
+            outline: none;
+            border-color: rgba(100, 180, 255, 0.6);
+        }
+
+        .dropdown-arrow
+        {
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 6px solid #e8ecf4;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .dropdown.open .dropdown-arrow
+        {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu
+        {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 0;
+            min-width: 100%;
+            background: rgba(18, 21, 28, 0.95);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 4px;
+            margin: 0;
+            list-style: none;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(6px);
+            transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+            z-index: 30;
+            max-height: 40vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+            font-size: 13px;
+        }
+
+        .dropdown.open .dropdown-menu
+        {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item
+        {
+            padding: 7px 12px;
+            border-radius: 7px;
+            cursor: pointer;
+            color: #e8ecf4;
+            transition: background-color 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .dropdown-item:hover,
+        .dropdown-item.highlighted
+        {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .dropdown-item.selected
+        {
+            background: rgba(90, 160, 255, 0.35);
+        }
+
+        #controlPanel button
+        {
+            background: rgba(24, 27, 36, 0.9);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        #controlPanel button:hover
+        {
+            background-color: rgba(38, 42, 54, 0.95);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 2px 12px rgba(100, 180, 255, 0.25);
+        }
+
+        #controlPanel button:focus
+        {
+            outline: none;
+            border-color: rgba(100, 180, 255, 0.6);
+        }
+
+        #controlPanel button
+        {
+            align-self: flex-end;
+        }
+
+        body.ui-hidden
+        {
+            cursor: none;
+        }
+
+        @media (max-width: 600px)
+        {
+            #backBtn
+            {
+                width: 32px;
+                height: 32px;
+                top: 12px;
+                left: 12px;
+            }
+            #backBtn::before
+            {
+                width: 8px;
+                height: 8px;
+            }
+            #controlPanel
+            {
+                left: 12px;
+                right: 12px;
+                bottom: 12px;
+                transform: none;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px 12px;
+                align-items: end;
+                padding: 12px 14px;
+                max-width: none;
+            }
+            #controlPanel.hidden
+            {
+                transform: translateY(10px);
+            }
+            .control-group
+            {
+                min-width: 0;
+            }
+            .control-group label
+            {
+                font-size: 10px;
+            }
+            .dropdown-toggle,
+            #controlPanel button
+            {
+                font-size: 12px;
+                padding: 5px 8px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="stars"></canvas>
+
+    <a id="backBtn" href="../../index.html" aria-label="Back" title="Back" onclick="if (history.length > 1) { history.back(); } else { location.href = this.href; } return false;"></a>
+
+    <div id="controlPanel">
+        <div class="control-group">
+            <label>Stars</label>
+            <div class="dropdown" id="countDropdown" tabindex="0">
+                <div class="dropdown-toggle">
+                    <span class="dropdown-value">25</span>
+                    <span class="dropdown-arrow"></span>
+                </div>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item" data-value="10">10</li>
+                    <li class="dropdown-item" data-value="15">15</li>
+                    <li class="dropdown-item selected" data-value="25">25</li>
+                    <li class="dropdown-item" data-value="50">50</li>
+                    <li class="dropdown-item" data-value="100">100</li>
+                    <li class="dropdown-item" data-value="150">150</li>
+                    <li class="dropdown-item" data-value="200">200</li>
+                </ul>
+            </div>
+        </div>
+        <div class="control-group">
+            <label>Speed</label>
+            <div class="dropdown" id="speedDropdown" tabindex="0">
+                <div class="dropdown-toggle">
+                    <span class="dropdown-value">Medium</span>
+                    <span class="dropdown-arrow"></span>
+                </div>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item" data-value="0.1">Calm</li>
+                    <li class="dropdown-item" data-value="0.3">Slow</li>
+                    <li class="dropdown-item selected" data-value="1.0">Medium</li>
+                    <li class="dropdown-item" data-value="2.5">Fast</li>
+                    <li class="dropdown-item" data-value="6.0">Warp</li>
+                </ul>
+            </div>
+        </div>
+        <div class="control-group">
+            <label>Style</label>
+            <div class="dropdown" id="styleDropdown" tabindex="0">
+                <div class="dropdown-toggle">
+                    <span class="dropdown-value">Classic</span>
+                    <span class="dropdown-arrow"></span>
+                </div>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item selected" data-value="classic">Classic</li>
+                    <li class="dropdown-item" data-value="modern">Modern</li>
+                </ul>
+            </div>
+        </div>
+        <button id="fsBtn" type="button">Fullscreen</button>
+    </div>
+
+    <script>
+        "use strict";
+
+        const canvas = document.getElementById("stars");
+        const ctx = canvas.getContext("2d");
+        const fsBtn = document.getElementById("fsBtn");
+        const controlPanel = document.getElementById("controlPanel");
+        const backBtn = document.getElementById("backBtn");
+
+        let width = 0;
+        let height = 0;
+        let dpr = window.devicePixelRatio || 1;
+
+        let stars = [];
+        let starCount = 25;
+        let speedFactor = 1.0;
+        let currentStyle = "classic";
+        const BASE_SPEED = 0.18;
+        const MAX_STAR_SIZE = 3;
+
+        const glowSprites = [];
+
+        function makeGlowSprite(r, g, b)
+        {
+            const size = 64;
+            const sprite = document.createElement("canvas");
+            sprite.width = size;
+            sprite.height = size;
+            const sctx = sprite.getContext("2d");
+            const grad = sctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+            grad.addColorStop(0, "rgba(255, 255, 255, 1)");
+            grad.addColorStop(0.22, "rgba(" + r + ", " + g + ", " + b + ", 0.85)");
+            grad.addColorStop(0.55, "rgba(" + r + ", " + g + ", " + b + ", 0.25)");
+            grad.addColorStop(1, "rgba(" + r + ", " + g + ", " + b + ", 0)");
+            sctx.fillStyle = grad;
+            sctx.fillRect(0, 0, size, size);
+            return sprite;
+        }
+
+        function initGlowSprites()
+        {
+            glowSprites.length = 0;
+            glowSprites.push(makeGlowSprite(180, 210, 255));
+            glowSprites.push(makeGlowSprite(255, 255, 255));
+            glowSprites.push(makeGlowSprite(255, 230, 190));
+        }
+
+        let lastTime = 0;
+        let hideTimer = null;
+        const UI_HIDE_DELAY = 3000;
+
+        function resizeCanvas()
+        {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            canvas.style.width = width + "px";
+            canvas.style.height = height + "px";
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            ctx.imageSmoothingEnabled = false;
+        }
+
+        function createStar(out)
+        {
+            out = out || {};
+            out.x = Math.random() * 2 - 1;
+            out.y = Math.random() * 2 - 1;
+            out.z = Math.random() * 0.9 + 0.1;
+            out.tint = (Math.random() * 3) | 0;
+            return out;
+        }
+
+        function initStars()
+        {
+            stars.length = 0;
+            for (let i = 0; i < starCount; i++)
+            {
+                stars.push(createStar());
+            }
+        }
+
+        function adjustStarCount(newCount)
+        {
+            starCount = newCount;
+            if (stars.length < starCount)
+            {
+                for (let i = stars.length; i < starCount; i++)
+                {
+                    stars.push(createStar());
+                }
+            }
+            else if (stars.length > starCount)
+            {
+                stars.length = starCount;
+            }
+        }
+
+        function update(dt)
+        {
+            const speed = BASE_SPEED * speedFactor;
+            const cx = width * 0.5;
+            const cy = height * 0.5;
+            const fl = Math.min(width, height) * 0.5;
+
+            ctx.fillStyle = "#000000";
+            ctx.fillRect(0, 0, width, height);
+
+            for (let i = 0; i < stars.length; i++)
+            {
+                const star = stars[i];
+                star.z -= speed * dt;
+
+                if (star.z <= 0.02)
+                {
+                    createStar(star);
+                }
+
+                const invZ = 1.0 / star.z;
+                const sx = cx + star.x * invZ * fl;
+                const sy = cy + star.y * invZ * fl;
+
+                const depth = 1.0 - star.z;
+                const rawSize = depth * MAX_STAR_SIZE;
+
+                if (currentStyle === "modern")
+                {
+                    const size = Math.max(0.5, rawSize);
+                    const alpha = Math.min(1.0, 0.3 + depth * 0.9);
+
+                    if (sx < -size || sx > width + size || sy < -size || sy > height + size)
+                    {
+                        createStar(star);
+                        continue;
+                    }
+
+                    const glowSize = Math.max(6, size * 6);
+                    const sprite = glowSprites[star.tint];
+                    ctx.globalCompositeOperation = "lighter";
+                    ctx.globalAlpha = alpha;
+                    ctx.drawImage(
+                        sprite,
+                        sx - glowSize * 0.5,
+                        sy - glowSize * 0.5,
+                        glowSize,
+                        glowSize
+                    );
+                    ctx.globalAlpha = Math.min(1.0, alpha + 0.25);
+                    ctx.fillStyle = "#ffffff";
+                    ctx.beginPath();
+                    ctx.arc(sx, sy, Math.max(0.3, size * 0.55), 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.globalCompositeOperation = "source-over";
+                    ctx.globalAlpha = 1.0;
+                }
+                else
+                {
+                    const size = Math.max(1, Math.floor(rawSize + 0.5));
+                    const alpha = Math.min(1.0, 0.3 + depth * 0.9);
+
+                    if (sx < -size || sx > width + size || sy < -size || sy > height + size)
+                    {
+                        createStar(star);
+                        continue;
+                    }
+
+                    ctx.fillStyle = "rgba(255, 255, 255, " + alpha.toFixed(3) + ")";
+                    ctx.fillRect(
+                        Math.floor(sx - size * 0.5),
+                        Math.floor(sy - size * 0.5),
+                        size,
+                        size
+                    );
+                }
+            }
+        }
+
+        function frame(now)
+        {
+            if (lastTime === 0)
+            {
+                lastTime = now;
+            }
+            let dt = (now - lastTime) / 1000;
+            if (dt > 0.1)
+            {
+                dt = 0.1;
+            }
+            lastTime = now;
+            update(dt);
+            requestAnimationFrame(frame);
+        }
+
+        function anyDropdownOpen()
+        {
+            return document.querySelector(".dropdown.open") !== null;
+        }
+
+        function showUI()
+        {
+            controlPanel.classList.remove("hidden");
+            backBtn.classList.remove("hidden");
+            document.body.classList.remove("ui-hidden");
+            resetHideTimer();
+        }
+
+        function hideUI()
+        {
+            if (anyDropdownOpen())
+            {
+                resetHideTimer();
+                return;
+            }
+            controlPanel.classList.add("hidden");
+            backBtn.classList.add("hidden");
+            document.body.classList.add("ui-hidden");
+        }
+
+        function resetHideTimer()
+        {
+            if (hideTimer)
+            {
+                clearTimeout(hideTimer);
+            }
+            hideTimer = setTimeout(hideUI, UI_HIDE_DELAY);
+        }
+
+        function createDropdown(dropdownEl, onChange)
+        {
+            const toggle = dropdownEl.querySelector(".dropdown-toggle");
+            const menu = dropdownEl.querySelector(".dropdown-menu");
+            const valueEl = dropdownEl.querySelector(".dropdown-value");
+            const items = Array.from(menu.querySelectorAll(".dropdown-item"));
+            let highlightedIndex = -1;
+
+            function close()
+            {
+                dropdownEl.classList.remove("open");
+                highlightedIndex = -1;
+                items.forEach(function (it) { it.classList.remove("highlighted"); });
+            }
+
+            function open()
+            {
+                document.querySelectorAll(".dropdown.open").forEach(function (d)
+                {
+                    if (d !== dropdownEl)
+                    {
+                        d.classList.remove("open");
+                    }
+                });
+                dropdownEl.classList.add("open");
+                const selectedIndex = items.findIndex(function (it) { return it.classList.contains("selected"); });
+                highlightedIndex = selectedIndex >= 0 ? selectedIndex : 0;
+                items[highlightedIndex].classList.add("highlighted");
+                items[highlightedIndex].scrollIntoView({ block: "nearest" });
+            }
+
+            function toggleOpen()
+            {
+                if (dropdownEl.classList.contains("open"))
+                {
+                    close();
+                }
+                else
+                {
+                    open();
+                }
+            }
+
+            function selectItem(item)
+            {
+                items.forEach(function (it) { it.classList.remove("selected"); });
+                item.classList.add("selected");
+                valueEl.textContent = item.textContent;
+                close();
+                toggle.focus();
+                if (onChange)
+                {
+                    onChange(item.dataset.value);
+                }
+            }
+
+            function highlightNext()
+            {
+                if (highlightedIndex < items.length - 1)
+                {
+                    items[highlightedIndex].classList.remove("highlighted");
+                    highlightedIndex++;
+                    items[highlightedIndex].classList.add("highlighted");
+                    items[highlightedIndex].scrollIntoView({ block: "nearest" });
+                }
+            }
+
+            function highlightPrev()
+            {
+                if (highlightedIndex > 0)
+                {
+                    items[highlightedIndex].classList.remove("highlighted");
+                    highlightedIndex--;
+                    items[highlightedIndex].classList.add("highlighted");
+                    items[highlightedIndex].scrollIntoView({ block: "nearest" });
+                }
+            }
+
+            toggle.addEventListener("click", function (e)
+            {
+                e.stopPropagation();
+                toggleOpen();
+                resetHideTimer();
+            });
+
+            items.forEach(function (item)
+            {
+                item.addEventListener("click", function (e)
+                {
+                    e.stopPropagation();
+                    selectItem(item);
+                    resetHideTimer();
+                });
+            });
+
+            dropdownEl.addEventListener("keydown", function (e)
+            {
+                const isOpen = dropdownEl.classList.contains("open");
+                switch (e.key)
+                {
+                    case "Enter":
+                    case " ":
+                    case "ArrowDown":
+                    case "ArrowUp":
+                        e.preventDefault();
+                        if (!isOpen)
+                        {
+                            open();
+                        }
+                        else if (e.key === "Enter" || e.key === " ")
+                        {
+                            if (highlightedIndex >= 0)
+                            {
+                                selectItem(items[highlightedIndex]);
+                            }
+                        }
+                        else if (e.key === "ArrowDown")
+                        {
+                            highlightNext();
+                        }
+                        else if (e.key === "ArrowUp")
+                        {
+                            highlightPrev();
+                        }
+                        break;
+                    case "Escape":
+                        if (isOpen)
+                        {
+                            close();
+                        }
+                        break;
+                }
+            });
+
+            dropdownEl.addEventListener("blur", function (e)
+            {
+                if (!dropdownEl.contains(e.relatedTarget))
+                {
+                    close();
+                }
+            });
+        }
+
+        createDropdown(document.getElementById("countDropdown"), function (value)
+        {
+            adjustStarCount(parseInt(value, 10));
+        });
+
+        createDropdown(document.getElementById("speedDropdown"), function (value)
+        {
+            speedFactor = parseFloat(value);
+        });
+
+        createDropdown(document.getElementById("styleDropdown"), function (value)
+        {
+            currentStyle = value;
+        });
+
+        document.addEventListener("click", function ()
+        {
+            document.querySelectorAll(".dropdown.open").forEach(function (d)
+            {
+                d.classList.remove("open");
+            });
+        });
+
+        fsBtn.addEventListener("click", async function ()
+        {
+            if (!document.fullscreenElement)
+            {
+                try
+                {
+                    await document.documentElement.requestFullscreen();
+                }
+                catch (e)
+                {
+                    /* ignore */
+                }
+            }
+            else
+            {
+                try
+                {
+                    await document.exitFullscreen();
+                }
+                catch (e)
+                {
+                    /* ignore */
+                }
+            }
+        });
+
+        document.addEventListener("fullscreenchange", function ()
+        {
+            fsBtn.textContent = document.fullscreenElement
+                ? "Exit Fullscreen"
+                : "Fullscreen";
+        });
+
+        document.addEventListener("mousemove", showUI);
+        document.addEventListener("touchstart", showUI);
+        document.addEventListener("keydown", showUI);
+
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+        initGlowSprites();
+        initStars();
+        showUI();
+        requestAnimationFrame(frame);
+    </script>
+</body>
+</html>
