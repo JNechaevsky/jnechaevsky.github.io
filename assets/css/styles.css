@@ -5,6 +5,7 @@
 /* ----------  CSS Variables  ---------- */
 
 :root {
+    /* Dark theme (default) */
     --bg: #011726;
     --bg-card: #0a1d2b;
     --accent: #4ea1ff;
@@ -16,6 +17,34 @@
     --radius: 10px;
     --shadow: 0 8px 24px rgba(0, 0, 0, .35);
     --font: "Segoe UI", sans-serif;
+}
+
+/* Light theme */
+html.light-theme {
+    --bg: #f5f5f5;
+    --bg-card: #ffffff;
+    --accent: #0066cc;
+    --accent-hover: #004c99;
+    --text: #1a1a1a;
+    --muted: #666666;
+    --input_tip: #999999;
+    --border: #d0d0d0;
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* System preference for light theme */
+@media (prefers-color-scheme: light) {
+    html:not(.light-theme):not(.dark-theme) {
+        --bg: #f5f5f5;
+        --bg-card: #ffffff;
+        --accent: #0066cc;
+        --accent-hover: #004c99;
+        --text: #1a1a1a;
+        --muted: #666666;
+        --input_tip: #999999;
+        --border: #d0d0d0;
+        --shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
 }
 
 /* ----------  Global / Reset  ---------- */
