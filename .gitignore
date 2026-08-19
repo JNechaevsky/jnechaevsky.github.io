@@ -51,11 +51,6 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# Coverage
-coverage/
-htmlcov/
-.coverage
-
 # Compressed files
 *.zip
 *.gz
