@@ -59,6 +59,8 @@ html.light-theme {
     box-sizing: border-box;
     scrollbar-width: auto;
     scrollbar-color: #4ea1ff #0a1d2b;
+    /* Smooth theme transition */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 html {
