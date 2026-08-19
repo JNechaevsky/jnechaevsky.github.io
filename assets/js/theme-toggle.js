@@ -3,6 +3,8 @@
  * Must be loaded in <head> to prevent Flash of Unstyled Content (FOUC)
  */
 (function() {
+    const root = document.documentElement;
+
     // --- Helpers ---
     function getCookie(name) {
         const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
@@ -10,47 +12,41 @@
     }
 
     function setCookie(name, value, days) {
-        const expires = new Date(Date.now() + days * 864e5).toUTCString();
-        document.cookie = name + '=' + value + '; expires=' + expires + '; path=/';
+        document.cookie = name + '=' + value +
+                          '; expires=' + new Date(Date.now() + days * 864e5).toUTCString() +
+                          '; path=/';
     }
 
-    // --- Apply saved theme ---
     function applyTheme(theme) {
-        if (theme === 'light') {
-            document.documentElement.classList.add('light-theme');
-        } else {
-            document.documentElement.classList.remove('light-theme');
-        }
+        root.classList.toggle('light-theme', theme === 'light');
     }
 
-    const savedTheme = getCookie('theme');
-    
-    if (savedTheme) {
-        applyTheme(savedTheme);
+    // --- Apply saved or system theme ---
+    const saved = getCookie('theme');
+    if (saved) {
+        applyTheme(saved);
     } else if (window.matchMedia?.('(prefers-color-scheme: light)').matches) {
         applyTheme('light');
     }
-    // else: dark by default
 
     // --- Toggle handler ---
     function toggleTheme() {
-        const isLight = document.documentElement.classList.contains('light-theme');
+        const isLight = root.classList.contains('light-theme');
         const newTheme = isLight ? 'dark' : 'light';
-        
         applyTheme(newTheme);
         setCookie('theme', newTheme, 365);
     }
 
-    // --- Attach event listeners ---
-    function initToggleButtons() {
-        document.querySelectorAll('.theme-toggle').forEach(function(btn) {
+    // --- Attach event listeners after DOM ready ---
+    function init() {
+        document.querySelectorAll('.theme-toggle').forEach(btn => {
             btn.addEventListener('click', toggleTheme);
         });
     }
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initToggleButtons);
+        document.addEventListener('DOMContentLoaded', init);
     } else {
-        initToggleButtons();
+        init();
     }
 })();
