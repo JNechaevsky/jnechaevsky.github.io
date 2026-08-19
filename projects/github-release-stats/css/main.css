@@ -46,41 +46,41 @@ body {
 
 #username,
 #repository {
-    background:#01101a;
-    border:1px solid #165b99;
-    color:var(--text);
-    min-height:45px;
-    padding:10px 12px;
-    width:100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    min-height: 45px;
+    padding: 10px 12px;
+    width: 100%;
 }
 
 #username:focus,
 #repository:focus {
-    border-color:#4ea1ff;
-    box-shadow:none;
-    outline:2px solid rgba(78, 161, 255, .25);
+    border-color: var(--accent);
+    box-shadow: none;
+    outline: 2px solid rgba(78, 161, 255, .25);
 }
 
 #get-stats-button {
-    align-self:end;
-    background:#165b99;
-    border:0;
-    color:#fff;
-    cursor:pointer;
-    font-weight:600;
-    min-height:45px;
-    padding:12px 20px;
-    transition:background .16s ease, color .16s ease;
+    align-self: end;
+    background: var(--accent);
+    border: 0;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 600;
+    min-height: 45px;
+    padding: 12px 20px;
+    transition: background .16s ease, color .16s ease;
 }
 
 #get-stats-button:hover:not(:disabled) {
-    background:#4ea1ff;
+    background: var(--accent-hover);
 }
 
 #get-stats-button:disabled {
-    background:#35628a;
-    color:#9bbcd6;
-    cursor:not-allowed;
+    background: var(--border);
+    color: var(--muted);
+    cursor: not-allowed;
 }
 
 #description {
@@ -123,22 +123,22 @@ body {
 }
 
 .alert.output {
-    background:#2a1521;
-    border:1px solid #99416b;
-    border-radius:8px;
-    color:#ffb4cc;
-    font-size:16px;
-    padding:1rem;
-    text-align:center;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 16px;
+    padding: 1rem;
+    text-align: center;
 }
 
 .total-downloads {
-    background:#01101a;
-    border:1px solid #165b99;
-    border-radius:8px;
-    margin:0 0 .75rem;
-    padding:.9rem;
-    text-align:center;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 0 0 .75rem;
+    padding: .9rem;
+    text-align: center;
 }
 
 .total-downloads h1 {
@@ -149,16 +149,16 @@ body {
 }
 
 .total-downloads span {
-    color:#90ee90;
-    font-weight:700;
+    color: var(--accent-hover);
+    font-weight: 700;
 }
 
 .release {
-    background:#01101a;
-    border:1px solid #165b99;
-    border-radius:8px;
-    margin:0 0 .75rem;
-    padding:1rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 0 0 .75rem;
+    padding: 1rem;
 }
 
 .release h3 {
@@ -197,47 +197,48 @@ body {
 }
 
 .release .badge {
-    background:#165b99;
-    border-radius:8px;
-    color:#fff;
-    font-size:.8rem;
-    padding:.25rem .5rem;
-    vertical-align:middle;
+    background: var(--border);
+    border-radius: 8px;
+    color: #fff;
+    font-size: .8rem;
+    padding: .25rem .5rem;
+    vertical-align: middle;
 }
 
 .release-hr {
-    border:0;
-    border-top:1px solid #165b99;
-    margin:.75rem 0;
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: .75rem 0;
 }
 
 .latest-release {
-    background:rgba(22, 91, 153, .28);
-    border-color:#4ea1ff;
+    background: rgba(78, 161, 255, .15);
+    border-color: var(--accent);
 }
 
 .latest-release h3,
 .latest-release h3 a {
-    color:#98c9ff;
+    color: var(--accent-hover);
 }
 
 .latest-release .badge {
-    background:#4ea1ff;
-    color:#01101a;
+    background: var(--accent);
+    color: #fff;
 }
 
 .pre-release {
-    background:rgba(153, 104, 22, .18);
-    border-color:#b8873b;
+    background: rgba(255, 165, 0, .15);
+    border-color: #ff9800;
 }
 
 .pre-release h3,
 .pre-release h3 a {
-    color:#e6d37a;
+    color: #ff9800;
 }
 
 .pre-release .badge {
-    background:#b8873b;
+    background: #ff9800;
+    color: #fff;
 }
 
 #pagination {
@@ -271,17 +272,17 @@ body {
 }
 
 #pagination a {
-    background:#165b99;
-    border:0;
-    color:#fff;
-    display:inline-flex;
-    font-weight:600;
-    padding:10px 18px;
+    background: var(--accent);
+    border: 0;
+    color: #fff;
+    display: inline-flex;
+    font-weight: 600;
+    padding: 10px 18px;
 }
 
 #pagination a:hover {
-    background:#4ea1ff;
-    color:#fff;
+    background: var(--accent-hover);
+    color: #fff;
 }
 
 #per-page {
@@ -297,10 +298,10 @@ body {
 }
 
 #per-page select {
-    background:#01101a;
-    border:1px solid #165b99;
-    color:var(--text);
-    padding:8px 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 10px;
 }
 
 #loader-gif {
@@ -314,30 +315,22 @@ body {
 }
 
 .dropdown-menu {
-    background:#01101a;
-    border:1px solid #165b99;
-    border-radius:8px;
-    box-shadow:var(--shadow);
-}
-
-.dropdown-menu > li {
-    margin:0;
-}
-
-.dropdown-menu > li > a {
-    color:var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
 }
 
 .dropdown-menu > li > a:hover,
 .dropdown-menu > .active > a,
 .dropdown-menu > .active > a:focus,
 .dropdown-menu > .active > a:hover {
-    background:#165b99;
-    color:#fff;
+    background: var(--accent);
+    color: #fff;
 }
 
 .glyphicon {
-    color:var(--accent);
+    color: var(--accent);
 }
 
 @media (max-width:760px) {

@@ -54,6 +54,7 @@
             <div class="tool-header">
                 <a class="back-button" href="../../index.html#various" aria-label="Back" title="Back"></a>
                 <h3>GitHub Release Stats</h3>
+                <button id="theme-toggle" type="button" title="Toggle theme" aria-label="Toggle light/dark theme">🌙</button>
             </div>
 
             <div id="search">
@@ -114,5 +115,31 @@
 <script src="third-party/bootstrap/js/bootstrap.min.js" defer></script>
 <script src="third-party/typahead/bootstrap3-typeahead.min.js" defer></script>
 <script src="js/main.js" defer></script>
+    <!-- Theme Toggle Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.getElementById('theme-toggle');
+            if (toggleBtn) {
+                updateButtonIcon();
+                
+                toggleBtn.addEventListener('click', function() {
+                    document.documentElement.classList.toggle('light-theme');
+                    updateButtonIcon();
+                    
+                    // Save to cookie (expires in 365 days)
+                    const isLight = document.documentElement.classList.contains('light-theme');
+                    const expires = new Date();
+                    expires.setTime(expires.getTime() + 365 * 24 * 60 * 60 * 1000);
+                    document.cookie = 'theme=' + (isLight ? 'light' : 'dark') + ';expires=' + expires.toUTCString() + ';path=/';
+                });
+            }
+            
+            function updateButtonIcon() {
+                const isLight = document.documentElement.classList.contains('light-theme');
+                toggleBtn.textContent = isLight ? '☀️' : '🌙';
+                toggleBtn.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
+            }
+        });
+    </script>
 </body>
 </html>
