@@ -225,6 +225,7 @@ nav {
     justify-content: center;
     gap: clamp(.75rem, 3vw, 2rem);
     font-weight: 600;
+    align-items: center;
 }
 
 nav a {
@@ -243,6 +244,30 @@ nav a:focus {
 nav a.active {
     color: var(--text);
     border-bottom-color: var(--text);
+}
+
+/* Theme Toggle Button */
+#theme-toggle {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.4em;
+    padding: 0.25rem 0;
+    color: var(--text);
+    transition: .2s;
+    min-width: auto;
+    line-height: 1;
+}
+
+#theme-toggle:hover {
+    color: var(--accent-hover);
+    transform: scale(1.1);
+}
+
+#theme-toggle:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 4px;
 }
 
 /* ----------  Subnavigation  ---------- */
