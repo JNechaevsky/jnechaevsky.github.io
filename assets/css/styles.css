@@ -445,6 +445,14 @@ nav a.active {
     background: rgba(255, 255, 255, .08);
 }
 
+html.light-theme .music-list li {
+    background: rgba(0, 0, 0, .05);
+}
+
+html.light-theme .music-list li:hover {
+    background: rgba(0, 0, 0, .08);
+}
+
 .music-list span {
     color: var(--muted);
     font-size: .875em;
