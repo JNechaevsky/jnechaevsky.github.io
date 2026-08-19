@@ -1,27 +1,56 @@
 /**
- * Theme Toggle - Loads saved theme from cookie on page load
+ * Theme Toggle - Loads saved theme from cookie and handles toggle clicks
  * Must be loaded in <head> to prevent Flash of Unstyled Content (FOUC)
  */
 (function() {
-    // Check for saved theme preference in cookies
+    // --- Helpers ---
     function getCookie(name) {
-        const value = '; ' + document.cookie;
-        const parts = value.split('; ' + name + '=');
-        if (parts.length === 2) return parts.pop().split(';').shift();
-        return null;
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? match[2] : null;
+    }
+
+    function setCookie(name, value, days) {
+        const expires = new Date(Date.now() + days * 864e5).toUTCString();
+        document.cookie = name + '=' + value + '; expires=' + expires + '; path=/';
+    }
+
+    // --- Apply saved theme ---
+    function applyTheme(theme) {
+        if (theme === 'light') {
+            document.documentElement.classList.add('light-theme');
+        } else {
+            document.documentElement.classList.remove('light-theme');
+        }
     }
 
     const savedTheme = getCookie('theme');
     
-    if (savedTheme === 'light') {
-        document.documentElement.classList.add('light-theme');
-    } else if (savedTheme === 'dark') {
-        // Dark theme is default, no class needed
-        document.documentElement.classList.remove('light-theme');
+    if (savedTheme) {
+        applyTheme(savedTheme);
+    } else if (window.matchMedia?.('(prefers-color-scheme: light)').matches) {
+        applyTheme('light');
+    }
+    // else: dark by default
+
+    // --- Toggle handler ---
+    function toggleTheme() {
+        const isLight = document.documentElement.classList.contains('light-theme');
+        const newTheme = isLight ? 'dark' : 'light';
+        
+        applyTheme(newTheme);
+        setCookie('theme', newTheme, 365);
+    }
+
+    // --- Attach event listeners ---
+    function initToggleButtons() {
+        document.querySelectorAll('.theme-toggle').forEach(function(btn) {
+            btn.addEventListener('click', toggleTheme);
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initToggleButtons);
     } else {
-        // No cookie set - check system preference
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-            document.documentElement.classList.add('light-theme');
-        }
+        initToggleButtons();
     }
 })();
