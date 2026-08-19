@@ -2066,6 +2066,26 @@ input[type="file"] {
     transition: transform 0.5s ease-out;
 }
 
+.timer-display,
+.progress-bar-container {
+    --timer-active: #5affa4;
+    --timer-alert: #ff5a5a;
+}
+
+html.light-theme .timer-display,
+html.light-theme .progress-bar-container {
+    --timer-active: #2e7d32;
+    --timer-alert: #b71c1c;
+}
+
+@media (prefers-color-scheme: light) {
+    html:not(.light-theme):not(.dark-theme) .timer-display,
+    html:not(.light-theme):not(.dark-theme) .progress-bar-container {
+        --timer-active: #2e7d32;
+        --timer-alert: #b71c1c;
+    }
+}
+
 /* ==========================================================================
    Scroll to top button
    ========================================================================== */
