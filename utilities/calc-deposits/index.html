@@ -43,6 +43,10 @@
   <link rel="start" href="../../" title="Projects">
 
 
+    
+    <!-- Theme Toggle Script (must be in head to prevent FOUC) -->
+    <script src="../../assets/js/theme-toggle.js"></script>
+
 </head>
 
 <body>
@@ -51,6 +55,7 @@
       <div class="tool-header">
         <a class="back-button" href="../../utilities.html#utilities" aria-label="Back" title="Back" onclick="if (history.length > 1) { history.back(); } else { location.href = this.href; } return false;"></a>
         <h3>Калькулятор вклада</h3>
+        <button id="theme-toggle" type="button" title="Toggle theme" aria-label="Toggle light/dark theme">🌙</button>
       </div>
 
       <div class="calculator-form">
@@ -178,5 +183,33 @@
       }
     );
   </script>
+    <!-- Theme Toggle Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.getElementById('theme-toggle');
+            if (toggleBtn) {
+                updateButtonIcon();
+                
+                toggleBtn.addEventListener('click', function() {
+                    document.documentElement.classList.toggle('light-theme');
+                    updateButtonIcon();
+                    
+                    // Save to cookie (expires in 365 days)
+                    const isLight = document.documentElement.classList.contains('light-theme');
+                    const expires = new Date();
+                    expires.setTime(expires.getTime() + 365 * 24 * 60 * 60 * 1000);
+                    document.cookie = 'theme=' + (isLight ? 'light' : 'dark') + ';expires=' + expires.toUTCString() + ';path=/';
+                });
+            }
+            
+            function updateButtonIcon() {
+                const isLight = document.documentElement.classList.contains('light-theme');
+                toggleBtn.textContent = isLight ? '☀️' : '🌙';
+                toggleBtn.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
+            }
+        });
+    </script>
+
+
 </body>
 </html>

@@ -5,6 +5,7 @@
 /* ----------  CSS Variables  ---------- */
 
 :root {
+    /* Dark theme (default) */
     --bg: #011726;
     --bg-card: #0a1d2b;
     --accent: #4ea1ff;
@@ -16,6 +17,38 @@
     --radius: 10px;
     --shadow: 0 8px 24px rgba(0, 0, 0, .35);
     --font: "Segoe UI", sans-serif;
+}
+
+/* Light theme */
+html.light-theme {
+    --bg: #f5f5f5;
+    --bg-card: #ffffff;
+    --accent: #0066cc;
+    --accent-hover: #004c99;
+    --text: #1a1a1a;
+    --muted: #666666;
+    --input_tip: #999999;
+    --border: #d0d0d0;
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --lightbox-bg: rgba(245, 245, 245, 0.95);
+    --lightbox-button-bg: rgba(255, 255, 255, 0.9);
+}
+
+/* System preference for light theme */
+@media (prefers-color-scheme: light) {
+    html:not(.light-theme):not(.dark-theme) {
+        --bg: #f5f5f5;
+        --bg-card: #ffffff;
+        --accent: #0066cc;
+        --accent-hover: #004c99;
+        --text: #1a1a1a;
+        --muted: #666666;
+        --input_tip: #999999;
+        --border: #d0d0d0;
+        --shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        --lightbox-bg: rgba(245, 245, 245, 0.95);
+        --lightbox-button-bg: rgba(255, 255, 255, 0.9);
+    }
 }
 
 /* ----------  Global / Reset  ---------- */
@@ -31,6 +64,65 @@
 html {
     scroll-behavior: smooth;
     overflow-y: scroll;
+    /* Firefox scrollbar (default dark) */
+    scrollbar-width: auto;
+    scrollbar-color: #4ea1ff #0a1d2b;
+}
+
+/* ==========================================================================
+   Scrollbar Styling (WebKit: Chrome, Edge, Safari)
+   ========================================================================== */
+
+/* Base dimensions */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+/* Dark theme (default) */
+::-webkit-scrollbar-track {
+    background-color: #0a1d2b;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #4ea1ff;
+    border-radius: 6px;
+    border: 2px solid #0a1d2b;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #98c9ff;
+}
+
+/* Light theme overrides */
+html.light-theme {
+    scrollbar-color: #0066cc #f5f5f5; /* Firefox */
+}
+
+html.light-theme ::-webkit-scrollbar-track {
+    background-color: #f5f5f5;
+}
+
+html.light-theme ::-webkit-scrollbar-thumb {
+    background-color: #0066cc;
+    border: 2px solid #f5f5f5;
+}
+
+html.light-theme ::-webkit-scrollbar-thumb:hover {
+    background-color: #004c99;
+}
+
+/* Webkit scrollbar styling for light theme */
+html.light-theme ::-webkit-scrollbar-track {
+    background-color: #f5f5f5;
+}
+
+html.light-theme ::-webkit-scrollbar-thumb {
+    background-color: #0066cc;
+}
+
+html.light-theme ::-webkit-scrollbar-thumb:hover {
+    background-color: #004c99;
 }
 
 body {
@@ -93,7 +185,7 @@ li.download {
 
 hr {
     border: none;
-    border-top: 1px solid #35628a;
+    border-top: 1px solid var(--border);
     margin: 20px 0;
 }
 
@@ -120,14 +212,14 @@ pre {
 }
 
 kbd {
-    background: #165b99;
-    border: 1px solid #4ea1ff;
+    background: var(--border);
+    border: 1px solid var(--accent);
     border-radius: 4px;
-    box-shadow: inset 0 0 3px #082234;
+    box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
     padding: 2px 6px;
     font-family: monospace;
     font-size: 0.95em;
-    color: #d4eaff;
+    color: var(--text);
 }
 
 blockquote {
@@ -196,6 +288,7 @@ nav {
     justify-content: center;
     gap: clamp(.75rem, 3vw, 2rem);
     font-weight: 600;
+    align-items: center;
 }
 
 nav a {
@@ -214,6 +307,37 @@ nav a:focus {
 nav a.active {
     color: var(--text);
     border-bottom-color: var(--text);
+}
+
+/* Theme Toggle Button */
+#theme-toggle {
+    background: transparent;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    cursor: pointer;
+    font-size: 1.4em;
+    padding: 0.25rem 0;
+    color: var(--text);
+    transition: .2s;
+    min-width: auto;
+    line-height: 1;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+#theme-toggle:hover {
+    color: var(--accent-hover);
+    transform: scale(1.1);
+}
+
+#theme-toggle:focus,
+#theme-toggle:focus-visible,
+#theme-toggle:active {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
 }
 
 /* ----------  Subnavigation  ---------- */
@@ -413,10 +537,10 @@ ul ul {
 
 .back-button {
     align-items: center;
-    background: #1b325a;
+    background: var(--border);
     border-bottom: 0;
     border-radius: 8px;
-    color: #fff;
+    color: var(--text);
     display: flex;
     height: 48px;
     justify-content: center;
@@ -435,14 +559,24 @@ ul ul {
 }
 
 .back-button:hover {
-    background: #2b4f86;
+    background: var(--accent);
     border-bottom: 0;
     color: #fff;
 }
 
+.back-button:hover::before {
+    border-bottom-color: #fff;
+    border-left-color: #fff;
+}
+
 .back-button:focus {
-    background: #2b4f86;
+    background: var(--accent);
     color: #fff;
+}
+
+.back-button:focus::before {
+    border-bottom-color: #fff;
+    border-left-color: #fff;
 }
 
 /* ==========================================================================
@@ -450,7 +584,7 @@ ul ul {
    ========================================================================== */
 
 .action-button {
-    background: #165b99;
+    background: var(--accent);
     border: none;
     border-radius: 8px;
     color: #fff;
@@ -465,22 +599,24 @@ ul ul {
 
 .action-button:hover,
 .action-button:focus {
-    background: #4ea1ff;
+    background: var(--accent-hover);
     color: #fff;
 }
 
 .action-button.secondary {
-    background: #1b325a;
+    background: var(--border);
+    color: var(--text);
 }
 
 .action-button.secondary:hover,
 .action-button.secondary:focus {
-    background: #2b4f86;
+    background: var(--accent);
+    color: #fff;
 }
 
 .action-button:disabled {
-    background: #35628a;
-    color: #9bbcd6;
+    background: var(--border);
+    color: var(--muted);
     cursor: not-allowed;
 }
 
@@ -489,7 +625,7 @@ ul ul {
 }
 
 .pick-button {
-    background: #165b99;
+    background: var(--accent);
     border: none;
     border-radius: 8px;
     color: #fff;
@@ -505,7 +641,7 @@ ul ul {
 }
 
 .pick-button:hover {
-    background: #4ea1ff;
+    background: var(--accent-hover);
     color: #fff;
 }
 
@@ -537,16 +673,16 @@ ul ul {
    ========================================================================== */
 
 .status {
-    color: #90ee90;
+    color: #4caf50;
     min-height: 1.5em;
 }
 
 .status.error {
-    color: #ff6f6f;
+    color: #e53935;
 }
 
 .status.warning {
-    color: #e6d37a;
+    color: #d4a017;
 }
 
 /* ==========================================================================
@@ -554,8 +690,8 @@ ul ul {
    ========================================================================== */
 
 .drop-zone {
-    background: #01101a;
-    border: 2px dashed #165b99;
+    background: var(--bg);
+    border: 2px dashed var(--border);
     border-radius: 8px;
     cursor: pointer;
     padding: 1.5rem;
@@ -564,8 +700,8 @@ ul ul {
 }
 
 .drop-zone.dragover {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-color: #4ea1ff;
+    background-color: rgba(78, 161, 255, 0.1);
+    border-color: var(--accent);
 }
 
 .drop-zone p {
@@ -582,9 +718,9 @@ ul ul {
    ========================================================================== */
 
 select {
-    background-color: #011726;
-    color: #d4eaff;
-    border: 1px solid #165b99;
+    background-color: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
     border-radius: 6px;
     padding: 6px;
 }
@@ -601,7 +737,7 @@ select {
 }
 
 .form-group input[type="number"] {
-    background: #01101a;
+    background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 12px;
@@ -637,7 +773,7 @@ select {
 }
 
 .option-label input {
-    accent-color: #4ea1ff;
+    accent-color: var(--accent);
     height: 18px;
     width: 18px;
 }
@@ -658,7 +794,7 @@ input[type="number"] {
    ========================================================================== */
 
 .result-box {
-    background: #01101a;
+    background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 1.25rem;
@@ -690,7 +826,7 @@ input[type="number"] {
 
 .result-value.total {
     font-size: 1.5em;
-    color: #90ee90;
+    color: #4caf50;
 }
 
 /* ==========================================================================
@@ -827,7 +963,7 @@ input[type="number"] {
 
 fieldset {
     max-width: 800px;
-    border: 1px solid #165b99;
+    border: 1px solid var(--border);
     padding: 10px;
     border-radius: 4px;
 }
@@ -845,7 +981,7 @@ input[type="file"] {
 
 .custom-file-label {
     display: inline-block;
-    background: #165b99;
+    background: var(--accent);
     color: #fff;
     padding: 8px 16px;
     border: none;
@@ -859,7 +995,7 @@ input[type="file"] {
 
 .custom-file-label-small {
     display: inline-block;
-    background: #165b99;
+    background: var(--accent);
     color: #fff;
     padding: 4px 16px;
     margin: 4px;
@@ -874,13 +1010,13 @@ input[type="file"] {
 
 .custom-file-label:hover,
 .custom-file-label-small:hover {
-    background-color: #569cd6;
+    background-color: var(--accent-hover);
     color: #fff;
 }
 
 .custom-file-label:active,
 .custom-file-label-small:active {
-    background-color: #4179a3;
+    background-color: var(--accent);
 }
 
 .signaturePreview {
@@ -894,8 +1030,8 @@ input[type="file"] {
 #txtResult {
     width: 100%;
     height: 480px;
-    background: #01101a;
-    color: #d4eaff;
+    background: var(--bg);
+    color: var(--text);
     border: none;
     border-radius: 8px;
     padding: 12px;
@@ -935,10 +1071,10 @@ input[type="file"] {
 }
 
 .code-area {
-    background: #01101a;
+    background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 8px;
-    color: #d4eaff;
+    color: var(--text);
     font-family: Consolas, "Courier New", monospace;
     font-size: 15px;
     line-height: 1.5;
@@ -1001,7 +1137,7 @@ input[type="file"] {
 
 .field-row input,
 .field-row select {
-    background: #01101a;
+    background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 8px;
     color: var(--text);
@@ -1043,8 +1179,8 @@ input[type="file"] {
 }
 
 .output-panel {
-    background: #01101a;
-    border: 1px solid #165b99;
+    background: var(--bg);
+    border: 1px solid var(--border);
     border-radius: 8px;
     display: grid;
     gap: 0.75rem;
@@ -1056,10 +1192,10 @@ input[type="file"] {
 }
 
 .shift-form .result-value {
-    background: #01101a;
+    background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 8px;
-    color: #d4eaff;
+    color: var(--text);
     font-family: Consolas, "Courier New", monospace;
     font-size: 16px;
     min-height: 44px;
@@ -1093,7 +1229,7 @@ input[type="file"] {
 }
 
 .calculate-button {
-    background: #165b99;
+    background: var(--accent);
     border: none;
     border-radius: 8px;
     color: #fff;
@@ -1106,7 +1242,7 @@ input[type="file"] {
 }
 
 .calculate-button:hover {
-    background: var(--accent);
+    background: var(--accent-hover);
 }
 
 /* ==========================================================================
@@ -1120,8 +1256,8 @@ input[type="file"] {
 }
 
 .converter-card {
-    background: #01101a;
-    border: 1px solid #165b99;
+    background: var(--bg);
+    border: 1px solid var(--border);
     border-radius: 8px;
     display: flex;
     flex-direction: column;
@@ -1141,8 +1277,8 @@ input[type="file"] {
 
 .converter-input,
 .converter-output {
-    background: #01101a;
-    border: 1px solid #165b99;
+    background: var(--bg);
+    border: 1px solid var(--border);
     border-radius: 8px;
     color: var(--text);
     font-family: Consolas, "Courier New", monospace;
@@ -1157,12 +1293,8 @@ input[type="file"] {
 
 .converter-input:focus,
 .converter-output:focus {
-    border-color: #4ea1ff;
+    border-color: var(--accent);
     box-shadow: 0 0 0 2px rgba(78, 161, 255, 0.2);
-}
-
-.converter-output {
-    color: #d4eaff;
 }
 
 .converter-input::placeholder,
@@ -1211,8 +1343,8 @@ input[type="file"] {
 }
 
 .settings-card {
-    background: #01101a;
-    border: 1px solid #165b99;
+    background: var(--bg);
+    border: 1px solid var(--border);
     border-radius: 8px;
     display: flex;
     flex-direction: column;
@@ -1268,7 +1400,7 @@ input[type="file"] {
 }
 
 .password-list {
-    color: #d4eaff;
+    color: var(--text);
     display: block;
     font-family: Consolas, "Courier New", monospace;
     font-size: 16px;
@@ -1307,8 +1439,8 @@ input[type="file"] {
    ========================================================================== */
 
 .file-summary {
-    background: #01101a;
-    border: 1px solid #165b99;
+    background: var(--bg);
+    border: 1px solid var(--border);
     border-radius: 8px;
     color: var(--text);
     display: none;
@@ -1325,7 +1457,7 @@ input[type="file"] {
    ========================================================================== */
 
 .download-button {
-    background: #165b99;
+    background: var(--accent);
     border: none;
     border-radius: 8px;
     color: #fff;
@@ -1341,7 +1473,7 @@ input[type="file"] {
 }
 
 .download-button:hover {
-    background: #4ea1ff;
+    background: var(--accent-hover);
     color: #fff;
 }
 
@@ -1354,8 +1486,8 @@ input[type="file"] {
 }
 
 .quality-select {
-    background: #01101a;
-    border: 1px solid #165b99;
+    background: var(--bg);
+    border: 1px solid var(--border);
     border-radius: 8px;
     color: var(--text);
     font-size: 16px;
@@ -1380,8 +1512,8 @@ input[type="file"] {
 
 .result-row {
     align-items: center;
-    background: #01101a;
-    border: 1px solid #165b99;
+    background: var(--bg);
+    border: 1px solid var(--border);
     border-radius: 8px;
     display: grid;
     gap: 0.75rem;
@@ -1406,7 +1538,7 @@ input[type="file"] {
 }
 
 .skipped-label {
-    color: #e6d37a;
+    color: #d4a017;
     font-weight: 600;
     text-align: center;
 }
@@ -1424,7 +1556,7 @@ input[type="file"] {
 }
 
 .error-label {
-    color: #ff6f6f;
+    color: #e53935;
     font-weight: 600;
     text-align: center;
 }
@@ -1464,7 +1596,7 @@ input[type="file"] {
 #text-input {
     width: 100%;
     height: 200px;
-    background: #01101a;
+    background: var(--bg);
     color: var(--text);
     border: 1px solid var(--border);
     border-radius: 8px;
@@ -1500,7 +1632,7 @@ input[type="file"] {
 #fix-btn,
 #copy-btn {
     padding: 12px 20px;
-    background: #165b99;
+    background: var(--accent);
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -1515,14 +1647,14 @@ input[type="file"] {
 #noncyr-check-btn:hover,
 #fix-btn:hover,
 #copy-btn:hover {
-    background: #4ea1ff;
+    background: var(--accent-hover);
 }
 
 .output {
     margin-top: 20px;
     white-space: pre-line;
     font-size: 16px;
-    background: #01101a;
+    background: var(--bg);
     padding: 12px;
     border: 1px solid var(--border);
     border-radius: 8px;
@@ -1539,16 +1671,16 @@ input[type="file"] {
 }
 
 .line-ok {
-    color: #d4d4d4;
+    color: var(--text);
 }
 
 .line-bad {
-    color: #ff4f4f;
+    color: #e53935;
 }
 
 .bad-char {
     text-decoration: underline;
-    color: #ff4f4f;
+    color: #e53935;
 }
 
 .noncyr-button-row {
@@ -1593,7 +1725,7 @@ input[type="file"] {
 }
 
 .prop-input-group input {
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--bg);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 0.8rem;
@@ -1703,20 +1835,20 @@ input[type="file"] {
 }
 
 .preset-options label {
-    background-color: #124c80;
+    background-color: var(--bg-card);
     padding: 0.4rem 0.8rem;
     border-radius: var(--radius);
     cursor: pointer;
-    color: #fff;
-    border: 1px solid transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
     transition: 0.2s;
     user-select: none;
     font-weight: bold;
 }
 
 .preset-options label:hover {
-    background-color: var(--accent);
-    color: #fff;
+    background-color: var(--border);
+    color: var(--text);
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -1725,16 +1857,17 @@ input[type="file"] {
 }
 
 .preset-options label:has(input[type="radio"]:checked) {
-    background-color: #3f81cc;
-    color: white;
+    background-color: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
 }
 
 .timer-back-link {
     align-items: center;
-    background: #17324f;
+    background: var(--bg-card);
     border-bottom: 0;
     border-radius: 8px;
-    color: #9bbcd6;
+    color: var(--muted);
     display: inline-flex;
     height: 36px;
     justify-content: center;
@@ -1754,8 +1887,8 @@ input[type="file"] {
 
 .timer-back-link:hover,
 .timer-back-link:focus {
-    background: #22486f;
-    color: #d4eaff;
+    background: var(--border);
+    color: var(--text);
 }
 
 .timer-title-row {
@@ -1773,10 +1906,10 @@ input[type="file"] {
 
 .timer-fullscreen-btn {
     align-items: center;
-    background: #17324f;
+    background: var(--bg-card);
     border: 0;
     border-radius: 8px;
-    color: #9bbcd6;
+    color: var(--muted);
     cursor: pointer;
     display: inline-flex;
     height: 36px;
@@ -1792,13 +1925,46 @@ input[type="file"] {
 
 .timer-fullscreen-btn:hover,
 .timer-fullscreen-btn:focus {
-    background: #22486f;
-    color: #d4eaff;
+    background: var(--border);
+    color: var(--text);
 }
 
 .timer-fullscreen-btn svg {
     height: 16px;
     width: 16px;
+}
+
+.timer-theme-toggle {
+    position: absolute;
+    right: 4rem;
+    top: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    cursor: pointer;
+    font-size: 1.4em;
+    padding: 0.25rem 0;
+    color: var(--text);
+    transition: .2s;
+    min-width: auto;
+    line-height: 1;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.timer-theme-toggle:hover {
+    color: var(--accent-hover);
+    transform: scale(1.1);
+}
+
+.timer-theme-toggle:focus,
+.timer-theme-toggle:focus-visible,
+.timer-theme-toggle:active {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
 }
 
 .time-inputs {
@@ -1808,9 +1974,9 @@ input[type="file"] {
 }
 
 .time-inputs input[type="number"] {
-    background: #01101a;
+    background: var(--bg);
     color: var(--text);
-    border: 1px solid #165b99;
+    border: 1px solid var(--border);
     border-radius: var(--radius);
     font-size: 16px;
     outline: none;
@@ -1885,7 +2051,7 @@ input[type="file"] {
 .progress-bar-container {
     width: 100%;
     height: 8px;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(128, 128, 128, 0.15);
     border-radius: 6px;
     overflow: hidden;
     margin-top: 1rem;
@@ -1972,7 +2138,7 @@ input[type="file"] {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(1, 23, 38, 0.95);
+    background: var(--lightbox-bg, rgba(1, 23, 38, 0.95));
     display: none;
     justify-content: center;
     align-items: center;
@@ -2009,7 +2175,7 @@ input[type="file"] {
 .lightbox-prev,
 .lightbox-next {
     position: absolute;
-    background: rgba(10, 29, 43, 0.8);
+    background: var(--lightbox-button-bg, rgba(10, 29, 43, 0.8));
     border: 1px solid var(--border);
     color: var(--text);
     border-radius: 50%;
