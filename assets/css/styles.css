@@ -53,7 +53,7 @@ html.light-theme {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    scrollbar-width: thin;
+    scrollbar-width: auto;
     scrollbar-color: #4ea1ff #0a1d2b;
 }
 
@@ -65,6 +65,19 @@ html {
 /* Light theme scrollbar */
 html.light-theme * {
     scrollbar-color: #0066cc #f5f5f5;
+}
+
+/* Webkit scrollbar styling for light theme */
+html.light-theme ::-webkit-scrollbar-track {
+    background-color: #f5f5f5;
+}
+
+html.light-theme ::-webkit-scrollbar-thumb {
+    background-color: #0066cc;
+}
+
+html.light-theme ::-webkit-scrollbar-thumb:hover {
+    background-color: #004c99;
 }
 
 body {
