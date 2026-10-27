@@ -20,6 +20,7 @@ A collection of MIT-licensed, client-side web tools by Polina "Aura" N. and Juli
 
 - [Allman Formatter](https://jnechaevsky.github.io/utilities/allman-4-spaces/) reformats source code into Allman brace style with 4-space indentation.
 - [Bit Shift Calculator](https://jnechaevsky.github.io/utilities/bit-shift/) shifts decimal, hexadecimal, or binary integer values left and right.
+- [Color Blender](https://jnechaevsky.github.io/utilities/color-blender/) mixes two colors into a stepped gradient of HEX values, editable in RGB or HSL.
 - [Countdown Timer](https://jnechaevsky.github.io/utilities/timer/) sets a countdown, starts or pauses it, and adjusts the time with presets or manual input.
 - [Deposit Calculator](https://jnechaevsky.github.io/utilities/calc-deposits/) estimates returns on ruble-denominated deposits from principal amount, interest rate, and term.
 - [DOCX Unprotector](https://jnechaevsky.github.io/utilities/docx-unprotector/) removes editing restrictions from .docx files, including password protection.

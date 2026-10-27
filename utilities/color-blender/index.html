@@ -1,0 +1,755 @@
+<!--
+  MIT License
+
+  Copyright (c) 2026 Polina "Aura" N.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Julia Nechaevskaya">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  <meta http-equiv="pragma" content="no-cache">
+  <title>Color Blender</title>
+
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="help" href="mailto:www-validator@w3.org">
+  <link rel="start" href="../../" title="Projects">
+
+  <!-- Theme Toggle Script (must be in head to prevent FOUC) -->
+  <script src="../../assets/js/theme-toggle.js"></script>
+
+</head>
+
+<body>
+  <div class="container">
+    <section class="tool-panel">
+      <div class="tool-header">
+        <a class="back-button" href="../../utilities.html#utilities" aria-label="Back" title="Back" onclick="if (history.length > 1) { history.back(); } else { location.href = this.href; } return false;"></a>
+        <h3>Color Blender</h3>
+        <button id="theme-toggle" type="button" title="Toggle theme" aria-label="Toggle light/dark theme">🌙</button>
+      </div>
+
+      <p class="blend-hint">Mix two colors into a stepped gradient, then click any step to copy its HEX value.</p>
+
+      <div class="blend-strip" id="blend-strip"></div>
+
+      <div class="blend-controls">
+        <article class="blend-color-card">
+          <div class="blend-color-head">
+            <span class="blend-color-title">Color 1</span>
+            <input class="hex-input" id="start-hex" type="text" value="#15262D" maxlength="7" spellcheck="false" autocapitalize="characters" aria-label="Color 1 HEX value">
+          </div>
+
+          <select class="blend-model" id="start-model" aria-label="Color 1 channel model">
+            <option value="rgb" selected>RGB</option>
+            <option value="hsl">HSL</option>
+          </select>
+
+          <div class="blend-sliders">
+            <div class="blend-slider-row">
+              <label id="start-label-0" for="start-range-0">R</label>
+              <input id="start-range-0" type="range" min="0" max="255" step="1" value="21">
+              <input class="blend-slider-value" id="start-value-0" type="number" min="0" max="255" value="21" aria-label="Color 1 first channel">
+            </div>
+            <div class="blend-slider-row">
+              <label id="start-label-1" for="start-range-1">G</label>
+              <input id="start-range-1" type="range" min="0" max="255" step="1" value="38">
+              <input class="blend-slider-value" id="start-value-1" type="number" min="0" max="255" value="38" aria-label="Color 1 second channel">
+            </div>
+            <div class="blend-slider-row">
+              <label id="start-label-2" for="start-range-2">B</label>
+              <input id="start-range-2" type="range" min="0" max="255" step="1" value="45">
+              <input class="blend-slider-value" id="start-value-2" type="number" min="0" max="255" value="45" aria-label="Color 1 third channel">
+            </div>
+          </div>
+
+          <div class="swatch-grid" id="start-swatches"></div>
+        </article>
+
+        <div class="blend-steps">
+          <span class="blend-steps-title">Steps</span>
+          <div class="blend-steps-row">
+            <button class="steps-button" id="steps-minus" type="button" aria-label="Fewer steps">−</button>
+            <input class="steps-input" id="steps-value" type="number" min="2" max="32" step="1" value="7" aria-label="Number of steps">
+            <button class="steps-button" id="steps-plus" type="button" aria-label="More steps">+</button>
+          </div>
+          <p class="blend-steps-hint">Includes both end colors.</p>
+
+          <div class="blend-options">
+            <label for="blend-model">Blend in</label>
+            <select class="blend-model" id="blend-model" aria-label="Blending color model">
+              <option value="rgb" selected>RGB</option>
+              <option value="hsl">HSL</option>
+            </select>
+          </div>
+
+          <div class="status blend-status" id="status-message" aria-live="polite"></div>
+        </div>
+
+        <article class="blend-color-card">
+          <div class="blend-color-head">
+            <span class="blend-color-title">Color 2</span>
+            <input class="hex-input" id="end-hex" type="text" value="#E5E9EB" maxlength="7" spellcheck="false" autocapitalize="characters" aria-label="Color 2 HEX value">
+          </div>
+
+          <select class="blend-model" id="end-model" aria-label="Color 2 channel model">
+            <option value="rgb" selected>RGB</option>
+            <option value="hsl">HSL</option>
+          </select>
+
+          <div class="blend-sliders">
+            <div class="blend-slider-row">
+              <label id="end-label-0" for="end-range-0">R</label>
+              <input id="end-range-0" type="range" min="0" max="255" step="1" value="229">
+              <input class="blend-slider-value" id="end-value-0" type="number" min="0" max="255" value="229" aria-label="Color 2 first channel">
+            </div>
+            <div class="blend-slider-row">
+              <label id="end-label-1" for="end-range-1">G</label>
+              <input id="end-range-1" type="range" min="0" max="255" step="1" value="233">
+              <input class="blend-slider-value" id="end-value-1" type="number" min="0" max="255" value="233" aria-label="Color 2 second channel">
+            </div>
+            <div class="blend-slider-row">
+              <label id="end-label-2" for="end-range-2">B</label>
+              <input id="end-range-2" type="range" min="0" max="255" step="1" value="235">
+              <input class="blend-slider-value" id="end-value-2" type="number" min="0" max="255" value="235" aria-label="Color 2 third channel">
+            </div>
+          </div>
+
+          <div class="swatch-grid" id="end-swatches"></div>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Preset colors offered next to each picker.
+    const SWATCH_COLORS = [
+      '#E53935', '#F4511E', '#FB8C00', '#FDD835', '#D4E157', '#9CCC65', '#7CB342', '#43A047',
+      '#1DE9B6', '#00ACC1', '#1E88E5', '#3949AB', '#5E35B1', '#8E24AA', '#D81B60', '#EC407A',
+      '#000000', '#212121', '#424242', '#616161', '#9E9E9E', '#BDBDBD', '#E0E0E0', '#FFFFFF',
+    ];
+
+    const MODELS = {
+      rgb: [
+        { name: 'R', max: 255 },
+        { name: 'G', max: 255 },
+        { name: 'B', max: 255 },
+      ],
+      hsl: [
+        { name: 'H', max: 360 },
+        { name: 'S', max: 100 },
+        { name: 'L', max: 100 },
+      ],
+    };
+
+    const MIN_STEPS = 2;
+    const MAX_STEPS = 32;
+    const COMPACT_STEPS = 10;
+
+    const state = {
+      steps: 7,
+      blendModel: 'rgb',
+      start: { hex: '#15262D', model: 'rgb', components: [0, 0, 0] },
+      end: { hex: '#E5E9EB', model: 'rgb', components: [0, 0, 0] },
+    };
+
+    function channelElements(prefix)
+    {
+      const ranges = [];
+      const values = [];
+      const labels = [];
+
+      for (let i = 0; i < 3; i++)
+      {
+        ranges.push(document.getElementById(`${prefix}-range-${i}`));
+        values.push(document.getElementById(`${prefix}-value-${i}`));
+        labels.push(document.getElementById(`${prefix}-label-${i}`));
+      }
+
+      return { ranges, values, labels };
+    }
+
+    const ui = {
+      strip: document.getElementById('blend-strip'),
+      status: document.getElementById('status-message'),
+      steps: document.getElementById('steps-value'),
+      blendModel: document.getElementById('blend-model'),
+      start: {
+        hex: document.getElementById('start-hex'),
+        model: document.getElementById('start-model'),
+        swatches: document.getElementById('start-swatches'),
+        ...channelElements('start'),
+      },
+      end: {
+        hex: document.getElementById('end-hex'),
+        model: document.getElementById('end-model'),
+        swatches: document.getElementById('end-swatches'),
+        ...channelElements('end'),
+      },
+    };
+
+    /* ----------  Color math  ---------- */
+
+    function clamp(value, min, max)
+    {
+      return Math.min(max, Math.max(min, value));
+    }
+
+    function wrapHue(hue)
+    {
+      return ((hue % 360) + 360) % 360;
+    }
+
+    function hexToRgb(hex)
+    {
+      const value = hex.replace('#', '');
+
+      return {
+        r: parseInt(value.slice(0, 2), 16),
+        g: parseInt(value.slice(2, 4), 16),
+        b: parseInt(value.slice(4, 6), 16),
+      };
+    }
+
+    function channelToHex(value)
+    {
+      return clamp(Math.round(value), 0, 255).toString(16).padStart(2, '0').toUpperCase();
+    }
+
+    function rgbToHex(rgb)
+    {
+      return `#${channelToHex(rgb.r)}${channelToHex(rgb.g)}${channelToHex(rgb.b)}`;
+    }
+
+    function rgbToHsl(rgb)
+    {
+      const r = rgb.r / 255;
+      const g = rgb.g / 255;
+      const b = rgb.b / 255;
+      const max = Math.max(r, g, b);
+      const min = Math.min(r, g, b);
+      const l = (max + min) / 2;
+
+      let h = 0;
+      let s = 0;
+
+      if (max !== min)
+      {
+        const delta = max - min;
+
+        s = l > 0.5 ? delta / (2 - max - min) : delta / (max + min);
+
+        if (max === r)
+        {
+          h = ((g - b) / delta + (g < b ? 6 : 0)) / 6;
+        }
+        else if (max === g)
+        {
+          h = ((b - r) / delta + 2) / 6;
+        }
+        else
+        {
+          h = ((r - g) / delta + 4) / 6;
+        }
+      }
+
+      return { h: h * 360, s: s * 100, l: l * 100 };
+    }
+
+    function hslToRgb(hsl)
+    {
+      const h = wrapHue(hsl.h) / 360;
+      const s = clamp(hsl.s, 0, 100) / 100;
+      const l = clamp(hsl.l, 0, 100) / 100;
+
+      if (s === 0)
+      {
+        const value = Math.round(l * 255);
+        return { r: value, g: value, b: value };
+      }
+
+      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+      const p = 2 * l - q;
+
+      const hueToChannel = (t) =>
+      {
+        let position = t;
+
+        if (position < 0)
+        {
+          position += 1;
+        }
+
+        if (position > 1)
+        {
+          position -= 1;
+        }
+
+        if (position < 1 / 6)
+        {
+          return p + (q - p) * 6 * position;
+        }
+
+        if (position < 1 / 2)
+        {
+          return q;
+        }
+
+        if (position < 2 / 3)
+        {
+          return p + (q - p) * (2 / 3 - position) * 6;
+        }
+
+        return p;
+      };
+
+      return {
+        r: Math.round(hueToChannel(h + 1 / 3) * 255),
+        g: Math.round(hueToChannel(h) * 255),
+        b: Math.round(hueToChannel(h - 1 / 3) * 255),
+      };
+    }
+
+    function normalizeHex(text)
+    {
+      const value = text.trim().replace(/^#/, '');
+
+      if (/^[0-9a-f]{3}$/i.test(value))
+      {
+        const expanded = `${value[0]}${value[0]}${value[1]}${value[1]}${value[2]}${value[2]}`;
+        return `#${expanded.toUpperCase()}`;
+      }
+
+      if (/^[0-9a-f]{6}$/i.test(value))
+      {
+        return `#${value.toUpperCase()}`;
+      }
+
+      return null;
+    }
+
+    function relativeLuminance(hex)
+    {
+      const { r, g, b } = hexToRgb(hex);
+
+      const linearize = (value) =>
+      {
+        const channel = value / 255;
+        return channel <= 0.03928 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4);
+      };
+
+      return 0.2126 * linearize(r) + 0.7152 * linearize(g) + 0.0722 * linearize(b);
+    }
+
+    function labelColorFor(hex)
+    {
+      return relativeLuminance(hex) > 0.42 ? '#111111' : '#ffffff';
+    }
+
+    /* ----------  Blending  ---------- */
+
+    function mixHex(startHex, endHex, position, model)
+    {
+      if (model === 'hsl')
+      {
+        const start = rgbToHsl(hexToRgb(startHex));
+        const end = rgbToHsl(hexToRgb(endHex));
+
+        let hueDelta = end.h - start.h;
+
+        if (hueDelta > 180)
+        {
+          hueDelta -= 360;
+        }
+
+        if (hueDelta < -180)
+        {
+          hueDelta += 360;
+        }
+
+        return rgbToHex(hslToRgb({
+          h: wrapHue(start.h + hueDelta * position),
+          s: start.s + (end.s - start.s) * position,
+          l: start.l + (end.l - start.l) * position,
+        }));
+      }
+
+      const start = hexToRgb(startHex);
+      const end = hexToRgb(endHex);
+
+      return rgbToHex({
+        r: start.r + (end.r - start.r) * position,
+        g: start.g + (end.g - start.g) * position,
+        b: start.b + (end.b - start.b) * position,
+      });
+    }
+
+    function blendColors()
+    {
+      const colors = [];
+      const total = state.steps;
+
+      for (let i = 0; i < total; i++)
+      {
+        colors.push(mixHex(state.start.hex, state.end.hex, i / (total - 1), state.blendModel));
+      }
+
+      return colors;
+    }
+
+    /* ----------  State helpers  ---------- */
+
+    function syncComponents(color)
+    {
+      const rgb = hexToRgb(color.hex);
+
+      if (color.model === 'rgb')
+      {
+        color.components = [rgb.r, rgb.g, rgb.b];
+        return;
+      }
+
+      const hsl = rgbToHsl(rgb);
+      color.components = [hsl.h, hsl.s, hsl.l];
+    }
+
+    function componentsToHex(color)
+    {
+      const [first, second, third] = color.components;
+
+      if (color.model === 'rgb')
+      {
+        return rgbToHex({ r: first, g: second, b: third });
+      }
+
+      return rgbToHex(hslToRgb({ h: first, s: second, l: third }));
+    }
+
+    /* ----------  Rendering  ---------- */
+
+    function setStatus(message, tone = '')
+    {
+      ui.status.textContent = message;
+      ui.status.classList.toggle('error', tone === 'error');
+      ui.status.classList.toggle('warning', tone === 'warning');
+    }
+
+    function renderColor(key)
+    {
+      const color = state[key];
+      const view = ui[key];
+      const channels = MODELS[color.model];
+
+      view.hex.value = color.hex;
+
+      channels.forEach((channel, index) =>
+      {
+        const value = Math.round(color.components[index]);
+
+        view.labels[index].textContent = channel.name;
+        view.ranges[index].max = channel.max;
+        view.values[index].max = channel.max;
+
+        if (Number(view.ranges[index].value) !== value)
+        {
+          view.ranges[index].value = value;
+        }
+
+        if (document.activeElement !== view.values[index])
+        {
+          view.values[index].value = value;
+        }
+      });
+    }
+
+    function renderStrip()
+    {
+      const colors = blendColors();
+      const fragment = document.createDocumentFragment();
+      const total = colors.length;
+
+      ui.strip.textContent = '';
+      ui.strip.classList.toggle('compact', total >= COMPACT_STEPS);
+
+      colors.forEach((hex, index) =>
+      {
+        const band = document.createElement('button');
+
+        band.type = 'button';
+        band.className = 'blend-band';
+        band.style.background = hex;
+        band.title = `Copy ${hex}`;
+        band.setAttribute('aria-label', `Copy ${hex}`);
+
+        const label = document.createElement('span');
+
+        label.className = 'blend-band-label';
+        label.textContent = hex;
+        label.style.color = labelColorFor(hex);
+
+        if (index === 0 || index === total - 1)
+        {
+          const caption = document.createElement('span');
+
+          caption.className = 'blend-band-caption';
+          caption.textContent = index === 0 ? 'Color 1' : 'Color 2';
+          caption.style.color = label.style.color;
+          band.appendChild(caption);
+        }
+
+        band.appendChild(label);
+        band.addEventListener('click', () => copyHex(hex));
+
+        fragment.appendChild(band);
+      });
+
+      ui.strip.appendChild(fragment);
+      updateStripDensity();
+    }
+
+    // Horizontal HEX labels need roughly 64 px per step; switch them upright otherwise.
+    function updateStripDensity()
+    {
+      const bandWidth = ui.strip.clientWidth / state.steps;
+      ui.strip.classList.toggle('compact', state.steps >= COMPACT_STEPS || bandWidth < 64);
+    }
+
+    function render()
+    {
+      renderColor('start');
+      renderColor('end');
+      renderStrip();
+    }
+
+    /* ----------  Actions  ---------- */
+
+    async function copyHex(hex)
+    {
+      try
+      {
+        await navigator.clipboard.writeText(hex);
+        setStatus(`${hex} copied.`);
+        return;
+      }
+      catch (error)
+      {
+        if (copyHexFallback(hex))
+        {
+          setStatus(`${hex} copied.`);
+          return;
+        }
+      }
+
+      setStatus('Copy failed.', 'warning');
+    }
+
+    // Clipboard API is unavailable outside secure contexts, so keep an old-fashioned path.
+    function copyHexFallback(hex)
+    {
+      const area = document.createElement('textarea');
+
+      area.value = hex;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.left = '-9999px';
+      area.style.opacity = '0';
+      document.body.appendChild(area);
+      area.select();
+
+      let copied = false;
+
+      try
+      {
+        copied = document.execCommand('copy');
+      }
+      catch (error)
+      {
+        copied = false;
+      }
+
+      area.remove();
+
+      return copied;
+    }
+
+    function applyHex(key, text)
+    {
+      const hex = normalizeHex(text);
+
+      if (!hex)
+      {
+        setStatus('Invalid HEX value.', 'error');
+        renderColor(key);
+        return;
+      }
+
+      const color = state[key];
+
+      color.hex = hex;
+      syncComponents(color);
+      setStatus('');
+      render();
+    }
+
+    function applyChannel(key, index, rawValue)
+    {
+      const color = state[key];
+      const channels = MODELS[color.model];
+      const value = Number(rawValue);
+
+      if (rawValue === '' || Number.isNaN(value))
+      {
+        return;
+      }
+
+      color.components[index] = clamp(value, 0, channels[index].max);
+      color.hex = componentsToHex(color);
+
+      renderColor(key);
+      renderStrip();
+      setStatus('');
+    }
+
+    function applyModel(key, model)
+    {
+      const color = state[key];
+
+      color.model = model;
+      syncComponents(color);
+      renderColor(key);
+    }
+
+    function applySteps(rawValue)
+    {
+      const value = Number(rawValue);
+      const steps = clamp(Math.round(Number.isNaN(value) ? MIN_STEPS : value), MIN_STEPS, MAX_STEPS);
+
+      state.steps = steps;
+      ui.steps.value = steps;
+      renderStrip();
+    }
+
+    function buildSwatches(key)
+    {
+      const grid = ui[key].swatches;
+      const fragment = document.createDocumentFragment();
+
+      SWATCH_COLORS.forEach((hex) =>
+      {
+        const swatch = document.createElement('button');
+
+        swatch.type = 'button';
+        swatch.className = 'swatch';
+        swatch.style.background = hex;
+        swatch.title = hex;
+        swatch.setAttribute('aria-label', `Use ${hex}`);
+        swatch.addEventListener('click', () =>
+        {
+          const color = state[key];
+
+          color.hex = hex;
+          syncComponents(color);
+          setStatus('');
+          render();
+        });
+
+        fragment.appendChild(swatch);
+      });
+
+      grid.appendChild(fragment);
+    }
+
+    /* ----------  Events  ---------- */
+
+    ['start', 'end'].forEach((key) =>
+    {
+      const view = ui[key];
+
+      view.hex.addEventListener('change', () => applyHex(key, view.hex.value));
+      view.hex.addEventListener('keydown', (event) =>
+      {
+        if (event.key === 'Enter')
+        {
+          applyHex(key, view.hex.value);
+          view.hex.blur();
+        }
+      });
+
+      view.model.addEventListener('change', () => applyModel(key, view.model.value));
+
+      view.ranges.forEach((range, index) =>
+      {
+        range.addEventListener('input', () =>
+        {
+          applyChannel(key, index, range.value);
+          view.values[index].value = Math.round(state[key].components[index]);
+        });
+      });
+
+      view.values.forEach((input, index) =>
+      {
+        input.addEventListener('input', () => applyChannel(key, index, input.value));
+        input.addEventListener('blur', () => renderColor(key));
+      });
+    });
+
+    ui.steps.addEventListener('change', () => applySteps(ui.steps.value));
+    ui.steps.addEventListener('input', () =>
+    {
+      if (ui.steps.value !== '')
+      {
+        applySteps(ui.steps.value);
+      }
+    });
+
+    document.getElementById('steps-minus').addEventListener('click', () => applySteps(state.steps - 1));
+    document.getElementById('steps-plus').addEventListener('click', () => applySteps(state.steps + 1));
+
+    ui.blendModel.addEventListener('change', () =>
+    {
+      state.blendModel = ui.blendModel.value;
+      renderStrip();
+    });
+
+    window.addEventListener('resize', updateStripDensity);
+
+    /* ----------  Init  ---------- */
+
+    state.blendModel = ui.blendModel.value;
+    syncComponents(state.start);
+    syncComponents(state.end);
+    buildSwatches('start');
+    buildSwatches('end');
+    ui.steps.value = state.steps;
+    render();
+  </script>
+
+  <!-- Save selected theme -->
+  <script src="../../assets/js/theme-save.js"></script>
+
+</body>
+</html>
