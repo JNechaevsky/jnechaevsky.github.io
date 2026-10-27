@@ -4,12 +4,34 @@
 
 ## International Doom
 
-- [International Doom](https://jnechaevsky.github.io/inter-doom/index.html) is a small, functional, and minimalist source port, built with help, collaboration, and code contributions from people around the world. It is based on Chocolate Doom and Crispy Doom, with notable additions from DOOM Retro. The mission of the project is to offer a choice between an enhanced and a classic gameplay experience. International Doom supports high rendering resolutions, visual improvements, and optional gameplay adjustments, while preserving the ability to play in the spirit of the original vanilla Doom. All enhancements are disabled by default, the port allows the player to decide which features to enable.
+- [International Doom](https://jnechaevsky.github.io/inter-doom/) is a small, functional, and minimalist Doom source port, built with help, collaboration, and code contributions from people around the world. It is based on Chocolate Doom and Crispy Doom, with notable additions from DOOM Retro. The mission of the project is to offer a choice between an enhanced and a classic gameplay experience. International Doom supports high rendering resolutions, visual improvements, and optional gameplay adjustments, while preserving the ability to play in the spirit of the original vanilla Doom. All enhancements are disabled by default, so the player decides which features to enable.
 
 ## CRL
 
-- [Chocorenderlimits](https://jnechaevsky.github.io/crl/index.html) (CRL for short) is a Doom and Heretic source port designed for vanilla map authors and modders. It provides real-time display of the original engine’s rendering and gameplay limits, includes in-game warnings for potential map issues and errors, offers additional testing modes for various scenarios, and incorporates numerous QoL improvements for more comfortable testing.
+- [Chocorenderlimits](https://jnechaevsky.github.io/crl/) (CRL for short) is a Doom and Heretic source port for vanilla map authors and modders, and a continuation of the original Chocorenderlimits by RestlessRodent. It provides a real-time display of the original engine's rendering and gameplay limits, includes in-game warnings for potential map issues and errors, offers additional testing modes for various scenarios, and incorporates numerous QoL improvements for more comfortable testing.
 
 ## CRY
 
-- [CRY](https://jnechaevsky.github.io/cry/index.html) is a reimagining of Jaguar Doom for PC, built on top of the International Doom engine. To ensure high emulation accuracy, substantial parts of the original Jaguar Doom code were integrated — including damage formulas, monster behavior, Nightmare difficulty mechanics, and sector/line specials.
+- [CRY](https://jnechaevsky.github.io/cry/) is a non-conservative recreation of Jaguar Doom for PC, built on top of the International Doom engine. To ensure high emulation accuracy, substantial parts of the original Jaguar Doom code were integrated, including damage formulas, monster behavior, Nightmare difficulty mechanics, and sector and line specials.
+
+## Browser utilities
+
+A collection of MIT-licensed, client-side web tools by Polina "Aura" N. and Julia Nechaevskaya. All of them run entirely in the browser: files are never uploaded to a server, and nothing is installed.
+
+- [Allman Formatter](https://jnechaevsky.github.io/utilities/allman-4-spaces/) reformats source code into Allman brace style with 4-space indentation.
+- [Bit Shift Calculator](https://jnechaevsky.github.io/utilities/bit-shift/) shifts decimal, hexadecimal, or binary integer values left and right.
+- [Countdown Timer](https://jnechaevsky.github.io/utilities/timer/) sets a countdown, starts or pauses it, and adjusts the time with presets or manual input.
+- [Deposit Calculator](https://jnechaevsky.github.io/utilities/calc-deposits/) estimates returns on ruble-denominated deposits from principal amount, interest rate, and term.
+- [DOCX Unprotector](https://jnechaevsky.github.io/utilities/docx-unprotector/) removes editing restrictions from .docx files, including password protection.
+- [Hex / Dec Converter](https://jnechaevsky.github.io/utilities/hex-to-dec/) converts hexadecimal values to decimal and back.
+- [Image and PDF Compressor](https://jnechaevsky.github.io/utilities/image-compressor/) reduces the file size of PNG, JPG, and PDF files.
+- [Non-Cyrillic Checker](https://jnechaevsky.github.io/utilities/noncyr-check/) highlights and fixes Latin letters mixed into Russian full-name lists, ensuring clean Cyrillic-only formatting.
+- [Password Generator](https://jnechaevsky.github.io/utilities/password-generator/) generates password variants with configurable length, character sets, and optional unique characters.
+- [PDF Splitter & Merger](https://jnechaevsky.github.io/utilities/pdf-splitter/) splits a PDF into JPG pages packed in a ZIP, merges PNG/JPG images into a single PDF, or merges several PDFs into one.
+- [Proportion Solver](https://jnechaevsky.github.io/utilities/prop-solver/) calculates the unknown value in a proportion A/B = C/D when the other three are known.
+
+## Optional
+
+- [Projects](https://jnechaevsky.github.io/): the full index of software and Doom-related projects, including palettes, 3DGE weapon animations, and more.
+- [Music](https://jnechaevsky.github.io/music.html): music written by Julia Nechaevskaya.
+- [Author](https://jnechaevsky.github.io/author.html): about the author.
