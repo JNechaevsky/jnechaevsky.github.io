@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Julia Nechaevskaya">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="pragma" content="no-cache">
+    <title>Projects - Cook Timer</title>
+
+    <!-- Modern, minimal CSS -->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="help" href="mailto:www-validator@w3.org">
+    <link rel="start" href="./" title="Cook Timer">
+
+    <!-- Theme Toggle Script (must be in head to prevent FOUC) -->
+    <script src="../../assets/js/theme-toggle.js"></script>
+
+</head>
+
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <nav>
+            <a href="../../index.html" class="active">Projects</a>
+            <a href="../../utilities.html">Utilities</a>
+            <a href="../../music.html">Music</a>
+            <a href="../../inter-doom/index.html">International Doom</a>
+            <a href="../../author.html">Author</a>
+            <button id="theme-toggle" type="button" title="Toggle theme" aria-label="Toggle light/dark theme">🌙</button>
+        </nav>
+
+        <!-- About -->
+        <section id="about">
+            <nav class="subnav">
+                <a href="#about">About</a>
+                <a href="#usage">Usage</a>
+                <a href="#download">Download</a>
+                <a href="#screenshots">Screenshots</a>
+                <a href="#license">License</a>
+            </nav>
+            <p>
+                <strong>Cook Timer</strong> is a small, portable kitchen countdown timer for Windows.
+            </p>
+            <p>
+                It is written in pure C99 against the Win32 API, with no frameworks and
+                no runtime dependencies beyond what ships with Windows. The interface is
+                drawn entirely by hand, which keeps the same consistent dark theme as
+                Auto Clicker, and full per-monitor DPI awareness keeps it crisp on scaled
+                and multi-monitor setups.
+            </p>
+            <p>
+                Choose a preset or set the exact hours, minutes and seconds. The remaining
+                time is repeated in the window title and on the taskbar button, which fills
+                green while cooking, turns yellow on pause and red when the time is up.
+                The alarm is a neutral three-tone beep, and both the settings and the window
+                position are remembered between runs.
+            </p>
+            <p class="text-right"><em>— Polina “Aura” N. &amp; Julia Nechaevskaya</em></p>
+        </section>
+
+        <!-- Usage -->
+        <section id="usage">
+            <h3 class="text-center">Usage</h3>
+
+            <ul>
+                <li>Pick a 3, 5 or 10 minute preset, or choose <strong>Custom</strong> and set hours, minutes and seconds by typing, with the arrow keys, the mouse wheel or the small spinners.</li>
+                <li><strong>Start</strong> begins the countdown and becomes <strong>Pause</strong>; <strong>Reset</strong> returns to the configured time.</li>
+                <li><strong>Automatic restart</strong> starts the next round 2.5 seconds after zero, so the display still shows the finished time for a moment.</li>
+                <li><strong>Ring forever</strong> keeps the alarm sounding until it is stopped. With both options enabled the alarm ends when the next round begins.</li>
+                <li>The taskbar button shows the progress, the same way Explorer does while copying files.</li>
+                <li>Settings and the window position are saved in <code>cooktimer.ini</code> next to the executable, so the whole folder can be moved anywhere.</li>
+            </ul>
+
+        </section>
+
+        <!-- Download -->
+        <section id="download">
+            <h3 class="text-center">Download</h3>
+            <h4>Version 1.0 (November 6, 2026)</h4>
+            <ul class="download-list">
+                <li class="download"><a href="./files/cooktimer-1.0-win64.zip"><img src="../../assets/img/icon_win64.png" width="16" height="16">&nbsp;&nbsp;Windows (64-bit, portable)</a></li>
+                <li class="download"><a href="./files/cooktimer-1.0-src.zip"><img src="../../assets/img/icon_zip.png" width="16" height="16">&nbsp;&nbsp;Source code</a></li>
+            </ul>
+        </section>
+
+        <!-- Screenshots -->
+        <section id="screenshots">
+            <h3 class="text-center">Screenshots</h3>
+            <p>Click to enlarge:</p>
+            <div class="screenshots">
+                <a href="scrn_1.png"><img src="scrn_1.png" alt="Cook Timer window"></a>
+                <a href="scrn_2.png"><img src="scrn_2.png" alt="Cook Timer counting down"></a>
+            </div>
+        </section>
+
+        <!-- License -->
+        <section id="license">
+            <h3 class="text-center">License</h3>
+            <p>
+                Cook Timer is <a href="https://opensource.org/osd">Open Source</a> and licensed under the <a href="https://opensource.org/license/mit">The MIT License</a>.
+            </p>
+        </section>
+
+    </div>
+
+    <!-- [PN] Scroll-to-top Button -->
+    <script src="../../assets/js/scroll-to-top.js"></script>
+
+    <!-- [PN] Lightbox for Screenshots -->
+    <script src="../../assets/js/lightbox.js"></script>
+
+    <!-- Save selected theme -->
+    <script src="../../assets/js/theme-save.js"></script>
+
+</body>
+</html>

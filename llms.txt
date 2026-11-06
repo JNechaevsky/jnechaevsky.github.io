@@ -18,6 +18,7 @@
 
 - [Ambienter](https://jnechaevsky.github.io/projects/ambienter/index.html). Simple app for sound ambience, that has four elements: water, forest, air and fire.
 - [Auto Clicker](https://jnechaevsky.github.io/projects/autoclicker/). Auto clicker for Windows with precise timing, a dark UI and per-monitor DPI support.
+- [Cook Timer](https://jnechaevsky.github.io/projects/cooktimer/). Kitchen countdown timer for Windows with presets, a dark UI and taskbar progress.
 - [Loto Keno!](https://jnechaevsky.github.io/projects/loto-keno/index.html). Delightful little absurdity from the CGA dimension.
 - [MiniNote](https://jnechaevsky.github.io/projects/mininote/index.html). Minimal dark notepad for quick notes. Written in pure Win32 API. No frameworks, no bloat.
 
