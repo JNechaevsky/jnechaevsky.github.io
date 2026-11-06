@@ -14,6 +14,13 @@
 
 - [CRY](https://jnechaevsky.github.io/cry/) is a non-conservative recreation of Jaguar Doom for PC, built on top of the International Doom engine. To ensure high emulation accuracy, substantial parts of the original Jaguar Doom code were integrated, including damage formulas, monster behavior, Nightmare difficulty mechanics, and sector and line specials.
 
+## Software
+
+- [Ambienter](https://jnechaevsky.github.io/projects/ambienter/index.html). Simple app for sound ambience, that has four elements: water, forest, air and fire.
+- [Auto Clicker](https://jnechaevsky.github.io/projects/autoclicker/). Auto clicker for Windows with precise timing, a dark UI and per-monitor DPI support.
+- [Loto Keno!](https://jnechaevsky.github.io/projects/loto-keno/index.html). Delightful little absurdity from the CGA dimension.
+- [MiniNote](https://jnechaevsky.github.io/projects/mininote/index.html). Minimal dark notepad for quick notes. Written in pure Win32 API. No frameworks, no bloat.
+
 ## Browser utilities
 
 A collection of MIT-licensed, client-side web tools by Polina "Aura" N. and Julia Nechaevskaya. All of them run entirely in the browser: files are never uploaded to a server, and nothing is installed.
